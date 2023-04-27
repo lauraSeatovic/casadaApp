@@ -1,6 +1,6 @@
 package com.casada.casadaApi.controllers;
 
-import com.casada.casadaApi.entities.Member;
+import com.casada.casadaApi.domain.Member;
 import com.casada.casadaApi.services.memberService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +21,7 @@ public class MemberController {
 
 
     @GetMapping
-    public List<Member> findAll() {
+    public String findAll() {
         return memebrService1.findAll();
     }
 }
