@@ -7,6 +7,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
+@IdClass(MassageChairColorId.class)
 @Table(name = "massagechaircolor")
 public class MassageChairColor {
     @Id

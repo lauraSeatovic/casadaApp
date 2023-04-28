@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Table(name = "orderproduct")
-//@IdClass(OrderProduct.class)
+@IdClass(OrderProductId.class)
 public class OrderProduct {
 
     @Column(name = "discount", nullable = false)
