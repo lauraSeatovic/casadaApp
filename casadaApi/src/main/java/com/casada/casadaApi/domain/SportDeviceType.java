@@ -20,7 +20,7 @@ public class SportDeviceType {
     @Column(name = "sportdevicetypename", nullable = false, length = 200)
     private String sportDeviceTypeName;
 
-    @ManyToMany(mappedBy = "sportDeviceSportDeviceTypes")
-    private Set<Product> sportDeviceProducts;
+    @OneToMany(mappedBy = "sportDeviceType")
+    private Set<SportDevice> sportDevices;
 
 }

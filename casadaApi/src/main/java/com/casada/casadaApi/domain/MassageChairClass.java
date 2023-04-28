@@ -20,7 +20,7 @@ public class MassageChairClass {
     @Column(name = "massagechairclassname", nullable = false, length = 200)
     private String massageChairClassName;
 
-    @ManyToMany(mappedBy = "massageChairMassageChairClasss")
-    private Set<Product> massageChairProducts;
+    @OneToMany(mappedBy = "massageChairClass")
+    private Set<MassageChair> massageChairs;
 
 }

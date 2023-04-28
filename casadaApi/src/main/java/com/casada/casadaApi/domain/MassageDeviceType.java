@@ -14,13 +14,13 @@ import lombok.Setter;
 public class MassageDeviceType {
 
     @Id
-    @Column(name = "massagedevicetypeid", nullable = false, updatable = false)
-    private Integer massageDeviceTypeId;
+    @Column(name = "massagedevicetypeid")
+    private int massageDeviceTypeId;
 
-    @Column(name = "massagedevicetypename", nullable = false, length = 200)
+    @Column(name = "massagedevicetypename")
     private String massageDeviceTypeName;
 
-    @ManyToMany(mappedBy = "massageDeviceMassageDeviceTypes")
-    private Set<Product> massageDeviceProducts;
+    @OneToMany(mappedBy = "massageDeviceType")
+    private Set<MassageDevice> massageDevices;
 
 }

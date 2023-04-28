@@ -29,29 +29,14 @@ public class Product {
     @Column(name = "productcode", length = 100)
     private String productCode;
 
-    @ManyToMany
-    @JoinTable(
-            name = "massagechair",
-            joinColumns = @JoinColumn(name = "productid"),
-            inverseJoinColumns = @JoinColumn(name = "massagechairclassid")
-    )
-    private Set<MassageChairClass> massageChairMassageChairClasss;
+    @OneToMany(mappedBy = "product")
+    private Set<MassageDevice> massageDevices;
 
-    @ManyToMany
-    @JoinTable(
-            name = "massagedevice",
-            joinColumns = @JoinColumn(name = "productid"),
-            inverseJoinColumns = @JoinColumn(name = "massagedevicetypeid")
-    )
-    private Set<MassageDeviceType> massageDeviceMassageDeviceTypes;
+    @OneToMany(mappedBy = "product")
+    private Set<SportDevice> sportDevices;
 
-    @ManyToMany
-    @JoinTable(
-            name = "sportdevice",
-            joinColumns = @JoinColumn(name = "productid"),
-            inverseJoinColumns = @JoinColumn(name = "sportdevicetypeid")
-    )
-    private Set<SportDeviceType> sportDeviceSportDeviceTypes;
+    @OneToMany(mappedBy = "product")
+    private Set<MassageChair> massageChairs;
 
     @OneToMany(mappedBy = "product")
     private Set<Service> productServices;

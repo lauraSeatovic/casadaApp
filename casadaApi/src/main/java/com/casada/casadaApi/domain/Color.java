@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Set;
+
 
 @Entity
 @Getter
@@ -17,5 +19,8 @@ public class Color {
 
     @Column(name = "colorname", nullable = false, length = 200)
     private String colorName;
+
+    @OneToMany(mappedBy = "color")
+    private Set<MassageChairColor> massageChairColors;
 
 }
