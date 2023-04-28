@@ -1,21 +1,36 @@
 package com.casada.casadaApi.DTOs;
 
 
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serializable;
 
-@lombok.Data
-public class MemberDTO implements Serializable {
-    private static final long serialVersionUID = 1L;
-    private Long memberid;
+@Getter
+@Setter
+public class MemberDTO implements  Serializable {
+    private int memberId;
 
-    private String membername;
+    private String memberName;
 
-    private String membersurname;
+    private String memberSurname;
 
-    private String memberemail;
+    private String memberEmail;
 
-    private String memberpassword;
+    private String memberPassword;
 
-    private Long roleid;
+    private int roleId;
+
+    private String roleName;
+    public MemberDTO(int memberId, String memberName, String memberSurname, String memberEmail, String memberPassword, int roleId, String roleName) {
+        this.memberId = memberId;
+        this.memberName = memberName;
+        this.memberSurname = memberSurname;
+        this.memberEmail = memberEmail;
+        this.memberPassword = memberPassword;
+        this.roleId = roleId;
+        this.roleName = roleName;
+    }
 
 }
