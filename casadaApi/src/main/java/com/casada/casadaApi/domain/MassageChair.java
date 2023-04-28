@@ -15,10 +15,16 @@ public class MassageChair {
     private MassageChairClass massageChairClass;
 
     @Id
-    @ManyToOne
+    @Column(name = "productid")
+    private Integer productId;
+
+    @MapsId
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "productid")
     private Product product;
 
+
     @OneToMany(mappedBy = "massageChair")
     private Set<MassageChairColor> massageChair;
+
 }

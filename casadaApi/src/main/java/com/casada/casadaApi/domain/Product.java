@@ -29,14 +29,14 @@ public class Product {
     @Column(name = "productcode", length = 100)
     private String productCode;
 
-    @OneToMany(mappedBy = "product")
-    private Set<MassageDevice> massageDevices;
+    @OneToOne(mappedBy = "product")
+    private MassageDevice massageDevices;
 
-    @OneToMany(mappedBy = "product")
-    private Set<SportDevice> sportDevices;
+    @OneToOne(mappedBy = "product")
+    private SportDevice sportDevice;
 
-    @OneToMany(mappedBy = "product")
-    private Set<MassageChair> massageChairs;
+    @OneToOne(mappedBy = "product")
+    private MassageChair massageChair;
 
     @OneToMany(mappedBy = "product")
     private Set<Service> productServices;
@@ -44,4 +44,13 @@ public class Product {
     @OneToMany(mappedBy = "product")
     private Set<OrderProduct> productOrderProducts;
 
+    public Product(){ }
+
+    public Product(Integer productId, String productName, Double productPrice, Boolean productActiveStatus, String productCode) {
+        this.productId = productId;
+        this.productName = productName;
+        this.productPrice = productPrice;
+        this.productActiveStatus = productActiveStatus;
+        this.productCode = productCode;
+    }
 }

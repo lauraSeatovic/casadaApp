@@ -14,7 +14,11 @@ public class MassageDevice {
     private MassageDeviceType massageDeviceType;
 
     @Id
-    @ManyToOne
+    @Column(name = "productid")
+    private Integer productId;
+
+    @MapsId
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "productid")
     private Product product;
 }

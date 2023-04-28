@@ -12,7 +12,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Table(name = "role")
-public class Role implements Serializable {
+public class Role {
 
     @Id
     @Column(name = "roleid", nullable = false, updatable = false)

@@ -12,7 +12,11 @@ public class SportDevice {
     private SportDeviceType sportDeviceType;
 
     @Id
-    @ManyToOne
+    @Column(name = "productid")
+    private Integer productId;
+
+    @MapsId
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "productid")
     private Product product;
 }

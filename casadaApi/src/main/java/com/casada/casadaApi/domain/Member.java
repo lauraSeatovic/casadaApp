@@ -6,6 +6,8 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,7 +15,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Table(name = "member")
-public class Member implements Serializable {
+public class Member {
 
     @Id
     @Column(name = "memberid", nullable = false, updatable = false)
@@ -41,4 +43,15 @@ public class Member implements Serializable {
     @OneToMany(mappedBy = "deliveryPerson")
     private Set<OrderInfo> deliveryPersonOrderInfos;
 
+    public Member() {
+    }
+
+    public Member(Integer memberId, String memberName, String memberSurname, String memberEmail, String memberPassword, Role role) {
+        this.memberId = memberId;
+        this.memberName = memberName;
+        this.memberSurname = memberSurname;
+        this.memberEmail = memberEmail;
+        this.memberPassword = memberPassword;
+        this.role = role;
+    }
 }

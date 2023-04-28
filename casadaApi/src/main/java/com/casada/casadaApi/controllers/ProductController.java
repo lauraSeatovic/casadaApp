@@ -1,26 +1,28 @@
 package com.casada.casadaApi.controllers;
 
 import com.casada.casadaApi.DTOs.MemberDTO;
+import com.casada.casadaApi.DTOs.ProductDTO;
 import com.casada.casadaApi.services.implementations.MemberServiceImpl;
+import com.casada.casadaApi.services.implementations.ProductServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/member")
-public class MemberController {
+@RequestMapping("/product")
+public class ProductController {
 
     @Autowired
-    private MemberServiceImpl memebrService;
+    private ProductServiceImpl productService;
 
     @GetMapping
-    public List<MemberDTO> findAll() {
-        return memebrService.findAll();
+    public List<ProductDTO> findAll() {
+        return productService.findAll();
     }
-
+    /*
     @PostMapping
     public Boolean saveMember(@RequestBody MemberDTO memberDTO){
         return memebrService.addMember(memberDTO);
-    }
+    }*/
 }
