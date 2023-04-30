@@ -25,6 +25,14 @@ public class ProductController {
         return productService.findAllMassageChair();
     }
 
+    @GetMapping("/massagedevice")
+    public List<MassageDeviceDTO> findAllMassageDevice() { return productService.findAllMassageDevice(); }
+
+    @GetMapping("/sportdevice")
+    public List<SportDeviceDTO> findAllSportDevice() {
+        return productService.findAllSportDevice();
+    }
+
     @PostMapping("/massagechair")//add colors
     public Boolean saveMassageChair(@RequestBody MassageChairProductDTO massageChairProductDTO){
         return productService.addMassageChair(massageChairProductDTO.getProductDTO(), massageChairProductDTO.getMassageChairClassId());

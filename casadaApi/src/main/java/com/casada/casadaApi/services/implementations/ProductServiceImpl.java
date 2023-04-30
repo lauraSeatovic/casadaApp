@@ -1,10 +1,14 @@
 package com.casada.casadaApi.services.implementations;
 
 import com.casada.casadaApi.DTOs.MassageChairDTO;
+import com.casada.casadaApi.DTOs.MassageDeviceDTO;
 import com.casada.casadaApi.DTOs.ProductDTO;
+import com.casada.casadaApi.DTOs.SportDeviceDTO;
 import com.casada.casadaApi.domain.*;
 import com.casada.casadaApi.mappers.MassageChairMapper;
+import com.casada.casadaApi.mappers.MassageDeviceMapper;
 import com.casada.casadaApi.mappers.ProductMapper;
+import com.casada.casadaApi.mappers.SportDeviceMapper;
 import com.casada.casadaApi.repos.*;
 import com.casada.casadaApi.services.ProductService;
 import jakarta.transaction.Transactional;
@@ -29,6 +33,12 @@ public class ProductServiceImpl implements ProductService {
     private MassageChairMapper massageChairMapper;
 
     @Autowired
+    private MassageDeviceMapper massageDeviceMapper;
+
+    @Autowired
+    private SportDeviceMapper sportDeviceMapper;
+
+    @Autowired
     private MassageChairClassRepository massageChairClassRepository;
 
     @Autowired
@@ -50,7 +60,15 @@ public class ProductServiceImpl implements ProductService {
     }
 
     public List<MassageChairDTO> findAllMassageChair(){
-        return massageChairRepository.findAll().stream().map(m -> massageChairMapper.toDTO(m)).collect(Collectors.toList());
+        return massageChairRepository.findAll().stream().map(massageChairMapper::toDTO).collect(Collectors.toList());
+    }
+
+    public List<MassageDeviceDTO> findAllMassageDevice(){
+        return massageDeviceRepository.findAll().stream().map(massageDeviceMapper::toDTO).collect(Collectors.toList());
+    }
+
+    public List<SportDeviceDTO> findAllSportDevice(){
+        return sportDeviceRepository.findAll().stream().map(sportDeviceMapper::toDTO).collect(Collectors.toList());
     }
 
     @Transactional
