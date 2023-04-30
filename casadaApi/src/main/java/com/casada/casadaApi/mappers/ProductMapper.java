@@ -1,6 +1,7 @@
 package com.casada.casadaApi.mappers;
 
 import com.casada.casadaApi.DTOs.ProductDTO;
+import com.casada.casadaApi.domain.MassageChair;
 import com.casada.casadaApi.domain.Product;
 import com.casada.casadaApi.services.ProductService;
 import org.springframework.stereotype.Component;
@@ -18,11 +19,11 @@ public class ProductMapper {
 
     public Product toDomain(ProductDTO product){
         return new Product(
-                product.getProductid(),
-                product.getProductname(),
-                product.getProductprice(),
-                product.getProductactivestatus(),
-                product.getProductcode()
+                product.getProductId(),
+                product.getProductName(),
+                product.getProductPrice(),
+                product.getProductActiveStatus(),
+                product.getProductCode()
         );
     }
 }

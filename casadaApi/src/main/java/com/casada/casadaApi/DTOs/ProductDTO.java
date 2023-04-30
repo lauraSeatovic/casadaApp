@@ -10,21 +10,21 @@ import java.io.Serializable;
 @Setter
 public class ProductDTO implements Serializable {
     private static final long serialVersionUID = 1L;
-    private int productid;
+    private int productId;
 
-    private String productname;
+    private String productName;
 
-    private Double productprice;
+    private Double productPrice;
 
-    private Boolean productactivestatus;
+    private Boolean productActiveStatus;
 
-    private String productcode;
+    private String productCode;
 
     public ProductDTO(int productid, String productname, Double productprice, Boolean productactivestatus, String productcode) {
-        this.productid = productid;
-        this.productname = productname;
-        this.productprice = productprice;
-        this.productactivestatus = productactivestatus;
-        this.productcode = productcode;
+        this.productId = productid;
+        this.productName = productname;
+        this.productPrice = productprice;
+        this.productActiveStatus = productactivestatus;
+        this.productCode = productcode;
     }
 }

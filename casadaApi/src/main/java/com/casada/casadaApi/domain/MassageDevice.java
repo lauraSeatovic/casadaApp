@@ -18,8 +18,16 @@ public class MassageDevice {
     private Integer productId;
 
     @MapsId
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "productid")
     private Product product;
+
+    public MassageDevice(){}
+
+    public MassageDevice(MassageDeviceType massageDeviceType, Product product) {
+        this.massageDeviceType = massageDeviceType;
+        this.product = product;
+        this.productId = product.getProductId();
+    }
 }
 

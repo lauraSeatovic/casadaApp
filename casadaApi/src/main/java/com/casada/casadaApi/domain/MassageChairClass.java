@@ -23,4 +23,6 @@ public class MassageChairClass {
     @OneToMany(mappedBy = "massageChairClass")
     private Set<MassageChair> massageChairs;
 
+    public MassageChairClass() { }
+
 }
