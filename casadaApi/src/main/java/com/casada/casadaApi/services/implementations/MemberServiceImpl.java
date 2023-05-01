@@ -22,14 +22,12 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public List<MemberDTO> findAll() {
-
         return memberRepository.findAll().stream()
                 .map(memberMapper::toDTO).collect(Collectors.toList());
     }
 
     @Override
-    public Boolean addMember(MemberDTO member){
-        memberRepository.save(memberMapper.toDomain(member));
-        return true;
+    public Member addMember(MemberDTO member){
+        return memberRepository.save(memberMapper.toDomain(member));
     }
 }

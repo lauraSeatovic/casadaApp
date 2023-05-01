@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface MemberService {
      List<MemberDTO> findAll();
-     Boolean addMember(MemberDTO member);
+     Member addMember(MemberDTO member);
 }
