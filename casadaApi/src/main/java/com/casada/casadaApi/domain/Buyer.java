@@ -46,4 +46,17 @@ public class Buyer {
     @OneToMany(mappedBy = "buyer")
     private Set<OrderInfo> buyerOrderInfos;
 
+    public Buyer(){}
+
+    public Buyer(Integer buyerId, String buyerName, String buyerSurname, String buyerPhoneNumber, String buyerHomeAddress, String buyerDeliveryAddress, String buyerEmail, City homePostalCode, City deliveryPostalCode) {
+        this.buyerId = buyerId;
+        this.buyerName = buyerName;
+        this.buyerSurname = buyerSurname;
+        this.buyerPhoneNumber = buyerPhoneNumber;
+        this.buyerHomeAddress = buyerHomeAddress;
+        this.buyerDeliveryAddress = buyerDeliveryAddress;
+        this.buyerEmail = buyerEmail;
+        this.homePostalCode = homePostalCode;
+        this.deliveryPostalCode = deliveryPostalCode;
+    }
 }

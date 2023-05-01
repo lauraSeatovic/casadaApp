@@ -1,27 +1,41 @@
 package com.casada.casadaApi.DTOs;
 
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serializable;
 
-@lombok.Data
+@Getter
+@Setter
 public class BuyerDTO implements Serializable {
-    private static final long serialVersionUID = 1L;
-    private Long buyerid;
+    private Integer buyerId;
 
-    private String buyername;
+    private String buyerName;
 
-    private String buyersurname;
+    private String buyerSurname;
 
-    private String buyerphonenumber;
+    private String buyerPhoneNumber;
 
-    private String buyerhomeaddress;
+    private String buyerHomeAddress;
 
-    private String buyerdeliveryaddress;
+    private String buyerDeliveryAddress;
 
-    private String buyeremail;
+    private String buyerEmail;
 
-    private Long homepostalcode;
+    private Integer homePostalCode;
 
-    private Long deliverypostalcode;
+    private Integer deliveryPostalCode;
 
+    public BuyerDTO(Integer buyerId, String buyerName, String buyerSurname, String buyerPhoneNumber, String buyerHomeAddress, String buyerDeliveryAddress, String buyerEmail, Integer homePostalCode, Integer deliveryPostalCode) {
+        this.buyerId = buyerId;
+        this.buyerName = buyerName;
+        this.buyerSurname = buyerSurname;
+        this.buyerPhoneNumber = buyerPhoneNumber;
+        this.buyerHomeAddress = buyerHomeAddress;
+        this.buyerDeliveryAddress = buyerDeliveryAddress;
+        this.buyerEmail = buyerEmail;
+        this.homePostalCode = homePostalCode;
+        this.deliveryPostalCode = deliveryPostalCode;
+    }
 }
