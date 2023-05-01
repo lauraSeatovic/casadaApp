@@ -10,8 +10,12 @@ import java.io.Serializable;
 @Setter
 public class PaymentMethodDTO implements Serializable {
     private static final long serialVersionUID = 1L;
-    private Long paymentMethodId;
+    private Integer paymentMethodId;
 
     private String paymentMethodName;
 
+    public PaymentMethodDTO(Integer paymentMethodId, String paymentMethodName) {
+        this.paymentMethodId = paymentMethodId;
+        this.paymentMethodName = paymentMethodName;
+    }
 }

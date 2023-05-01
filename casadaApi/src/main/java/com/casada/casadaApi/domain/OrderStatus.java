@@ -23,4 +23,12 @@ public class OrderStatus {
     @OneToMany(mappedBy = "orderStatus")
     private Set<OrderInfo> orderStatusOrderInfos;
 
+    public OrderStatus(){}
+
+    public OrderStatus(Integer orderStatusId, String orderStatusName) {
+        this.orderStatusId = orderStatusId;
+        this.orderStatusName = orderStatusName;
+    }
+
+
 }

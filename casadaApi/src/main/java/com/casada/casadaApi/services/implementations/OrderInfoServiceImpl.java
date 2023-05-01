@@ -2,6 +2,7 @@ package com.casada.casadaApi.services.implementations;
 
 import com.casada.casadaApi.DTOs.MemberDTO;
 import com.casada.casadaApi.DTOs.OrderInfoDTO;
+import com.casada.casadaApi.domain.OrderInfo;
 import com.casada.casadaApi.mappers.OrderInfoMapper;
 import com.casada.casadaApi.repos.OrderInfoRepository;
 import com.casada.casadaApi.services.OrderInfoService;
@@ -25,8 +26,7 @@ public class OrderInfoServiceImpl implements OrderInfoService {
                 .map(orderInfoMapper::toDTO).collect(Collectors.toList());
     }
 
-    public Boolean addOrderInfo(OrderInfoDTO orderInfo){
-        orderInfoRepository.save(orderInfoMapper.toDomain(orderInfo));
-        return true;
+    public OrderInfo addOrderInfo(OrderInfoDTO orderInfo){
+        return orderInfoRepository.save(orderInfoMapper.toDomain(orderInfo));
     }
 }

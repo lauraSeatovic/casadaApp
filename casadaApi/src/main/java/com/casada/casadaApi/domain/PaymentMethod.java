@@ -23,4 +23,10 @@ public class PaymentMethod {
     @OneToMany(mappedBy = "paymentMethod")
     private Set<OrderInfo> paymentMethodOrderInfos;
 
+    public PaymentMethod(){}
+
+    public PaymentMethod(Integer paymentMethodId, String paymentMethodName) {
+        this.paymentMethodId = paymentMethodId;
+        this.paymentMethodName = paymentMethodName;
+    }
 }
