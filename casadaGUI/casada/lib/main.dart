@@ -1,84 +1,78 @@
-import 'dart:convert';
-
+import 'package:casada/products/products.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
-void main() => runApp(MyApp());
-
-class MyApp extends StatefulWidget {
-  @override
-  _MyAppState createState() => _MyAppState();
+void main() {
+  runApp(MyApp());
 }
 
-class _MyAppState extends State<MyApp> {
-  List<dynamic> _data = [];
-
+class MyApp extends StatelessWidget {
   @override
-  void initState() {
-    super.initState();
-    _getData();
+  Widget build(BuildContext context){
+    return MaterialApp(
+      title: "My App",
+      home: MyHomePage(),
+    );
   }
+}
 
-  Future<void> _getData() async {
-    final response =
-    await http.get(Uri.parse('http://localhost:8080/member'));
-    if (response.statusCode == 200) {
-      setState(() {
-        _data = json.decode(response.body);
-      });
-    } else {
-      throw Exception('Failed to load data');
-    }
+class MyHomePage extends StatefulWidget{
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  int _selectedIndex = 0;
+
+  final List<Widget> _pages = [
+    const Text('Page 1'),
+    const Text('Page 2'),
+    Products(),
+  ];
+
+  Widget _getPage(int index) {
+    return _pages[index];
   }
+  
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'API Data Table',
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('API Data Table'),
-        ),
-        body: DataTable(
-          columns: const <DataColumn>[
-            DataColumn(
-              label: Text(
-                'Name',
-                style: TextStyle(fontStyle: FontStyle.italic),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Casada'),
+      ),
+      body: Row(
+        children: [
+          NavigationRail(
+            selectedIndex: _selectedIndex,
+            onDestinationSelected: (int index) {
+              setState(() {
+                _selectedIndex = index;
+              });
+            },
+            labelType: NavigationRailLabelType.all,
+            destinations: const [
+              NavigationRailDestination(
+                icon: Icon(Icons.person),
+                label: Text('Korisnici'),
               ),
-            ),
-            DataColumn(
-              label: Text(
-                'Email',
-                style: TextStyle(fontStyle: FontStyle.italic),
+             NavigationRailDestination(
+                icon: Icon(Icons.local_mall),
+                label: Text('Proizvodi'),
               ),
-            ),
-            DataColumn(
-              label: Text(
-                'Phone',
-                style: TextStyle(fontStyle: FontStyle.italic),
+              NavigationRailDestination(
+                icon: Icon(Icons.list),
+                label: Text('Narudžbe'),
               ),
+            ],
+          ),
+          Expanded(
+            child: Center(
+              child: _getPage(_selectedIndex),
             ),
-          ],
-          rows: _data
-              .map(
-                (dynamic item) => DataRow(
-              cells: <DataCell>[
-                DataCell(
-                  Text(item['memberId'].toString()),
-                ),
-                DataCell(
-                  Text(item['memberName']),
-                ),
-                DataCell(
-                  Text(item['memberSurname']),
-                ),
-              ],
-            ),
-          )
-              .toList(),
-        ),
+          ),
+        ],
       ),
     );
   }
 }
+
