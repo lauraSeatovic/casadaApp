@@ -15,32 +15,32 @@ class _SportDeviceTable extends State<SportDeviceTable> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: PaginatedDataTable(
-      header: Text('Sportski uređaji'),
-      columns: [
-        DataColumn(
-          label: Text('ID'),
-        ),
-        DataColumn(
-          label: Text('Naziv'),
-        ),
-        DataColumn(
-          label: Text('Cijena'),
-        ),
-        DataColumn(
-          label: Text('Aktivan'),
-        ),
-        DataColumn(
-          label: Text('Šifra'),
-        ),
-        DataColumn(
-          label: Text('Tip'),
-        ),
-      ],
-      source: _dataTableSource,
-      rowsPerPage: 5, // number of rows to show per page
-    ));
+        padding: const EdgeInsets.all(16.0),
+        child: PaginatedDataTable(
+          header: Text('Sportski uređaji'),
+          columns: [
+            DataColumn(
+              label: Text('ID'),
+            ),
+            DataColumn(
+              label: Text('Naziv'),
+            ),
+            DataColumn(
+              label: Text('Cijena'),
+            ),
+            DataColumn(
+              label: Text('Aktivan'),
+            ),
+            DataColumn(
+              label: Text('Šifra'),
+            ),
+            DataColumn(
+              label: Text('Tip'),
+            ),
+          ],
+          source: _dataTableSource,
+          rowsPerPage: 5, // number of rows to show per page
+        ));
   }
 }
 

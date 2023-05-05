@@ -1,4 +1,5 @@
 import 'package:casada/products/products.dart';
+import 'package:casada/products/products2.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -7,7 +8,7 @@ void main() {
 
 class MyApp extends StatelessWidget {
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return MaterialApp(
       title: "My App",
       home: MyHomePage(),
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatefulWidget{
+class MyHomePage extends StatefulWidget {
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
@@ -26,13 +27,12 @@ class _MyHomePageState extends State<MyHomePage> {
   final List<Widget> _pages = [
     const Text('Page 1'),
     const Text('Page 2'),
-    Products(),
+    Products2(),
   ];
 
   Widget _getPage(int index) {
     return _pages[index];
   }
-  
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 icon: Icon(Icons.person),
                 label: Text('Korisnici'),
               ),
-             NavigationRailDestination(
+              NavigationRailDestination(
                 icon: Icon(Icons.local_mall),
                 label: Text('Proizvodi'),
               ),
@@ -75,4 +75,3 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-

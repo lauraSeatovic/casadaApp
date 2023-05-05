@@ -1,33 +1,38 @@
 import 'package:casada/products/all_products_table.dart';
 import 'package:casada/products/massage_chairs_table.dart';
 import 'package:casada/products/massage_device_table.dart';
+import 'package:casada/products/products_bloc.dart';
 import 'package:casada/products/products_service.dart';
 import 'package:casada/products/sport_device_table.dart';
 import 'package:flutter/material.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../common/Api_Data.dart';
 import '../data/product.dart';
 
-class Products extends StatefulWidget {
+class Products2 extends StatefulWidget {
   @override
-  _ProductsState createState() => _ProductsState();
+  _Products2State createState() => _Products2State();
 }
 
-class _ProductsState extends State<Products> {
+class _Products2State extends State<Products2> {
   final _productsService = ProductsService();
+  final _productsBloc = ProductsBloc();
   int _selectedTable = 0;
 
-  List<Map<String, dynamic>> _allProducts = [];
-  List<Map<String, dynamic>> _massageChairs = [];
-  List<Map<String, dynamic>> _massageDevices = [];
-  List<Map<String, dynamic>> _sportsDevices = [];
+  final _allProducts = BehaviorSubject<List<Product>>();
 
   @override
-  void initState() {}
+  void initState() {
+    _loadProducts();
+  }
 
-  Future<List<Product>> loadProducts() async {
-    final products = await _productsService.loadProducts();
-    return products;
+  void _loadProducts() async {
+    try {
+      await _productsBloc.loadAllProducts();
+    } catch (e) {
+      // handle error
+    }
   }
 
 /*
@@ -78,9 +83,17 @@ class _ProductsState extends State<Products> {
   Widget _buildTable() {
     switch (_selectedTable) {
       case 0:
-        return _buildTableForFuture(
-          future: loadProducts(),
-          builder: (data) => AllProductsTable(data: data),
+        return StreamBuilder<List<Product>>(
+          stream: _productsBloc.allProductsStream,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return AllProductsTable(data: snapshot.data!);
+            } else if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            } else {
+              return Center(child: CircularProgressIndicator());
+            }
+          },
         );
       /*
     case 1:
