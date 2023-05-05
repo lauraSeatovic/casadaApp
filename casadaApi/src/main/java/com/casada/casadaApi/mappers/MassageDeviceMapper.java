@@ -43,7 +43,8 @@ public class MassageDeviceMapper {
                 massageDevice.getProduct().getProductPrice(),
                 massageDevice.getProduct().getProductActiveStatus(),
                 massageDevice.getProduct().getProductCode(),
-                massageDevice.getMassageDeviceType().getMassageDeviceTypeId()
+                massageDevice.getMassageDeviceType().getMassageDeviceTypeId(),
+                massageDevice.getMassageDeviceType().getMassageDeviceTypeName()
         );
     }
 }

@@ -22,13 +22,16 @@ public class MassageDeviceDTO implements Serializable {
 
     private Integer massageDeviceTypeId;
 
-    public MassageDeviceDTO(Integer productId, String productName, Double productPrice, Boolean productActiveStatus, String productCode, Integer massageDeviceTypeId) {
+    private String massageDeviceTypeName;
+
+    public MassageDeviceDTO(Integer productId, String productName, Double productPrice, Boolean productActiveStatus, String productCode, Integer massageDeviceTypeId, String massageDeviceTypeName) {
         this.productId = productId;
         this.productName = productName;
         this.productPrice = productPrice;
         this.productActiveStatus = productActiveStatus;
         this.productCode = productCode;
         this.massageDeviceTypeId = massageDeviceTypeId;
+        this.massageDeviceTypeName = massageDeviceTypeName;
     }
 
 }
