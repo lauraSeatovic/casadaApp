@@ -43,7 +43,8 @@ public class SportDeviceMapper {
                 sportDevice.getProduct().getProductPrice(),
                 sportDevice.getProduct().getProductActiveStatus(),
                 sportDevice.getProduct().getProductCode(),
-                sportDevice.getSportDeviceType().getSportDeviceTypeId()
+                sportDevice.getSportDeviceType().getSportDeviceTypeId(),
+                sportDevice.getSportDeviceType().getSportDeviceTypeName()
         );
     }
 }
