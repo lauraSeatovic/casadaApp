@@ -1,10 +1,12 @@
 import 'package:casada/products/all_products_table.dart';
 import 'package:casada/products/massage_chairs_table.dart';
 import 'package:casada/products/massage_device_table.dart';
+import 'package:casada/products/products_service.dart';
 import 'package:casada/products/sport_device_table.dart';
 import 'package:flutter/material.dart';
 
 import '../common/Api_Data.dart';
+import '../data/product.dart';
 class Products extends StatefulWidget {
   @override
   _ProductsState createState() => _ProductsState();
@@ -12,7 +14,7 @@ class Products extends StatefulWidget {
 
 
 class _ProductsState extends State<Products> {
-  final _apiData = ApiData('https://example.com/api/all-products');
+  final _productsService = ProductsService();
   int _selectedTable = 0;
 
   List<Map<String, dynamic>> _allProducts = [];
@@ -22,13 +24,15 @@ class _ProductsState extends State<Products> {
 
   @override
   void initState() {
-    super.initState();
-    _loadMassageChairData();
-    _loadMassageDeviceData();
-    _loadSportsDeviceData();
-    _loadProductsData();
   }
 
+
+  Future<List<Product>> loadProducts() async {
+    final products = await _productsService.loadProducts();
+  return products;
+}
+
+/*
   Future<void> _loadProductsData() async {
     try {
       final allData =  await ApiData('http://localhost:8080/product').getData();
@@ -71,22 +75,56 @@ class _ProductsState extends State<Products> {
     } catch (e) {
       // handle error
     }
-  }
+  }*/
 
   Widget _buildTable() {
-    switch (_selectedTable) {
-      case 0:
-        return AllProductsTable(data: _allProducts);
-      case 1:
-        return MassageChairTable(data: _massageChairs);
-      case 2:
-        return MassageDeviceTable(data: _massageDevices);
-      case 3:
-        return SportDeviceTable(data: _massageDevices);
-      default:
-        return Container();
-    }
+  switch (_selectedTable) {
+    case 0:
+      return _buildTableForFuture(
+        future: loadProducts(),
+        builder: (data) => AllProductsTable(data: data),
+      );
+      /*
+    case 1:
+      return _buildTableForFuture(
+        future: loadMassageChairs(),
+        builder: (data) => MassageChairTable(data: data),
+      );
+    case 2:
+      return _buildTableForFuture(
+        future: loadMassageDevices(),
+        builder: (data) => MassageDeviceTable(data: data),
+      );
+    case 3:
+      return _buildTableForFuture(
+        future: loadSportDevices(),
+        builder: (data) => SportDeviceTable(data: data),
+      );*/
+    default:
+      return Container();
   }
+}
+
+Widget _buildTableForFuture<T>({
+  required Future<List<T>> future,
+  required Widget Function(List<T>) builder,
+}) {
+  return FutureBuilder<List<T>>(
+    future: future,
+    builder: (context, snapshot) {
+      if (snapshot.connectionState == ConnectionState.done) {
+        if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        }
+        return builder(snapshot.data!);
+      } else {
+        return Center(
+            child: CircularProgressIndicator(),
+          );
+      }
+    },
+  );
+}
 
   @override
   Widget build(BuildContext context) {
