@@ -41,7 +41,8 @@ public class MassageChairMapper {
                 massageChair.getProduct().getProductPrice(),
                 massageChair.getProduct().getProductActiveStatus(),
                 massageChair.getProduct().getProductCode(),
-                massageChair.getMassageChairClass().getMassageChairClassId()
+                massageChair.getMassageChairClass().getMassageChairClassId(),
+                massageChair.getMassageChairClass().getMassageChairClassName()
         );
     }
 }

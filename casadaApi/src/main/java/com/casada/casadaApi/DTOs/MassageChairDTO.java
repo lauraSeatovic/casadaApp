@@ -21,12 +21,15 @@ public class MassageChairDTO implements Serializable {
 
     private Integer massageChairClassId;
 
-    public MassageChairDTO(Integer productId, String productName, Double productPrice, Boolean productActiveStatus, String productCode, Integer massageChairClassId) {
+    private String massageChairClassName;
+
+    public MassageChairDTO(Integer productId, String productName, Double productPrice, Boolean productActiveStatus, String productCode, Integer massageChairClassId, String massageChairClassName) {
         this.productId = productId;
         this.productName = productName;
         this.productPrice = productPrice;
         this.productActiveStatus = productActiveStatus;
         this.productCode = productCode;
         this.massageChairClassId = massageChairClassId;
+        this.massageChairClassName = massageChairClassName;
     }
 }
