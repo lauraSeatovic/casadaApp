@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../data/sport_device.dart';
+
 class SportDeviceTable extends StatefulWidget {
-  final List<Map<String, dynamic>> data;
+  final List<SportDevice> data;
 
   SportDeviceTable({required this.data});
 
@@ -45,7 +47,7 @@ class _SportDeviceTable extends State<SportDeviceTable> {
 }
 
 class _DataTableSource extends DataTableSource {
-  final List<Map<String, dynamic>> _data;
+  final List<SportDevice> _data;
   int _selectedRowCount = 0;
   _DataTableSource(this._data);
 
@@ -58,12 +60,12 @@ class _DataTableSource extends DataTableSource {
     return DataRow.byIndex(
       index: index,
       cells: [
-        DataCell(Text(item['productId'].toString())),
-        DataCell(Text(item['productName'].toString())),
-        DataCell(Text(item['productPrice'].toString())),
-        DataCell(Text(item['productActiveStatus'].toString())),
-        DataCell(Text(item['productCode'].toString())),
-        DataCell(Text(item['productId'].toString())),
+        DataCell(Text(item.productId.toString())),
+        DataCell(Text(item.productName.toString())),
+        DataCell(Text(item.productPrice.toString())),
+        DataCell(Text(item.productActiveStatus.toString())),
+        DataCell(Text(item.productCode.toString())),
+        DataCell(Text(item.sportDeviceTypeName.toString())),
       ],
     );
   }

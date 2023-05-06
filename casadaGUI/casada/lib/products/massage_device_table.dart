@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 
+import '../data/massage_device.dart';
+
 class MassageDeviceTable extends StatefulWidget {
-  final List<Map<String, dynamic>> data;
+  final List<MassageDevice> data;
 
   MassageDeviceTable({required this.data});
 
   @override
-  _MassageDeviceTable createState() => _MassageDeviceTable();
+  _MassageDeviceTableState createState() => _MassageDeviceTableState();
 }
 
-class _MassageDeviceTable extends State<MassageDeviceTable> {
+class _MassageDeviceTableState extends State<MassageDeviceTable> {
   late final _dataTableSource = _DataTableSource(widget.data);
 
   @override
@@ -45,7 +47,7 @@ class _MassageDeviceTable extends State<MassageDeviceTable> {
 }
 
 class _DataTableSource extends DataTableSource {
-  final List<Map<String, dynamic>> _data;
+  final List<MassageDevice> _data;
   int _selectedRowCount = 0;
   _DataTableSource(this._data);
 
@@ -58,12 +60,12 @@ class _DataTableSource extends DataTableSource {
     return DataRow.byIndex(
       index: index,
       cells: [
-        DataCell(Text(item['productId'].toString())),
-        DataCell(Text(item['productName'].toString())),
-        DataCell(Text(item['productPrice'].toString())),
-        DataCell(Text(item['productActiveStatus'].toString())),
-        DataCell(Text(item['productCode'].toString())),
-        DataCell(Text(item['productId'].toString())),
+        DataCell(Text(item.productId.toString())),
+        DataCell(Text(item.productName.toString())),
+        DataCell(Text(item.productPrice.toString())),
+        DataCell(Text(item.productActiveStatus.toString())),
+        DataCell(Text(item.productCode.toString())),
+        DataCell(Text(item.massageDeviceTypeName.toString())),
       ],
     );
   }

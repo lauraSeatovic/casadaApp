@@ -1,3 +1,6 @@
+import 'package:casada/data/massage_chair.dart';
+import 'package:casada/data/massage_device.dart';
+import 'package:casada/data/sport_device.dart';
 import 'package:casada/products/all_products_table.dart';
 import 'package:casada/products/massage_chairs_table.dart';
 import 'package:casada/products/massage_device_table.dart';
@@ -30,6 +33,9 @@ class _Products2State extends State<Products2> {
   void _loadProducts() async {
     try {
       await _productsBloc.loadAllProducts();
+      await _productsBloc.loadAllMassageChairs();
+      await _productsBloc.loadAllMassageDevice();
+      await _productsBloc.loadAllSportDevice();
     } catch (e) {
       // handle error
     }
@@ -95,46 +101,48 @@ class _Products2State extends State<Products2> {
             }
           },
         );
-      /*
-    case 1:
-      return _buildTableForFuture(
-        future: loadMassageChairs(),
-        builder: (data) => MassageChairTable(data: data),
-      );
-    case 2:
-      return _buildTableForFuture(
-        future: loadMassageDevices(),
-        builder: (data) => MassageDeviceTable(data: data),
-      );
-    case 3:
-      return _buildTableForFuture(
-        future: loadSportDevices(),
-        builder: (data) => SportDeviceTable(data: data),
-      );*/
+      case 1:
+        return StreamBuilder<List<MassageChair>>(
+          stream: _productsBloc.massageChairsStream,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return MassageChairTable(data: snapshot.data!);
+            } else if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            } else {
+              return Center(child: CircularProgressIndicator());
+            }
+          },
+        );
+      case 2:
+        return StreamBuilder<List<MassageDevice>>(
+          stream: _productsBloc.massageDevicesStream,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return MassageDeviceTable(data: snapshot.data!);
+            } else if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            } else {
+              return Center(child: CircularProgressIndicator());
+            }
+          },
+        );
+      case 3:
+        return StreamBuilder<List<SportDevice>>(
+          stream: _productsBloc.sportsDevicesStream,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return SportDeviceTable(data: snapshot.data!);
+            } else if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            } else {
+              return Center(child: CircularProgressIndicator());
+            }
+          },
+        );
       default:
         return Container();
     }
-  }
-
-  Widget _buildTableForFuture<T>({
-    required Future<List<T>> future,
-    required Widget Function(List<T>) builder,
-  }) {
-    return FutureBuilder<List<T>>(
-      future: future,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          if (snapshot.hasError) {
-            return Text('Error: ${snapshot.error}');
-          }
-          return builder(snapshot.data!);
-        } else {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-      },
-    );
   }
 
   @override
