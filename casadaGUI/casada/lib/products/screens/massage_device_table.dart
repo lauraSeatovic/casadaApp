@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../data/massage_device.dart';
+import '../../data/massage_device.dart';
 
 class MassageDeviceTable extends StatefulWidget {
   final List<MassageDevice> data;
@@ -21,6 +21,9 @@ class _MassageDeviceTableState extends State<MassageDeviceTable> {
         child: PaginatedDataTable(
           header: Text('Masažni uređaji'),
           columns: [
+            DataColumn(
+              label: Text(''),
+            ),
             DataColumn(
               label: Text('ID'),
             ),
@@ -60,10 +63,15 @@ class _DataTableSource extends DataTableSource {
     return DataRow.byIndex(
       index: index,
       cells: [
+        DataCell(Text(("${++index}.").toString())),
         DataCell(Text(item.productId.toString())),
         DataCell(Text(item.productName.toString())),
         DataCell(Text(item.productPrice.toString())),
-        DataCell(Text(item.productActiveStatus.toString())),
+        DataCell(
+          item.productActiveStatus == true
+              ? Icon(Icons.check, color: Colors.green)
+              : Icon(Icons.close, color: Colors.red),
+        ),
         DataCell(Text(item.productCode.toString())),
         DataCell(Text(item.massageDeviceTypeName.toString())),
       ],

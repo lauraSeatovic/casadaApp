@@ -1,15 +1,14 @@
 import 'package:casada/data/massage_chair.dart';
 import 'package:casada/data/massage_device.dart';
 import 'package:casada/data/sport_device.dart';
-import 'package:casada/products/all_products_table.dart';
-import 'package:casada/products/massage_chairs_table.dart';
-import 'package:casada/products/massage_device_table.dart';
+import 'package:casada/products/screens/all_products_table.dart';
+import 'package:casada/products/screens/massage_chairs_table.dart';
+import 'package:casada/products/screens/massage_device_table.dart';
 import 'package:casada/products/products_bloc.dart';
-import 'package:casada/products/products_service.dart';
-import 'package:casada/products/sport_device_table.dart';
+import 'package:casada/products/screens/sport_device_table.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
-import '../data/product.dart';
+import '../../data/product.dart';
 
 class Products extends StatefulWidget {
   @override
@@ -17,7 +16,6 @@ class Products extends StatefulWidget {
 }
 
 class _ProductsState extends State<Products> {
-  final _productsService = ProductsService();
   final _productsBloc = ProductsBloc();
   int _selectedTable = 0;
 

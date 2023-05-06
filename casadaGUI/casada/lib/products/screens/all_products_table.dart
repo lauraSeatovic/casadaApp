@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../data/product.dart';
+import '../../data/product.dart';
 
 class AllProductsTable extends StatefulWidget {
   final List<Product> data;
@@ -21,6 +21,9 @@ class _AllProductsTableState extends State<AllProductsTable> {
         child: PaginatedDataTable(
           header: Text('Svi proizvodi'),
           columns: [
+            DataColumn(
+              label: Text(''),
+            ),
             DataColumn(
               label: Text('ID'),
             ),
@@ -57,10 +60,15 @@ class _DataTableSource extends DataTableSource {
     return DataRow.byIndex(
       index: index,
       cells: [
+        DataCell(Text(("${++index}.").toString())),
         DataCell(Text(item.productId.toString())),
         DataCell(Text(item.productName.toString())),
         DataCell(Text(item.productPrice.toString())),
-        DataCell(Text(item.productActiveStatus.toString())),
+        DataCell(
+          item.productActiveStatus == true
+              ? Icon(Icons.check, color: Colors.green)
+              : Icon(Icons.close, color: Colors.red),
+        ),
         DataCell(Text(item.productCode.toString())),
       ],
     );
