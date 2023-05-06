@@ -7,6 +7,7 @@ import 'package:casada/products/screens/massage_device_table.dart';
 import 'package:casada/products/products_bloc.dart';
 import 'package:casada/products/screens/sport_device_table.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../data/product.dart';
 
@@ -15,7 +16,8 @@ class Products extends StatefulWidget {
   _ProductsState createState() => _ProductsState();
 }
 
-class _ProductsState extends State<Products> {
+class _ProductsState extends State<Products>
+    with SingleTickerProviderStateMixin {
   final _productsBloc = ProductsBloc();
   int _selectedTable = 0;
 
@@ -36,51 +38,6 @@ class _ProductsState extends State<Products> {
       // handle error
     }
   }
-
-/*
-  Future<void> _loadProductsData() async {
-    try {
-      final allData =  await ApiData('http://localhost:8080/product').getData();
-      setState(() {
-        _allProducts = allData;
-      });
-    } catch (e) {
-      // handle error
-    }
-  }
-
-  Future<void> _loadMassageChairData() async {
-    try {
-      final massageChairData = await ApiData('http://localhost:8080/product/massagechair').getData();
-      setState(() {
-        _massageChairs = massageChairData;
-      });
-    } catch (e) {
-      // handle error
-    }
-  }
-
-  Future<void> _loadMassageDeviceData() async {
-    try {
-      final massageDeviceData = await ApiData('http://localhost:8080/product/massagedevice').getData();
-      setState(() {
-        _massageDevices = massageDeviceData;
-      });
-    } catch (e) {
-      // handle error
-    }
-  }
-
-  Future<void> _loadSportsDeviceData() async {
-    try {
-      final sportsDeviceData = await ApiData('http://localhost:8080/product/sportdevice').getData();
-      setState(() {
-        _sportsDevices = sportsDeviceData;
-      });
-    } catch (e) {
-      // handle error
-    }
-  }*/
 
   Widget _buildTable() {
     switch (_selectedTable) {
@@ -209,17 +166,23 @@ class _ProductsState extends State<Products> {
           ),
           SizedBox(height: 40),
           _buildTable(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [],
-          ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Add some functionality here
-        },
-        child: Icon(Icons.add),
+      floatingActionButtonLocation: ExpandableFab.location,
+      floatingActionButton: ExpandableFab(
+        type: ExpandableFabType.up,
+        children: [
+          FloatingActionButton.small(
+            heroTag: null,
+            child: const Icon(Icons.edit),
+            onPressed: () {},
+          ),
+          FloatingActionButton.small(
+            heroTag: null,
+            child: const Icon(Icons.search),
+            onPressed: () {},
+          ),
+        ],
       ),
     );
   }
