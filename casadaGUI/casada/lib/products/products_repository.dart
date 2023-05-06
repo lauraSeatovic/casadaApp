@@ -1,12 +1,16 @@
+import 'package:casada/data/massage_chair.dart';
+import 'package:casada/data/massage_device.dart';
+import 'package:casada/data/sport_device.dart';
+
 import '../common/Api_Data.dart';
 import '../data/product.dart';
 
 class ProductsRepository {
   final ApiData _apiData = ApiData('http://localhost:8080/product');
   List<Product> _allProducts = [];
-  List<Product> _massageChairs = [];
-  List<Product> _massageDevices = [];
-  List<Product> _sportsDevices = [];
+  List<MassageChair> _massageChairs = [];
+  List<MassageDevice> _massageDevices = [];
+  List<SportDevice> _sportsDevices = [];
 
   Future<List<Product>> loadProducts() async {
     try {
@@ -26,27 +30,28 @@ class ProductsRepository {
     return _allProducts;
   }
 
-  Future<List<Product>> getMassageChairs() async {
+  Future<List<MassageChair>> getAllMassageChairs() async {
     if (_massageChairs.isEmpty) {
-      final response = await _apiData.getData("?category=massage_chair");
-      _massageChairs = response.map((json) => Product.fromJson(json)).toList();
+      final response = await _apiData.getData("/massagechair");
+      _massageChairs = response.map((json) => MassageChair.fromJson(json)).toList();
     }
     return _massageChairs;
   }
 
-  Future<List<Product>> getMassageDevices() async {
+  Future<List<MassageDevice>> getAllMassageDevices() async {
     if (_massageDevices.isEmpty) {
-      final response = await _apiData.getData("?category=massage_device");
-      _massageDevices = response.map((json) => Product.fromJson(json)).toList();
+      final response = await _apiData.getData("/massagedevice");
+      _massageDevices = response.map((json) => MassageDevice.fromJson(json)).toList();
     }
     return _massageDevices;
   }
 
-  Future<List<Product>> getSportsDevices() async {
+  Future<List<SportDevice>> getAllSportDevice() async {
     if (_sportsDevices.isEmpty) {
-      final response = await _apiData.getData("?category=sports_device");
-      _sportsDevices = response.map((json) => Product.fromJson(json)).toList();
+      final response = await _apiData.getData("/sportdevice");
+      _sportsDevices = response.map((json) => SportDevice.fromJson(json)).toList();
     }
     return _sportsDevices;
   }
+
 }
