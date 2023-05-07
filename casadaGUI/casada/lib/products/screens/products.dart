@@ -5,6 +5,7 @@ import 'package:casada/products/screens/all_products_table.dart';
 import 'package:casada/products/screens/massage_chairs_table.dart';
 import 'package:casada/products/screens/massage_device_table.dart';
 import 'package:casada/products/products_bloc.dart';
+import 'package:casada/products/screens/new_massage_chair.dart';
 import 'package:casada/products/screens/sport_device_table.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
@@ -170,16 +171,31 @@ class _ProductsState extends State<Products>
       ),
       floatingActionButtonLocation: ExpandableFab.location,
       floatingActionButton: ExpandableFab(
+        child: const Icon(Icons.add),
         type: ExpandableFabType.up,
+        distance: 70,
         children: [
-          FloatingActionButton.small(
+          FloatingActionButton.extended(
             heroTag: null,
-            child: const Icon(Icons.edit),
+            label: Text("Masažna fotelja"),
+            icon: Icon(Icons.event_seat),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => NewMassageChair()),
+              );
+            },
+          ),
+          FloatingActionButton.extended(
+            heroTag: null,
+            label: Text("Masažni uređaj"),
+            icon: Icon(Icons.settings),
             onPressed: () {},
           ),
-          FloatingActionButton.small(
+          FloatingActionButton.extended(
             heroTag: null,
-            child: const Icon(Icons.search),
+            label: Text("Sportski uređaj"),
+            icon: Icon(Icons.directions_run),
             onPressed: () {},
           ),
         ],
