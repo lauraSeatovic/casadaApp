@@ -7,6 +7,14 @@ class NewMassageChair extends StatefulWidget {
 }
 
 class _NewMassageChair extends State<NewMassageChair> {
+  bool _isActive = true;
+  int _selectedId = 1;
+  Map<int, String> itemsMap = {
+    1: 'Option 1',
+    2: 'Option 2',
+    3: 'Option 3',
+  };
+
   final _formKey = GlobalKey<FormState>();
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,7 +26,7 @@ class _NewMassageChair extends State<NewMassageChair> {
         title: Text('Nova masažna fotelja'),
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(30.0), // specify the width you want
         child: Form(
           key: _formKey,
           child: Column(
@@ -26,7 +34,7 @@ class _NewMassageChair extends State<NewMassageChair> {
             children: [
               TextFormField(
                 decoration: InputDecoration(
-                  labelText: 'Name',
+                  labelText: 'Naziv',
                 ),
                 validator: (value) {
                   if (value!.isEmpty) {
@@ -37,7 +45,7 @@ class _NewMassageChair extends State<NewMassageChair> {
               ),
               TextFormField(
                 decoration: InputDecoration(
-                  labelText: 'Email',
+                  labelText: 'Cijena',
                 ),
                 validator: (value) {
                   if (value!.isEmpty) {
@@ -46,13 +54,58 @@ class _NewMassageChair extends State<NewMassageChair> {
                   return null;
                 },
               ),
+              TextFormField(
+                decoration: InputDecoration(
+                  labelText: 'Šifra',
+                ),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Please enter your email';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              DropdownButtonFormField<int>(
+                value: _selectedId,
+                onChanged: (value) {
+                  setState(() {
+                    _selectedId = value!;
+                  });
+                },
+                items: itemsMap.entries
+                    .map((entry) => DropdownMenuItem<int>(
+                          value: entry.key,
+                          child: Text(entry.value),
+                        ))
+                    .toList(),
+              ),
+              Row(
+                children: [
+                  Text(
+                    'Aktivna',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  SizedBox(width: 8.0),
+                  Switch(
+                    value: _isActive,
+                    onChanged: (bool value) {
+                      setState(() {
+                        _isActive = value;
+                      });
+                    },
+                  ),
+                ],
+              ),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     // Process form data
                   }
                 },
-                child: Text('Submit'),
+                child: Text('Dodaj'),
               ),
             ],
           ),

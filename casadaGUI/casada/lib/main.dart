@@ -25,8 +25,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   final List<Widget> _pages = [
     const Text('Page 1'),
-    const Text('Page 2'),
     Products(),
+    const Text('Page 3'),
   ];
 
   Widget _getPage(int index) {
