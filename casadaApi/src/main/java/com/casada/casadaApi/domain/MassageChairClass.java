@@ -25,4 +25,8 @@ public class MassageChairClass {
 
     public MassageChairClass() { }
 
+    public MassageChairClass(Integer massageChairClassId, String massageChairClassName) {
+        this.massageChairClassId = massageChairClassId;
+        this.massageChairClassName = massageChairClassName;
+    }
 }
