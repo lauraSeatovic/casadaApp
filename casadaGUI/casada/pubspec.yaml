@@ -31,11 +31,9 @@ dependencies:
   flutter:
     sdk: flutter
   http: ^0.13.4
-
-
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.2
+  rxdart: ^0.27.1
+  hawk_fab_menu: ^1.2.0
+  flutter_expandable_fab: ^1.7.1
 
 dev_dependencies:
   flutter_test:
