@@ -1,5 +1,5 @@
+import 'package:casada/products/screens/custom_paginated_data_table.dart';
 import 'package:flutter/material.dart';
-
 import '../../data/massage_device.dart';
 
 class MassageDeviceTable extends StatefulWidget {
@@ -18,7 +18,7 @@ class _MassageDeviceTableState extends State<MassageDeviceTable> {
   Widget build(BuildContext context) {
     return Padding(
         padding: const EdgeInsets.all(16.0),
-        child: PaginatedDataTable(
+        child: CustomPaginatedDataTable(
           header: Text('Masažni uređaji'),
           columns: [
             DataColumn(

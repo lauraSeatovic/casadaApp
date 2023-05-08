@@ -120,7 +120,7 @@ class _ProductsState extends State<Products>
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Padding(
-                padding: const EdgeInsets.all(5.0),
+                padding: EdgeInsets.symmetric(horizontal: 5),
                 child: ElevatedButton(
                   onPressed: () {
                     setState(() {
@@ -165,7 +165,7 @@ class _ProductsState extends State<Products>
               ),
             ],
           ),
-          SizedBox(height: 40),
+          SizedBox(height: 10),
           _buildTable(),
         ],
       ),
