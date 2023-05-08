@@ -1,3 +1,4 @@
+import 'package:casada/products/screens/custom_paginated_data_table.dart';
 import 'package:flutter/material.dart';
 
 import '../../data/product.dart';
@@ -18,7 +19,7 @@ class _AllProductsTableState extends State<AllProductsTable> {
   Widget build(BuildContext context) {
     return Padding(
         padding: const EdgeInsets.all(16.0),
-        child: PaginatedDataTable(
+        child: CustomPaginatedDataTable(
           header: Text('Svi proizvodi'),
           columns: [
             DataColumn(
