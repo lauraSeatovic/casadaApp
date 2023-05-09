@@ -1,4 +1,5 @@
 import 'package:casada/data/massage_chair.dart';
+import 'package:casada/data/massage_chair_class.dart';
 import 'package:casada/data/massage_device.dart';
 import 'package:casada/data/sport_device.dart';
 import 'package:casada/products/products_repository.dart';
@@ -36,5 +37,10 @@ class ProductsBloc {
   Future<void> loadAllSportDevice() async {
     final products = await _productsRepository.getAllSportDevice();
     _sportsDevices.sink.add(products);
+  }
+
+  Future<List<MassageChairClass>> loadAllMassageChairClass() async {
+    final classes = await _productsRepository.getAllMassageChairClass();
+    return classes;
   }
 }

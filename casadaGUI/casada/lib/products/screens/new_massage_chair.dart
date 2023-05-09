@@ -1,5 +1,8 @@
+import 'package:casada/data/massage_chair_class.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import '../products_bloc.dart';
 
 class NewMassageChair extends StatefulWidget {
   @override
@@ -7,15 +10,34 @@ class NewMassageChair extends StatefulWidget {
 }
 
 class _NewMassageChair extends State<NewMassageChair> {
+  final _productsBloc = ProductsBloc();
   bool _isActive = true;
   int _selectedId = 1;
+  List<MassageChairClass> _massageChairClasses = [];
   Map<int, String> itemsMap = {
     1: 'Option 1',
     2: 'Option 2',
     3: 'Option 3',
   };
 
+
   final _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    _loadClasses();
+  }
+
+  void _loadClasses() async {
+    try {
+      final massageChairClasses = await _productsBloc.loadAllMassageChairClass();
+      setState(() {
+        _massageChairClasses = massageChairClasses;
+      });
+    } catch (e) {
+      // handle error
+    }
+  }
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -75,10 +97,10 @@ class _NewMassageChair extends State<NewMassageChair> {
                     _selectedId = value!;
                   });
                 },
-                items: itemsMap.entries
+                items: _massageChairClasses
                     .map((entry) => DropdownMenuItem<int>(
-                          value: entry.key,
-                          child: Text(entry.value),
+                          value: entry.massageChairClassId,
+                          child: Text(entry.massageChairClassName!),
                         ))
                     .toList(),
               ),
