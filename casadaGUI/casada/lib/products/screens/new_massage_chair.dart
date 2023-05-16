@@ -11,8 +11,6 @@ class NewMassageChair extends StatefulWidget {
 
 class _NewMassageChair extends State<NewMassageChair> {
   final _productsBloc = ProductsBloc();
-  bool _isActive = true;
-  int _selectedId = 1;
   List<MassageChairClass> _massageChairClasses = [];
   Map<int, String> itemsMap = {
     1: 'Option 1',
@@ -20,8 +18,12 @@ class _NewMassageChair extends State<NewMassageChair> {
     3: 'Option 3',
   };
 
-
   final _formKey = GlobalKey<FormState>();
+  String? _name;
+  String? _price;
+  String? _code;
+  int _selectedId = 1;
+  bool _isActive = true;
 
   @override
   void initState() {
@@ -30,7 +32,8 @@ class _NewMassageChair extends State<NewMassageChair> {
 
   void _loadClasses() async {
     try {
-      final massageChairClasses = await _productsBloc.loadAllMassageChairClass();
+      final massageChairClasses =
+          await _productsBloc.loadAllMassageChairClass();
       setState(() {
         _massageChairClasses = massageChairClasses;
       });
@@ -38,6 +41,7 @@ class _NewMassageChair extends State<NewMassageChair> {
       // handle error
     }
   }
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -60,9 +64,12 @@ class _NewMassageChair extends State<NewMassageChair> {
                 ),
                 validator: (value) {
                   if (value!.isEmpty) {
-                    return 'Please enter your name';
+                    return 'Unesite naziv';
                   }
                   return null;
+                },
+                onSaved: (value) {
+                  _name = value;
                 },
               ),
               TextFormField(
@@ -71,9 +78,16 @@ class _NewMassageChair extends State<NewMassageChair> {
                 ),
                 validator: (value) {
                   if (value!.isEmpty) {
-                    return 'Please enter your email';
+                    return 'Unesite cijenu';
+                  }
+                  final number = num.tryParse(value);
+                  if (number == null) {
+                    return "Unesite brojčanu vrijednost";
                   }
                   return null;
+                },
+                onSaved: (value) {
+                  _price = value;
                 },
               ),
               TextFormField(
@@ -85,6 +99,9 @@ class _NewMassageChair extends State<NewMassageChair> {
                     return 'Please enter your email';
                   }
                   return null;
+                },
+                onSaved: (value) {
+                  _code = value;
                 },
               ),
               SizedBox(
@@ -124,7 +141,9 @@ class _NewMassageChair extends State<NewMassageChair> {
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    // Process form data
+                    _formKey.currentState!.save();
+                    _productsBloc.addMassageChair(
+                        _name, _price, _code, _selectedId, _isActive);
                   }
                 },
                 child: Text('Dodaj'),

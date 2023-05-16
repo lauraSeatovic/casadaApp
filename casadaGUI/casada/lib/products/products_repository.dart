@@ -35,7 +35,8 @@ class ProductsRepository {
   Future<List<MassageChair>> getAllMassageChairs() async {
     if (_massageChairs.isEmpty) {
       final response = await _apiData.getData("/product/massagechair");
-      _massageChairs = response.map((json) => MassageChair.fromJson(json)).toList();
+      _massageChairs =
+          response.map((json) => MassageChair.fromJson(json)).toList();
     }
     return _massageChairs;
   }
@@ -43,7 +44,8 @@ class ProductsRepository {
   Future<List<MassageDevice>> getAllMassageDevices() async {
     if (_massageDevices.isEmpty) {
       final response = await _apiData.getData("/product/massagedevice");
-      _massageDevices = response.map((json) => MassageDevice.fromJson(json)).toList();
+      _massageDevices =
+          response.map((json) => MassageDevice.fromJson(json)).toList();
     }
     return _massageDevices;
   }
@@ -51,7 +53,8 @@ class ProductsRepository {
   Future<List<SportDevice>> getAllSportDevice() async {
     if (_sportsDevices.isEmpty) {
       final response = await _apiData.getData("/product/sportdevice");
-      _sportsDevices = response.map((json) => SportDevice.fromJson(json)).toList();
+      _sportsDevices =
+          response.map((json) => SportDevice.fromJson(json)).toList();
     }
     return _sportsDevices;
   }
@@ -59,9 +62,27 @@ class ProductsRepository {
   Future<List<MassageChairClass>> getAllMassageChairClass() async {
     if (_massageChairClasses.isEmpty) {
       final response = await _apiData.getData("/massagechair/class");
-      _massageChairClasses = response.map((json) => MassageChairClass.fromJson(json)).toList();
+      _massageChairClasses =
+          response.map((json) => MassageChairClass.fromJson(json)).toList();
     }
     return _massageChairClasses;
   }
 
+  Future<void> addMassageChair(String? name, String? price, String? productCode,
+      int? classId, bool isActive) async {
+    const apiUrl = '/product/massagechair';
+
+    final formData = {
+      "productDTO": {
+        "productId": 0,
+        "productName": name,
+        "productPrice": price,
+        "productActiveStatus": isActive,
+        "productCode": productCode
+      },
+      "massageChairClassId": classId
+    };
+
+    _apiData.sendData(apiUrl, formData);
+  }
 }
