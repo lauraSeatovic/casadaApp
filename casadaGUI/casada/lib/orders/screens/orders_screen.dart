@@ -1,5 +1,6 @@
 import 'package:casada/data/order.dart';
 import 'package:casada/orders/screens/all_orders_table.dart';
+import 'package:casada/orders/screens/new_order.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
@@ -45,44 +46,32 @@ class _OrdersScreenState extends State<OrdersScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: EdgeInsets.all(16.0),
-            child: Text(
-              'Narudžbe',
-              style: TextStyle(
-                color: Theme.of(context).primaryColor,
-                fontSize: 24.0,
-                fontWeight: FontWeight.bold,
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Text(
+                'Narudžbe',
+                style: TextStyle(
+                  color: Theme.of(context).primaryColor,
+                  fontSize: 24.0,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
-          ),
-          SizedBox(height: 10),
-          _buildTable(),
-        ],
-      ),
-      floatingActionButtonLocation: ExpandableFab.location,
-      floatingActionButton: ExpandableFab(
-        child: const Icon(Icons.add),
-        type: ExpandableFabType.up,
-        distance: 70,
-        children: [
-          FloatingActionButton.extended(
-            heroTag: null,
-            label: Text("Masažni uređaj"),
-            icon: Icon(Icons.settings),
-            onPressed: () {},
-          ),
-          FloatingActionButton.extended(
-            heroTag: null,
-            label: Text("Sportski uređaj"),
-            icon: Icon(Icons.directions_run),
-            onPressed: () {},
-          ),
-        ],
-      ),
-    );
+            SizedBox(height: 10),
+            _buildTable(),
+          ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          child: const Icon(Icons.add),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => NewOrder()),
+            );
+          },
+        ));
   }
 }
