@@ -16,7 +16,8 @@ class ProductsBloc {
 
   Stream<List<Product>> get allProductsStream => _allProducts.stream;
   Stream<List<MassageChair>> get massageChairsStream => _massageChairs.stream;
-  Stream<List<MassageDevice>> get massageDevicesStream => _massageDevices.stream;
+  Stream<List<MassageDevice>> get massageDevicesStream =>
+      _massageDevices.stream;
   Stream<List<SportDevice>> get sportsDevicesStream => _sportsDevices.stream;
 
   Future<void> loadAllProducts() async {
@@ -43,4 +44,9 @@ class ProductsBloc {
     final classes = await _productsRepository.getAllMassageChairClass();
     return classes;
   }
+
+  void addMassageChair(String? name, String? price, String? productCode,
+      int? classId, bool isActive) {
+        _productsRepository.addMassageChair(name, price, productCode, classId, isActive);
+      }
 }
