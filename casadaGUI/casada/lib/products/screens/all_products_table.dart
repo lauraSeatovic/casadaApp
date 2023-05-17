@@ -1,4 +1,4 @@
-import 'package:casada/products/screens/custom_paginated_data_table.dart';
+import 'package:casada/common/custom_paginated_data_table.dart';
 import 'package:flutter/material.dart';
 
 import '../../data/product.dart';

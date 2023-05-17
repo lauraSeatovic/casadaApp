@@ -1,5 +1,6 @@
-import 'package:casada/products/screens/custom_paginated_data_table.dart';
+
 import 'package:flutter/material.dart';
+import '../../common/custom_paginated_data_table.dart';
 import '../../data/massage_device.dart';
 
 class MassageDeviceTable extends StatefulWidget {

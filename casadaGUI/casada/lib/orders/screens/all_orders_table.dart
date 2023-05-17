@@ -1,18 +1,19 @@
-import 'package:casada/common/custom_paginated_data_table.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../data/sport_device.dart';
+import '../../common/custom_paginated_data_table.dart';
+import '../../data/order.dart';
 
-class SportDeviceTable extends StatefulWidget {
-  final List<SportDevice> data;
+class AllOrdersTable extends StatefulWidget {
+  final List<Order> data;
 
-  SportDeviceTable({required this.data});
+  AllOrdersTable({required this.data});
 
   @override
-  _SportDeviceTable createState() => _SportDeviceTable();
+  _AllOrdersTableState createState() => _AllOrdersTableState();
 }
 
-class _SportDeviceTable extends State<SportDeviceTable> {
+class _AllOrdersTableState extends State<AllOrdersTable> {
   late final _dataTableSource = _DataTableSource(widget.data);
 
   @override
@@ -20,7 +21,7 @@ class _SportDeviceTable extends State<SportDeviceTable> {
     return Padding(
         padding: const EdgeInsets.all(16.0),
         child: CustomPaginatedDataTable(
-          header: Text('Sportski uređaji'),
+          header: Text('Sve narudžbe'),
           columns: [
             DataColumn(
               label: Text(''),
@@ -29,19 +30,16 @@ class _SportDeviceTable extends State<SportDeviceTable> {
               label: Text('ID'),
             ),
             DataColumn(
-              label: Text('Naziv'),
+              label: Text('Datum'),
             ),
             DataColumn(
-              label: Text('Cijena'),
+              label: Text('Kupac'),
             ),
             DataColumn(
-              label: Text('Aktivan'),
+              label: Text('Status'),
             ),
             DataColumn(
-              label: Text('Šifra'),
-            ),
-            DataColumn(
-              label: Text('Tip'),
+              label: Text('Način plaćanja'),
             ),
           ],
           source: _dataTableSource,
@@ -51,7 +49,7 @@ class _SportDeviceTable extends State<SportDeviceTable> {
 }
 
 class _DataTableSource extends DataTableSource {
-  final List<SportDevice> _data;
+  final List<Order> _data;
   int _selectedRowCount = 0;
   _DataTableSource(this._data);
 
@@ -65,16 +63,11 @@ class _DataTableSource extends DataTableSource {
       index: index,
       cells: [
         DataCell(Text(("${++index}.").toString())),
-        DataCell(Text(item.productId.toString())),
-        DataCell(Text(item.productName.toString())),
-        DataCell(Text(item.productPrice.toString())),
-        DataCell(
-          item.productActiveStatus == true
-              ? Icon(Icons.check, color: Colors.green)
-              : Icon(Icons.close, color: Colors.red),
-        ),
-        DataCell(Text(item.productCode.toString())),
-        DataCell(Text(item.sportDeviceTypeName.toString())),
+        DataCell(Text(item.orderId.toString())),
+        DataCell(Text(item.orderDate.toString())),
+        DataCell(Text("${item.buyerName.toString()} ${item.buyerSurname.toString()}")),
+        DataCell(Text(item.orderStatusName.toString())),
+        DataCell(Text(item.paymentMethodName.toString())),
       ],
     );
   }

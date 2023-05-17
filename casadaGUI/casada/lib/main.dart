@@ -1,3 +1,4 @@
+import 'package:casada/orders/screens/orders_screen.dart';
 import 'package:casada/products/screens/products.dart';
 import 'package:flutter/material.dart';
 
@@ -26,7 +27,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final List<Widget> _pages = [
     const Text('Page 1'),
     Products(),
-    const Text('Page 3'),
+    OrdersScreen(),
   ];
 
   Widget _getPage(int index) {
