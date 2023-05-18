@@ -12,11 +12,6 @@ class NewMassageChair extends StatefulWidget {
 class _NewMassageChair extends State<NewMassageChair> {
   final _productsBloc = ProductsBloc();
   List<MassageChairClass> _massageChairClasses = [];
-  Map<int, String> itemsMap = {
-    1: 'Option 1',
-    2: 'Option 2',
-    3: 'Option 3',
-  };
 
   final _formKey = GlobalKey<FormState>();
   String? _name;
