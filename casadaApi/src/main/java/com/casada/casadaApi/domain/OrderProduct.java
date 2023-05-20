@@ -31,4 +31,13 @@ public class OrderProduct {
     @JoinColumn(name = "productid", nullable = false)
     private Product product;
 
+    public OrderProduct(){}
+
+    public OrderProduct(Double discount, Integer guarantee, Integer quantity, OrderInfo order, Product product) {
+        this.discount = discount;
+        this.guarantee = guarantee;
+        this.quantity = quantity;
+        this.order = order;
+        this.product = product;
+    }
 }
