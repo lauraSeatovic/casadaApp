@@ -1,10 +1,16 @@
+import 'dart:ffi';
+
 class Order {
   int? orderId;
   String? orderDate;
   bool? personalPickup;
-  Null? orderNote;
+  String? orderNote;
   int? deliveryPersonId;
+  String? deliveryPersonName;
+  String? deliveryPersonSurname;
   int? sellerId;
+  String? sellerName;
+  String? sellerSurname;
   int? buyerId;
   String? buyerName;
   String? buyerSurname;
@@ -14,7 +20,7 @@ class Order {
   String? paymentMethodName;
   String? deliveryDate;
   double? orderDiscount;
-  Null? otherPayment;
+  String? otherPayment;
   double? orderDeposit;
   bool? isFullPaid;
   String? orderNumber;
@@ -26,7 +32,11 @@ class Order {
       this.personalPickup,
       this.orderNote,
       this.deliveryPersonId,
+      this.deliveryPersonName,
+      this.deliveryPersonSurname,
       this.sellerId,
+      this.sellerName,
+      this.sellerSurname,
       this.buyerId,
       this.buyerName,
       this.buyerSurname,
@@ -48,7 +58,11 @@ class Order {
     personalPickup = json['personalPickup'];
     orderNote = json['orderNote'];
     deliveryPersonId = json['deliveryPersonId'];
+    deliveryPersonName = json['deliveryPersonName'];
+    deliveryPersonSurname = json['deliveryPersonSurname'];
     sellerId = json['sellerId'];
+    sellerName = json['sellerName'];
+    sellerSurname = json['sellerSurname'];
     buyerId = json['buyerId'];
     buyerName = json['buyerName'];
     buyerSurname = json['buyerSurname'];
@@ -72,7 +86,11 @@ class Order {
     data['personalPickup'] = this.personalPickup;
     data['orderNote'] = this.orderNote;
     data['deliveryPersonId'] = this.deliveryPersonId;
+    data['deliveryPersonName'] = this.deliveryPersonName;
+    data['deliveryPersonSurname'] = this.deliveryPersonSurname;
     data['sellerId'] = this.sellerId;
+    data['sellerName'] = this.sellerName;
+    data['sellerSurname'] = this.sellerSurname;
     data['buyerId'] = this.buyerId;
     data['buyerName'] = this.buyerName;
     data['buyerSurname'] = this.buyerSurname;

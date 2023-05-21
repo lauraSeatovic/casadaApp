@@ -40,4 +40,14 @@ class ApiData {
         print('Error sending form data: $e');
       }
   }
+
+  Future<dynamic> getSingleData(String url) async {
+    final response = await http.get(Uri.parse("$apiUrl$url"));
+    if (response.statusCode == 200) {
+      final jsonData = json.decode(response.body);
+      return jsonData;
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
 }

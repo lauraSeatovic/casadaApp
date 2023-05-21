@@ -7,4 +7,9 @@ class OrderRepository {
     final response = await _apiData.getData("/orderinfo");
     return response.map((json) => Order.fromJson(json)).toList();
   }
+
+  Future<Order> getOrder(int orderId) async {
+    final response = await _apiData.getSingleData("/orderinfo/$orderId");
+    return Order.fromJson(response);
+  }
 }

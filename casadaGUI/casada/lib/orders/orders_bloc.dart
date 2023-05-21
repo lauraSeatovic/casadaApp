@@ -1,5 +1,5 @@
 import 'package:casada/data/order.dart';
-import 'package:casada/orders/orders_repository.dart';
+import 'package:casada/orders/order_repository.dart';
 import 'package:rxdart/rxdart.dart';
 
 class OrdersBloc{
@@ -11,5 +11,10 @@ class OrdersBloc{
   Future<void> loadAllOrders() async {
     final orders = await _orderRepository.getAllOrders();
     _allOrders.sink.add(orders);
+  }
+
+  Future<Order> loadOrderById(int orderId) async {
+    final order = await _orderRepository.getOrder(orderId);
+    return order;
   }
 }

@@ -1,4 +1,4 @@
-import 'package:casada/orders/screens/order_deatil_screen.dart';
+import 'package:casada/orders/screens/order_detail_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -79,7 +79,7 @@ class _DataTableSource extends DataTableSource {
                 onPressed: () {
             Navigator.push(
               _context,
-              MaterialPageRoute(builder: (context) => OrderDetailScreen(orderId: item.orderId!)),
+              MaterialPageRoute(builder: (context) => OrderDetailScreen(orderId: item.orderId!, buyerId: item.buyerId!,)),
             );
           },
               ),
