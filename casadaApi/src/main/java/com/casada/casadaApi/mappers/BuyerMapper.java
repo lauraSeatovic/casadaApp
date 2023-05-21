@@ -28,7 +28,9 @@ public class BuyerMapper {
                 buyer.getBuyerDeliveryAddress(),
                 buyer.getBuyerEmail(),
                 buyer.getHomePostalCode().getCityPostalCode(),
-                buyer.getDeliveryPostalCode().getCityPostalCode()
+                buyer.getHomePostalCode().getCityName(),
+                buyer.getDeliveryPostalCode().getCityPostalCode(),
+                buyer.getDeliveryPostalCode().getCityName()
 
         );
     }

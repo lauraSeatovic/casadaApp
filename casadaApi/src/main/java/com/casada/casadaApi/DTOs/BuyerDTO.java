@@ -25,9 +25,13 @@ public class BuyerDTO implements Serializable {
 
     private Integer homePostalCode;
 
+    private String homePostalCodeName;
+
     private Integer deliveryPostalCode;
 
-    public BuyerDTO(Integer buyerId, String buyerName, String buyerSurname, String buyerPhoneNumber, String buyerHomeAddress, String buyerDeliveryAddress, String buyerEmail, Integer homePostalCode, Integer deliveryPostalCode) {
+    private String deliveryPostalCodeName;
+
+    public BuyerDTO(Integer buyerId, String buyerName, String buyerSurname, String buyerPhoneNumber, String buyerHomeAddress, String buyerDeliveryAddress, String buyerEmail, Integer homePostalCode, String homePostalCodeName, Integer deliveryPostalCode, String deliveryPostalCodeName) {
         this.buyerId = buyerId;
         this.buyerName = buyerName;
         this.buyerSurname = buyerSurname;
@@ -36,6 +40,10 @@ public class BuyerDTO implements Serializable {
         this.buyerDeliveryAddress = buyerDeliveryAddress;
         this.buyerEmail = buyerEmail;
         this.homePostalCode = homePostalCode;
+        this.homePostalCodeName = homePostalCodeName;
         this.deliveryPostalCode = deliveryPostalCode;
+        this.deliveryPostalCodeName = deliveryPostalCodeName;
     }
 }
+
+
