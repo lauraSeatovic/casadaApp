@@ -21,7 +21,15 @@ public class OrderInfoDTO implements Serializable {
 
     private Integer deliveryPersonId;
 
+    private String deliveryPersonName;
+
+    private String deliveryPersonSurname;
+
     private Integer sellerId;
+
+    private String sellerName;
+
+    private String sellerSurname;
 
     private Integer buyerId;
 
@@ -51,13 +59,17 @@ public class OrderInfoDTO implements Serializable {
 
     private Boolean orderStatusNotifications;
 
-    public OrderInfoDTO(Integer orderId, Date orderDate, Boolean personalPickup, String orderNote, Integer deliveryPersonId, Integer sellerId, Integer buyerId, String buyerName, String buyerSurname, Integer orderStatusId, String orderStatusName, Integer paymentMethodId, String paymentMethodName, String deliveryDate, Double orderDiscount, String otherPayment, Double orderDeposit, Boolean isFullPaid, String orderNumber, Boolean orderStatusNotifications) {
+    public OrderInfoDTO(Integer orderId, Date orderDate, Boolean personalPickup, String orderNote, Integer deliveryPersonId, String deliveryPersonName, String deliveryPersonSurname, Integer sellerId, String sellerName, String sellerSurname, Integer buyerId, String buyerName, String buyerSurname, Integer orderStatusId, String orderStatusName, Integer paymentMethodId, String paymentMethodName, String deliveryDate, Double orderDiscount, String otherPayment, Double orderDeposit, Boolean isFullPaid, String orderNumber, Boolean orderStatusNotifications) {
         this.orderId = orderId;
         this.orderDate = orderDate;
         this.personalPickup = personalPickup;
         this.orderNote = orderNote;
         this.deliveryPersonId = deliveryPersonId;
+        this.deliveryPersonName = deliveryPersonName;
+        this.deliveryPersonSurname = deliveryPersonSurname;
         this.sellerId = sellerId;
+        this.sellerName = sellerName;
+        this.sellerSurname = sellerSurname;
         this.buyerId = buyerId;
         this.buyerName = buyerName;
         this.buyerSurname = buyerSurname;
