@@ -1,5 +1,6 @@
 package com.casada.casadaApi.controllers;
 
+import com.casada.casadaApi.DTOs.BuyerDTO;
 import com.casada.casadaApi.DTOs.OrderInfoDTO;
 import com.casada.casadaApi.domain.OrderInfo;
 import com.casada.casadaApi.services.implementations.OrderInfoServiceImpl;
@@ -22,5 +23,10 @@ public class OrderInfoController {
     @PostMapping
     public OrderInfo saveOrderInfo(@RequestBody OrderInfoDTO orderInfoDTO) {
         return orderInfoService.addOrderInfo(orderInfoDTO);
+    }
+
+    @GetMapping("/{orderId}")
+    public OrderInfoDTO findById(@PathVariable("orderId") Integer orderId) {
+        return orderInfoService.findById(orderId);
     }
 }
