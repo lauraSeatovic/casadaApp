@@ -17,4 +17,8 @@ class OrdersBloc{
     final order = await _orderRepository.getOrder(orderId);
     return order;
   }
+
+  void getOrderPDF(int orderId)async {
+    final order = await _orderRepository.getOrderPDF(orderId);
+  }
 }

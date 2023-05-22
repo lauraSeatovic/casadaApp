@@ -1,3 +1,5 @@
+import 'package:casada/orders/order_repository.dart';
+import 'package:casada/orders/orders_bloc.dart';
 import 'package:casada/orders/screens/order_detail_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +9,6 @@ import '../../data/order.dart';
 
 class AllOrdersTable extends StatefulWidget {
   final List<Order> data;
-
   AllOrdersTable({required this.data});
 
   @override
@@ -53,6 +54,7 @@ class _AllOrdersTableState extends State<AllOrdersTable> {
 }
 
 class _DataTableSource extends DataTableSource {
+  final OrdersBloc _ordersBloc = OrdersBloc();
   final List<Order> _data;
   final BuildContext _context;
   int _selectedRowCount = 0;
@@ -70,20 +72,33 @@ class _DataTableSource extends DataTableSource {
         DataCell(Text(("${++index}.").toString())),
         DataCell(Text(item.orderId.toString())),
         DataCell(Text(item.orderDate.toString())),
-        DataCell(Text("${item.buyerName.toString()} ${item.buyerSurname.toString()}")),
+        DataCell(Text(
+            "${item.buyerName.toString()} ${item.buyerSurname.toString()}")),
         DataCell(Text(item.orderStatusName.toString())),
         DataCell(Text(item.paymentMethodName.toString())),
-        DataCell(
-              IconButton(
-                icon: Icon(Icons.info_outline),
-                onPressed: () {
-            Navigator.push(
-              _context,
-              MaterialPageRoute(builder: (context) => OrderDetailScreen(orderId: item.orderId!, buyerId: item.buyerId!,)),
-            );
-          },
-              ),
+        DataCell(Row(
+          children: [
+            IconButton(
+              icon: Icon(Icons.info_outline),
+              onPressed: () {
+                Navigator.push(
+                  _context,
+                  MaterialPageRoute(
+                      builder: (context) => OrderDetailScreen(
+                            orderId: item.orderId!,
+                            buyerId: item.buyerId!,
+                          )),
+                );
+              },
             ),
+            IconButton(
+              icon: Icon(Icons.picture_as_pdf),
+              onPressed: () {
+                _ordersBloc.getOrderPDF(item.orderId!);
+              },
+            ),
+          ],
+        )),
       ],
     );
   }

@@ -34,6 +34,7 @@ dependencies:
   rxdart: ^0.27.1
   hawk_fab_menu: ^1.2.0
   flutter_expandable_fab: ^1.7.1
+  path_provider: ^2.0.5
 
 dev_dependencies:
   flutter_test:

@@ -1,4 +1,6 @@
 
+import 'dart:io' as io;
+import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -50,4 +52,23 @@ class ApiData {
       throw Exception('Failed to load data');
     }
   }
+
+  Future<void> getPDF(String url) async {
+  final response = await http.get(Uri.parse('$apiUrl$url'));
+
+  if (response.statusCode == io.HttpStatus.ok) {
+    final io.Directory? downloadsDirectory = await getDownloadsDirectory();
+    if (downloadsDirectory != null) {
+      final file =  io.File('${downloadsDirectory.path}/document.pdf');
+      await file.writeAsBytes(response.bodyBytes);
+      // File saved successfully
+    } else {
+      // Handle null downloadsDirectory
+      print('Downloads directory not available');
+    }
+  } else {
+    // Handle error
+    print('Error downloading PDF: ${response.statusCode}');
+  }
+}
 }

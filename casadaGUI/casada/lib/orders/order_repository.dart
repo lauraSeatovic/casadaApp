@@ -12,4 +12,8 @@ class OrderRepository {
     final response = await _apiData.getSingleData("/orderinfo/$orderId");
     return Order.fromJson(response);
   }
+
+  Future<void> getOrderPDF(int orderId) async {
+    final response = await _apiData.getPDF("/pdf"); //modify this
+  }
 }
