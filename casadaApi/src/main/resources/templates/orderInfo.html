@@ -5,18 +5,18 @@
     <style type='text/css'>
    @page {
       size: A4;
-      margin: 0;
+      margin: 1cm 0cm 0cm 0cm;
     }
 
+
     body {
-      padding: 2cm;
-      position: relative;
        font-family: "Times New Roman";
     }
         h1 {
             color: #FF0000;
         }
       .column-box {
+      padding-bottom:10px;
       }
       .column-box-title {
       font-weight: bold;
@@ -69,111 +69,123 @@
         .bold {
             font-weight: 500;
         }
+        .image-size {
+        width: 150px;
+    }
+    .content{
+    padding:0cm 2cm 2cm 2cm;
+        min-height: calc(100vh - 4cm);
+            box-sizing: border-box;
+            page-break-inside: avoid;
+    }
     </style>
 </head>
 <body>
-<img src="path/to/image.jpg" alt="Casada Logo"></img>
-<div class="top-left-column">
-    <div class="column-box">CASADA PARTNER – CROATIA</div>
-    <div class="column-box">
-        <div class="column-item column-box-title">CASADA ADRIATIC d.o.o.</div>
-        <div class="column-item">A. Šenoe 90, Zaprešićččćč - Hrvatska</div>
-        <div class="column-item">OIB 27177711116</div>
+<div class="content">
+    <img alt="logo" th:src="@{classpath:images/casadaLogo.png}" class="image-size"></img>
+    <div class="top-left-column">
+        <div class="column-box">CASADA PARTNER – CROATIA</div>
+        <div class="column-box">
+            <div class="column-item column-box-title">CASADA ADRIATIC d.o.o.</div>
+            <div class="column-item">A. Šenoe 90, Zaprešić - Hrvatska</div>
+            <div class="column-item">OIB 27177711116</div>
+        </div>
+        <div class="column-box">
+            <div class="column-item column-box-title">PRODAJNO MJESTO – TC WESTGATE.</div>
+            <div class="column-item">Tel: +385 1 210 8833</div>
+            <div class="column-item">Mob: +385 92 1888 721</div>
+            <div class="column-item">Mail: info@casada-adriatic.com</div>
+            <div class="column-item">www.casada-adriatic.com</div>
+        </div>
+
+        <div class="column-box">
+            <div>IBAN: HR7824840081135019904</div>
+            <div>SWIFT: RZBHHR2XXXX</div>
+        </div>
     </div>
-    <div class="column-box">
-        <div class="column-item column-box-title">PRODAJNO MJESTO – TC WESTGATE.</div>
-        <div class="column-item">Tel: +385 1 210 8833</div>
-        <div class="column-item">Mob: +385 92 1888 721</div>
-        <div class="column-item">Mail: info@casada-adriatic.com</div>
-        <div class="column-item">www.casada-adriatic.com</div>
+
+    <div class="align-right">
+        <div class="column-item">
+            Kupac:
+        </div>
+        <div th:text="${buyerNameSurname}" class="buyer-name">
+        </div>
+        <hr></hr>
+        <div th:text="${buyerPhone}">
+        </div>
+        <div th:text="${buyerEmail}">
+        </div>
+        <div th:text="${buyerAddress}">
+        </div>
+    </div>
+
+    <div>
+        <label>Narudžbenica:</label>
+        <span>narudzbenicabroj</span>
+    </div>
+    <div>
+        <label>Datum:</label>
+        <span>25.5.2020.</span>
+    </div>
+    <table>
+        <tr class="bold">
+            <th>RB</th>
+            <th>PROIZVOD/USLUGA</th>
+            <th>KOL</th>
+            <th>CIJENA/€</th>
+            <th>IZNOS/€</th>
+        </tr>
+        <!-- Iterate over a collection using Thymeleaf -->
+        <tr th:each="product, index : ${products}">
+            <td th:text="${index.count}"></td>
+            <td th:text="${product.name}"></td>
+            <td th:text="${product.quantity}"></td>
+            <td th:text="${product.price}"></td>
+            <td th:text="${product.totalProductPrice}"></td>
+        </tr>
+        <tr>
+            <td colspan="4" style="text-align: right;"><b>Rekaputalacija PDV-a</b></td>
+        </tr>
+        <tr>
+            <td colspan="4" style="text-align: right;"><b>NETO</b></td>
+            <td>1500</td>
+        </tr>
+        <tr>
+            <td colspan="4" style="text-align: right;"><b>PDV-25%</b></td>
+            <td>200</td>
+        </tr>
+        <tr>
+            <td colspan="4" style="text-align: right;"><b>BRUTO</b></td>
+            <td>700</td>
+        </tr>
+        <tr>
+            <td colspan="4" style="text-align: right;"><b>ZA PLATITI/€</b></td>
+            <td>200</td>
+        </tr>
+        <tr>
+            <td colspan="5" style="text-align: left;">TEČAJ KONVERZIJE 1 EUR=7,53450 KN, <b>IZNOS U KUNAMA 13.328,53 KN</b></td>
+        </tr>
+    </table>
+    <br></br>
+    <div>
+        <label>Način plaćanja:</label>
+        <span th:text="${payment}"></span>
+    </div>
+    <div>
+        <label>Dostava:</label>
+        <span th:text="${delivery}"></span>
+    </div>
+    <div>
+        <label>Opearater:</label>
+        <span th:text="${seller}"></span>
+    </div>
+    <div>
+        <label>Napomena:</label>
+        <span th:text="${note}"></span>
     </div>
 </div>
 
-<div class="align-right">
-    <div class="column-item">
-        Kupac:
-    </div>
-    <div class="buyer-name">
-        Laura Seatovic
-    </div>
-    <hr></hr>
-    <div>
-        0958145348
-    </div>
-    <div>
-        laura.seatovic@mail.com
-    </div>
-    <div>
-        Moja adresa 123
-    </div>
-</div>
-
-<div>
-    <label>Narudžbenica:</label>
-    <span>narudzbenicabroj</span>
-</div>
-<div>
-    <label>Datum:</label>
-    <span>25.5.2020.</span>
-</div>
-<table>
-    <tr class="bold">
-        <th>RB</th>
-        <th>PROIZVOD/USLUGA</th>
-        <th>KOL</th>
-        <th>CIJENA/€</th>
-        <th>IZNOS/€</th>
-    </tr>
-    <!-- Iterate over a collection using Thymeleaf -->
-    <!--
-    <tr th:each="product, index : ${products}">
-        <td th:text="${index.count}">1</td>
-        <td th:text="${product.name}">Hilton</td>
-        <td th:text="${product.quantity}">2</td>
-        <td th:text="${product.price}">1000</td>
-        <td th:text="${product.total}">2000</td>
-    </tr>-->
-    <tr>
-        <td colspan="4" style="text-align: right;"><b>Rekaputalacija PDV-a</b></td>
-    </tr>
-    <tr>
-        <td colspan="4" style="text-align: right;"><b>NETO</b></td>
-        <td>1500</td>
-    </tr>
-    <tr>
-        <td colspan="4" style="text-align: right;"><b>PDV-25%</b></td>
-        <td>200</td>
-    </tr>
-    <tr>
-        <td colspan="4" style="text-align: right;"><b>BRUTO</b></td>
-        <td>700</td>
-    </tr>
-    <tr>
-        <td colspan="4" style="text-align: right;"><b>ZA PLATITI/€</b></td>
-        <td>200</td>
-    </tr>
-    <tr>
-        <td colspan="5" style="text-align: left;">TEČAJ KONVERZIJE 1 EUR=7,53450 KN, <b>IZNOS U KUNAMA 13.328,53 KN</b></td>
-    </tr>
-</table>
-<br></br>
-<div>
-    <label>Način plaćanja:</label>
-    <span>kartica</span>
-</div>
-<div>
-    <label>Dostava:</label>
-    <span>Na adresu</span>
-</div>
-<div>
-    <label>Opearater:</label>
-    <span>Dalibor Šeatović</span>
-</div>
-<div>
-    <label>Napomena:</label>
-    <span>Text</span>
-</div>
-
+</body>
 <div class="footer">
     <hr></hr>
     <div class="footer-text">
@@ -183,5 +195,4 @@
         Trgovački sud u Zagrebu, upisano pod MBS 081071463
     </div>
 </div>
-</body>
 </html>
