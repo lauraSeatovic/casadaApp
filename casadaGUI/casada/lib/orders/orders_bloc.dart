@@ -21,4 +21,8 @@ class OrdersBloc{
   void getOrderPDF(int orderId)async {
     final order = await _orderRepository.getOrderPDF(orderId);
   }
+
+  Future<String> getOrderHTML(int orderId)async {
+    return await _orderRepository.getOrderHTML(orderId);
+  }
 }

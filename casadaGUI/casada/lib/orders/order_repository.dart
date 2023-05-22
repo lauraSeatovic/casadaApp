@@ -14,6 +14,10 @@ class OrderRepository {
   }
 
   Future<void> getOrderPDF(int orderId) async {
-    final response = await _apiData.getPDF("/pdf"); //modify this
+    final response = await _apiData.getPDF("/order/pdf/$orderId");
+  }
+
+  Future<String> getOrderHTML(int orderId) async {
+    return await _apiData.getHTML("/order/html/$orderId");
   }
 }

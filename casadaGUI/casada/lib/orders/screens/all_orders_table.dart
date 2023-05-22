@@ -1,6 +1,7 @@
 import 'package:casada/orders/order_repository.dart';
 import 'package:casada/orders/orders_bloc.dart';
 import 'package:casada/orders/screens/order_detail_screen.dart';
+import 'package:casada/orders/screens/order_html_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -79,7 +80,7 @@ class _DataTableSource extends DataTableSource {
         DataCell(Row(
           children: [
             IconButton(
-              icon: Icon(Icons.info_outline),
+              icon: Icon(Icons.edit),
               onPressed: () {
                 Navigator.push(
                   _context,
@@ -95,6 +96,18 @@ class _DataTableSource extends DataTableSource {
               icon: Icon(Icons.picture_as_pdf),
               onPressed: () {
                 _ordersBloc.getOrderPDF(item.orderId!);
+              },
+            ),
+            IconButton(
+              icon: Icon(Icons.info),
+              onPressed: () {
+                Navigator.push(
+                  _context,
+                  MaterialPageRoute(
+                      builder: (context) => OrderHtmlScreen(
+                            orderId: item.orderId!
+                          )),
+                );
               },
             ),
           ],
