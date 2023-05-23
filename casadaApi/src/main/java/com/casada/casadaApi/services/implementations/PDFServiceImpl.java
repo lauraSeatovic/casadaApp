@@ -67,7 +67,7 @@ public class PDFServiceImpl {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.TEXT_HTML);
 
-            String htmlContent = templateEngine.process("orderInfo", getOrderTemplateContext(orderId));
+            String htmlContent = templateEngine.process("orderInfoDetail", getOrderTemplateContext(orderId));
 
             return ResponseEntity.ok().headers(headers).body(htmlContent);
         } catch (Exception e) {
