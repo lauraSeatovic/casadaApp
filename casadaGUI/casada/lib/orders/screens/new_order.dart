@@ -1,4 +1,5 @@
 import 'package:casada/orders/screens/new_buyer_form.dart';
+import 'package:casada/orders/screens/product_catalog_step.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -94,7 +95,7 @@ class _NewOrder extends State<NewOrder> {
           ),
           Step(
             title: Text('Products'),
-            content: Text('proizvodi'),
+            content: ProductCatalogStep(),
             state: _currentStep == 2 ? StepState.editing : StepState.indexed,
             isActive: _currentStep == 2,
           ),

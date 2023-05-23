@@ -45,6 +45,10 @@ class ProductsBloc {
     return classes;
   }
 
+  Future<List<Product>> getProductList() async {
+    return await _productsRepository.getAllProducts();
+  }
+
   void addMassageChair(String? name, String? price, String? productCode,
       int? classId, bool isActive) {
         _productsRepository.addMassageChair(name, price, productCode, classId, isActive);
