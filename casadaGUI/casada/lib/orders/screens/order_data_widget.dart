@@ -20,7 +20,7 @@ class _OrderDataWidgetState extends State<OrderDataWidget> {
   bool _isEditable = false;
   final _formKey = GlobalKey<FormState>();
   Order? _order;
-  String? _orderDate;
+  DateTime? _orderDate;
   bool? _personalPickup;
   String? _orderNote;
   int? _deliveryPersonId;
@@ -112,10 +112,12 @@ class _OrderDataWidgetState extends State<OrderDataWidget> {
                       ],
                     )
                   ]),
-                  TextFormField(
-                    decoration: InputDecoration(labelText: 'Order Date'),
-                    initialValue: _orderDate,
-                    enabled: _isEditable,
+                  DatePickerDialog(
+                    //decoration: InputDecoration(labelText: 'Order Date'),
+                    initialDate: _orderDate!,
+                    firstDate: DateTime(2010, 1, 1),
+                    lastDate: DateTime.now(),
+                    /*enabled: _isEditable,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter the order date';
@@ -126,7 +128,7 @@ class _OrderDataWidgetState extends State<OrderDataWidget> {
                       setState(() {
                         _orderDate = value;
                       });
-                    },
+                    },*/
                   ),
                   TextFormField(
                     decoration: InputDecoration(labelText: 'Personal Pickup'),

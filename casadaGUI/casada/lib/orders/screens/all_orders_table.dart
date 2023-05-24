@@ -4,6 +4,7 @@ import 'package:casada/orders/screens/order_detail_screen.dart';
 import 'package:casada/orders/screens/order_html_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../common/custom_paginated_data_table.dart';
 import '../../data/order.dart';
@@ -18,39 +19,94 @@ class AllOrdersTable extends StatefulWidget {
 
 class _AllOrdersTableState extends State<AllOrdersTable> {
   late final _dataTableSource = _DataTableSource(widget.data, context);
+  TextEditingController _searchController = TextEditingController();
+  List<Order> _filteredData = [];
+  int _sortColumnIndex = 2;
+  bool _sortAscending = true;
 
   @override
+  void initState() {
+    super.initState();
+    _filteredData = widget.data;
+  }
+
+  void _filterData(String searchText) {
+    setState(() {
+      _filteredData = widget.data.where((order) {
+        return order.buyerName
+                .toString()
+                .toLowerCase()
+                .contains(searchText.toLowerCase()) ||
+            order.buyerSurname
+                .toString()
+                .toLowerCase()
+                .contains(searchText.toLowerCase());
+      }).toList();
+    });
+  }
+
+  void _sort<T>(
+      Comparable<T> Function(Order) getField, int columnIndex, bool ascending) {
+    _filteredData.sort((a, b) {
+      final aValue = getField(a);
+      final bValue = getField(b);
+      return ascending
+          ? Comparable.compare(aValue, bValue)
+          : Comparable.compare(bValue, aValue);
+    });
+
+    setState(() {
+      _sortColumnIndex = columnIndex;
+      _sortAscending = ascending;
+    });
+  }
+
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: CustomPaginatedDataTable(
-          header: Text('Sve narudžbe'),
-          columns: [
-            DataColumn(
-              label: Text(''),
+        padding: const EdgeInsets.only(left: 16, right: 16),
+        child: Column(children: [
+          CustomPaginatedDataTable(
+            header: TextField(
+              controller: _searchController,
+              onChanged: (value) {
+                _filterData(value);
+              },
+              decoration: InputDecoration(
+                labelText: 'Pretraži',
+              ),
             ),
-            DataColumn(
-              label: Text('ID'),
-            ),
-            DataColumn(
-              label: Text('Datum'),
-            ),
-            DataColumn(
-              label: Text('Kupac'),
-            ),
-            DataColumn(
-              label: Text('Status'),
-            ),
-            DataColumn(
-              label: Text('Način plaćanja'),
-            ),
-            DataColumn(
-              label: Text(''),
-            ),
-          ],
-          source: _DataTableSource(widget.data, context),
-          rowsPerPage: 5, // number of rows to show per page
-        ));
+            columns: [
+              DataColumn(
+                label: Text(''),
+              ),
+              DataColumn(
+                label: Text('ID'),
+              ),
+              DataColumn(
+                label: Text('Datum'),
+                onSort: (columnIndex, ascending) {
+                  _sort<DateTime>((d) => d.orderDate!, columnIndex, ascending);
+                },
+              ),
+              DataColumn(
+                label: Text('Kupac'),
+              ),
+              DataColumn(
+                label: Text('Status'),
+              ),
+              DataColumn(
+                label: Text('Način plaćanja'),
+              ),
+              DataColumn(
+                label: Text(''),
+              ),
+            ],
+            source: _DataTableSource(_filteredData, context),
+            rowsPerPage: 5, // number of rows to show per page
+            sortColumnIndex: _sortColumnIndex,
+            sortAscending: _sortAscending,
+          )
+        ]));
   }
 }
 
@@ -72,7 +128,7 @@ class _DataTableSource extends DataTableSource {
       cells: [
         DataCell(Text(("${++index}.").toString())),
         DataCell(Text(item.orderId.toString())),
-        DataCell(Text(item.orderDate.toString())),
+        DataCell(Text(DateFormat('yyyy-MM-dd').format(item.orderDate!))),
         DataCell(Text(
             "${item.buyerName.toString()} ${item.buyerSurname.toString()}")),
         DataCell(Text(item.orderStatusName.toString())),
@@ -104,9 +160,8 @@ class _DataTableSource extends DataTableSource {
                 Navigator.push(
                   _context,
                   MaterialPageRoute(
-                      builder: (context) => OrderHtmlScreen(
-                            orderId: item.orderId!
-                          )),
+                      builder: (context) =>
+                          OrderHtmlScreen(orderId: item.orderId!)),
                 );
               },
             ),

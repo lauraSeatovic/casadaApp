@@ -2,7 +2,7 @@ import 'dart:ffi';
 
 class Order {
   int? orderId;
-  String? orderDate;
+  DateTime? orderDate;
   bool? personalPickup;
   String? orderNote;
   int? deliveryPersonId;
@@ -54,7 +54,7 @@ class Order {
 
   Order.fromJson(Map<String, dynamic> json) {
     orderId = json['orderId'];
-    orderDate = json['orderDate'];
+    orderDate = DateTime.parse(json['orderDate']);
     personalPickup = json['personalPickup'];
     orderNote = json['orderNote'];
     deliveryPersonId = json['deliveryPersonId'];

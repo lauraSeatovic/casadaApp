@@ -14,40 +14,76 @@ class MassageChairTable extends StatefulWidget {
 
 class _MassageChairTableState extends State<MassageChairTable> {
   late final _dataTableSource = _DataTableSource(widget.data);
+  TextEditingController _searchController = TextEditingController();
+  List<MassageChair> _filteredData = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _filteredData = widget.data;
+  }
+
+  void _filterData(String searchText) {
+    setState(() {
+      _filteredData = widget.data.where((chair) {
+        return chair.productName
+            .toString()
+            .toLowerCase()
+            .contains(searchText.toLowerCase());
+      }).toList();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: CustomPaginatedDataTable(
-        header: Text('Masažne fotelje'),
-        columns: [
-          DataColumn(
-              label: Text(''),
+        padding: const EdgeInsets.only(left: 16, right: 16),
+        child: Column(children: [
+          CustomPaginatedDataTable(
+            header: Row(
+              children: [
+                Container(
+                    width: 150,
+                    child: TextField(
+                      controller: _searchController,
+                      onChanged: (value) {
+                        _filterData(value);
+                      },
+                      decoration: InputDecoration(
+                        labelText: 'Pretraži',
+                      ),
+                    )),
+                    SizedBox(width: 20,),
+                    Text('Masažne fotelje'),
+              ],
             ),
-          DataColumn(
-            label: Text('ID'),
+            columns: [
+              DataColumn(
+                label: Text(''),
+              ),
+              DataColumn(
+                label: Text('ID'),
+              ),
+              DataColumn(
+                label: Text('Naziv'),
+              ),
+              DataColumn(
+                label: Text('Cijena'),
+              ),
+              DataColumn(
+                label: Text('Aktivan'),
+              ),
+              DataColumn(
+                label: Text('Šifra'),
+              ),
+              DataColumn(
+                label: Text('Klasa'),
+              ),
+            ],
+            source: _DataTableSource(_filteredData),
+            rowsPerPage: 5, // number of rows to show per page
           ),
-          DataColumn(
-            label: Text('Naziv'),
-          ),
-          DataColumn(
-            label: Text('Cijena'),
-          ),
-          DataColumn(
-            label: Text('Aktivan'),
-          ),
-          DataColumn(
-            label: Text('Šifra'),
-          ),
-          DataColumn(
-            label: Text('Klasa'),
-          ),
-        ],
-        source: _dataTableSource,
-        rowsPerPage: 5, // number of rows to show per page
-      ),
-    );
+        ]));
   }
 }
 
