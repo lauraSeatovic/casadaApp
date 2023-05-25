@@ -98,4 +98,8 @@ public class ProductServiceImpl implements ProductService {
         return true;
     }
 
+    public void removeProduct(int productId){
+        productRepository.deleteById(productId);
+    }
+
 }

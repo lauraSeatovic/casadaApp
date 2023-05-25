@@ -3,6 +3,7 @@ package com.casada.casadaApi.domain;
 import jakarta.persistence.*;
 
 import java.util.Set;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -30,22 +31,23 @@ public class Product {
     @Column(name = "productcode", length = 100)
     private String productCode;
 
-    @OneToOne(mappedBy = "product")
+    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private MassageDevice massageDevices;
 
-    @OneToOne(mappedBy = "product")
+    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private SportDevice sportDevice;
 
-    @OneToOne(mappedBy = "product")
+    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private MassageChair massageChair;
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Service> productServices;
 
     @OneToMany(mappedBy = "product")
     private Set<OrderProduct> productOrderProducts;
 
-    public Product(){ }
+    public Product() {
+    }
 
     public Product(Integer productId, String productName, Double productPrice, Boolean productActiveStatus, String productCode) {
         this.productId = productId;

@@ -20,6 +20,12 @@ public class ProductController {
         return productService.findAll();
     }
 
+    @DeleteMapping("/{productId}")
+    public void deleteById(@PathVariable("productId") Integer productId){
+        System.out.println("tu");
+        productService.removeProduct(productId);
+    }
+
     @GetMapping("/massagechair")
     public List<MassageChairDTO> findAllMassageChair() {
         return productService.findAllMassageChair();
