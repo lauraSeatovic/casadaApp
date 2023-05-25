@@ -26,4 +26,10 @@ public class City {
     @OneToMany(mappedBy = "deliveryPostalCode")
     private Set<Buyer> deliveryPostalCodeBuyers;
 
+    public City(Integer cityPostalCode, String cityName) {
+        this.cityPostalCode = cityPostalCode;
+        this.cityName = cityName;
+    }
+
+    public City(){}
 }
