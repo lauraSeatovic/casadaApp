@@ -22,12 +22,13 @@ class _AllOrdersTableState extends State<AllOrdersTable> {
   TextEditingController _searchController = TextEditingController();
   List<Order> _filteredData = [];
   int _sortColumnIndex = 2;
-  bool _sortAscending = true;
+  bool _sortAscending = false;
 
   @override
   void initState() {
     super.initState();
     _filteredData = widget.data;
+    _sort<DateTime>((d) => d.orderDate!, _sortColumnIndex, _sortAscending);
   }
 
   void _filterData(String searchText) {
