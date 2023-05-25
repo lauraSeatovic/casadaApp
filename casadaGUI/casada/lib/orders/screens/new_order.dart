@@ -3,6 +3,8 @@ import 'package:casada/orders/screens/product_catalog_step.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'order_data_form.dart';
+
 class NewOrder extends StatefulWidget {
   @override
   _NewOrder createState() => _NewOrder();
@@ -44,7 +46,6 @@ class _NewOrder extends State<NewOrder> {
         },
         onStepTapped: (int index) {
           setState(() {
-            // directly jump to particular step in stepper
             _currentStep = index;
           });
         },
@@ -89,7 +90,7 @@ class _NewOrder extends State<NewOrder> {
           ),
           Step(
             title: Text('Order Data'),
-            content: Text('narudzba podaci'),
+            content: OrderDataForm(),
             state: _currentStep == 1 ? StepState.editing : StepState.indexed,
             isActive: _currentStep == 1,
           ),

@@ -1,5 +1,8 @@
+import 'package:casada/data/city.dart';
+
 import '../common/Api_Data.dart';
 import '../data/order.dart';
+import '../data/payment_method.dart';
 
 class OrderRepository {
   final ApiData _apiData = ApiData('http://localhost:8080');
@@ -19,5 +22,15 @@ class OrderRepository {
 
   Future<String> getOrderHTML(int orderId) async {
     return await _apiData.getHTML("/order/html/$orderId");
+  }
+
+  Future<List<City>> getAllCity() async {
+      final response = await _apiData.getData("/city");
+      return response.map((json) => City.fromJson(json)).toList();
+  }
+
+  Future<List<PaymentMethod>> getAllPaymentMethod() async {
+      final response = await _apiData.getData("/paymentmethod");
+      return response.map((json) => PaymentMethod.fromJson(json)).toList();
   }
 }

@@ -18,14 +18,26 @@ class _OrderDetailScreen extends State<OrderDetailScreen> {
   Widget build(BuildContext context) {
     final int stepLength = 4;
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Nova narudžba'),
+      appBar: AppBar(
+        title: Text('Nova narudžba'),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: OrderDataWidget(orderId: widget.orderId),
+                ),
+                Expanded(
+                  child: BuyerDataWidget(buyerId: widget.buyerId),
+                ),
+              ],
+            ),
+          ],
         ),
-        body: SingleChildScrollView(
-          child: Column(children: [
-            BuyerDataWidget(buyerId: widget.buyerId),
-            OrderDataWidget(orderId: widget.orderId)
-          ]),
-        ));
+      ),
+    );
   }
 }

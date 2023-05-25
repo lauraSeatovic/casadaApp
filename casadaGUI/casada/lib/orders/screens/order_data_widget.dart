@@ -1,11 +1,16 @@
 import 'dart:ffi';
 
 import 'package:casada/data/buyer.dart';
+import 'package:casada/members/mamber_bloc.dart';
 import 'package:casada/orders/buyers_bloc.dart';
 import 'package:casada/orders/orders_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:intl/intl.dart';
 
+import '../../data/member.dart';
 import '../../data/order.dart';
+import '../../data/payment_method.dart';
 
 class OrderDataWidget extends StatefulWidget {
   final int orderId;
@@ -17,6 +22,7 @@ class OrderDataWidget extends StatefulWidget {
 
 class _OrderDataWidgetState extends State<OrderDataWidget> {
   final _orderBloc = OrdersBloc();
+  final _memberBloc = MemberBloc();
   bool _isEditable = false;
   final _formKey = GlobalKey<FormState>();
   Order? _order;
@@ -26,6 +32,7 @@ class _OrderDataWidgetState extends State<OrderDataWidget> {
   int? _deliveryPersonId;
   int? _sellerId;
   String? _orderStatusName;
+  int? _paymentMethodId;
   String? _paymentMethodName;
   String? _deliveryDate;
   double? _orderDiscount;
@@ -34,10 +41,15 @@ class _OrderDataWidgetState extends State<OrderDataWidget> {
   bool? _isFullPaid;
   String? _orderNumber;
   bool? _orderStatusNotifications;
+  List<Member> _members = [];
+  List<PaymentMethod> _payments = [];
+  TextEditingController _sellerController = TextEditingController();
+  TextEditingController _deliveryPersonController = TextEditingController();
 
   @override
   void initState() {
     _loadOrder();
+    _loadData();
     super.initState();
   }
 
@@ -51,6 +63,7 @@ class _OrderDataWidgetState extends State<OrderDataWidget> {
         _deliveryPersonId = order.deliveryPersonId;
         _sellerId = order.sellerId;
         _orderStatusName = order.orderStatusName;
+        _paymentMethodId = order.paymentMethodId;
         _paymentMethodName = order.paymentMethodName;
         _deliveryDate = order.deliveryDate;
         _orderDiscount = order.orderDiscount;
@@ -60,17 +73,61 @@ class _OrderDataWidgetState extends State<OrderDataWidget> {
         _orderNumber = order.orderNumber;
         _orderStatusNotifications = order.orderStatusNotifications;
         _order = order;
+        _sellerController.text = "${order.sellerName!} ${order.sellerSurname!}";
+        _deliveryPersonController.text =
+            "${order.deliveryPersonName!} ${order.deliveryPersonSurname!}";
       });
     } catch (e) {
       // handle error
     }
   }
 
+  Future<void> _selectDate() async {
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: _orderDate ?? DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime(2100),
+    );
+
+    if (pickedDate != null) {
+      setState(() {
+        _orderDate = pickedDate;
+      });
+    }
+  }
+
+  void _loadData() async {
+    try {
+      final members = await _memberBloc.loadAllMember();
+      final payments = await _orderBloc.loadAllPaymentMethod();
+      setState(() {
+        _members = members;
+        _payments = payments;
+      });
+    } catch (e) {
+      // handle error
+    }
+  }
+
+  List<Member> _suggestion(String text) {
+    return _members.where((member) {
+      return member.memberName
+              .toString()
+              .toLowerCase()
+              .contains(text.toLowerCase()) ||
+          member.memberSurname
+              .toString()
+              .toLowerCase()
+              .contains(text.toLowerCase());
+    }).toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     return _order != null
         ? Padding(
-            padding: EdgeInsets.all(30.0), // specify the width you want
+            padding: EdgeInsets.all(30.0),
             child: Form(
               child: Column(
                 children: [
@@ -78,7 +135,7 @@ class _OrderDataWidgetState extends State<OrderDataWidget> {
                     Container(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        'Informacije o kupcu',
+                        'Informacije o narudzbi',
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -94,9 +151,7 @@ class _OrderDataWidgetState extends State<OrderDataWidget> {
                         if (_isEditable)
                           ElevatedButton(
                             onPressed: () {
-                              // Perform the saving action
                               print('Saving...');
-                              // You can add your own saving logic here
                             },
                             child: Text('Save'),
                           ),
@@ -112,44 +167,48 @@ class _OrderDataWidgetState extends State<OrderDataWidget> {
                       ],
                     )
                   ]),
-                  DatePickerDialog(
-                    //decoration: InputDecoration(labelText: 'Order Date'),
-                    initialDate: _orderDate!,
-                    firstDate: DateTime(2010, 1, 1),
-                    lastDate: DateTime.now(),
-                    /*enabled: _isEditable,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter the order date';
-                      }
-                      return null;
-                    },
-                    onChanged: (value) {
-                      setState(() {
-                        _orderDate = value;
-                      });
-                    },*/
+                  SizedBox(height: 30),
+                  GestureDetector(
+                    onTap: _selectDate,
+                    child: TextField(
+                      enabled: false,
+                      decoration: InputDecoration(
+                        prefixIcon: Icon(Icons.calendar_today),
+                        labelText: 'Datum',
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                      ),
+                      controller: TextEditingController(
+                        text: _orderDate != null
+                            ? DateFormat('yyyy-MM-dd').format(_orderDate!)
+                            : '',
+                      ),
+                    ),
                   ),
-                  TextFormField(
-                    decoration: InputDecoration(labelText: 'Personal Pickup'),
-                    initialValue: _personalPickup?.toString(),
-                    enabled: _isEditable,
-                    validator: (value) {
-                      // Add validation logic if needed
-                      return null;
-                    },
-                    onChanged: (value) {
-                      setState(() {
-                        _personalPickup = value == 'true';
-                      });
-                    },
+                  Row(
+                    children: [
+                      Text(
+                        'Osobno preuzimanje',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      SizedBox(width: 8.0),
+                      Switch(
+                        value: _personalPickup!,
+                        onChanged: (bool value) {
+                          setState(() {
+                            _personalPickup = value;
+                          });
+                        },
+                      ),
+                    ],
                   ),
                   TextFormField(
                     decoration: InputDecoration(labelText: 'Order Note'),
                     initialValue: _orderNote,
                     enabled: _isEditable,
                     validator: (value) {
-                      // Add validation logic if needed
                       return null;
                     },
                     onChanged: (value) {
@@ -158,32 +217,55 @@ class _OrderDataWidgetState extends State<OrderDataWidget> {
                       });
                     },
                   ),
-                  TextFormField(
-                    decoration:
-                        InputDecoration(labelText: 'Delivery Person ID'),
-                    initialValue: _deliveryPersonId?.toString(),
-                    enabled: _isEditable,
-                    validator: (value) {
-                      // Add validation logic if needed
-                      return null;
+                  TypeAheadField(
+                    textFieldConfiguration: TextFieldConfiguration(
+                      controller: _sellerController,
+                      autofocus: false,
+                      decoration: InputDecoration(
+                        labelText: 'Prodavac',
+                        errorText: null,
+                      ),
+                    ),
+                    suggestionsCallback: (pattern) async {
+                      return _suggestion(pattern);
                     },
-                    onChanged: (value) {
+                    itemBuilder: (context, suggestion) {
+                      return ListTile(
+                        title: Text(
+                            "${suggestion.memberName!} ${suggestion.memberSurname!}"),
+                      );
+                    },
+                    onSuggestionSelected: (suggestion) {
                       setState(() {
-                        _deliveryPersonId = int.tryParse(value);
+                        _sellerController.text =
+                            "${suggestion.memberName!} ${suggestion.memberSurname!}";
+                        _sellerId = suggestion.memberId!;
                       });
                     },
                   ),
-                  TextFormField(
-                    decoration: InputDecoration(labelText: 'Seller ID'),
-                    initialValue: _sellerId?.toString(),
-                    enabled: _isEditable,
-                    validator: (value) {
-                      // Add validation logic if needed
-                      return null;
+                  TypeAheadField(
+                    textFieldConfiguration: TextFieldConfiguration(
+                      controller: _deliveryPersonController,
+                      autofocus: false,
+                      decoration: InputDecoration(
+                        labelText: 'Dostavljac',
+                        errorText: null,
+                      ),
+                    ),
+                    suggestionsCallback: (pattern) async {
+                      return _suggestion(pattern);
                     },
-                    onChanged: (value) {
+                    itemBuilder: (context, suggestion) {
+                      return ListTile(
+                        title: Text(
+                            "${suggestion.memberName!} ${suggestion.memberSurname!}"),
+                      );
+                    },
+                    onSuggestionSelected: (suggestion) {
                       setState(() {
-                        _sellerId = int.tryParse(value);
+                        _deliveryPersonController.text =
+                            "${suggestion.memberName!} ${suggestion.memberSurname!}";
+                        _deliveryPersonId = suggestion.memberId!;
                       });
                     },
                   ),
@@ -192,7 +274,6 @@ class _OrderDataWidgetState extends State<OrderDataWidget> {
                     initialValue: _orderStatusName,
                     enabled: _isEditable,
                     validator: (value) {
-                      // Add validation logic if needed
                       return null;
                     },
                     onChanged: (value) {
@@ -201,27 +282,25 @@ class _OrderDataWidgetState extends State<OrderDataWidget> {
                       });
                     },
                   ),
-                  TextFormField(
-                    decoration:
-                        InputDecoration(labelText: 'Payment Method Name'),
-                    initialValue: _paymentMethodName,
-                    enabled: _isEditable,
-                    validator: (value) {
-                      // Add validation logic if needed
-                      return null;
-                    },
+                  DropdownButtonFormField<int>(
+                    value: _paymentMethodId,
                     onChanged: (value) {
                       setState(() {
-                        _paymentMethodName = value;
+                        _paymentMethodId = value!;
                       });
                     },
+                    items: _payments
+                        .map((entry) => DropdownMenuItem<int>(
+                              value: entry.paymentMethodId,
+                              child: Text(entry.paymentMethodName!),
+                            ))
+                        .toList(),
                   ),
                   TextFormField(
-                    decoration: InputDecoration(labelText: 'Delivery Date'),
+                    decoration: InputDecoration(labelText: 'Opis dostave'),
                     initialValue: _deliveryDate,
                     enabled: _isEditable,
                     validator: (value) {
-                      // Add validation logic if needed
                       return null;
                     },
                     onChanged: (value) {
@@ -235,7 +314,6 @@ class _OrderDataWidgetState extends State<OrderDataWidget> {
                     initialValue: _orderDiscount?.toString(),
                     enabled: _isEditable,
                     validator: (value) {
-                      // Add validation logic if needed
                       return null;
                     },
                     onChanged: (value) {
@@ -249,7 +327,6 @@ class _OrderDataWidgetState extends State<OrderDataWidget> {
                     initialValue: _otherPayment,
                     enabled: _isEditable,
                     validator: (value) {
-                      // Add validation logic if needed
                       return null;
                     },
                     onChanged: (value) {
@@ -263,7 +340,6 @@ class _OrderDataWidgetState extends State<OrderDataWidget> {
                     initialValue: _orderDeposit?.toString(),
                     enabled: _isEditable,
                     validator: (value) {
-                      // Add validation logic if needed
                       return null;
                     },
                     onChanged: (value) {
@@ -272,26 +348,28 @@ class _OrderDataWidgetState extends State<OrderDataWidget> {
                       });
                     },
                   ),
-                  TextFormField(
-                    decoration: InputDecoration(labelText: 'Is Full Paid'),
-                    initialValue: _isFullPaid?.toString(),
-                    enabled: _isEditable,
-                    validator: (value) {
-                      // Add validation logic if needed
-                      return null;
-                    },
-                    onChanged: (value) {
-                      setState(() {
-                        _isFullPaid = value == 'true';
-                      });
-                    },
+                  Row(
+                    children: [
+                      Text(
+                        'Plaćeno u potpunosti',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      SizedBox(width: 8.0),
+                      Switch(
+                        value: _isFullPaid!,
+                        onChanged: (bool value) {
+                          setState(() {
+                            _isFullPaid = value;
+                          });
+                        },
+                      ),
+                    ],
                   ),
                   TextFormField(
                     decoration: InputDecoration(labelText: 'Order Number'),
                     initialValue: _orderNumber,
                     enabled: _isEditable,
                     validator: (value) {
-                      // Add validation logic if needed
                       return null;
                     },
                     onChanged: (value) {
@@ -300,20 +378,22 @@ class _OrderDataWidgetState extends State<OrderDataWidget> {
                       });
                     },
                   ),
-                  TextFormField(
-                    decoration: InputDecoration(
-                        labelText: 'Order Status Notifications'),
-                    initialValue: _orderStatusNotifications?.toString(),
-                    enabled: _isEditable,
-                    validator: (value) {
-                      // Add validation logic if needed
-                      return null;
-                    },
-                    onChanged: (value) {
-                      setState(() {
-                        _orderStatusNotifications = value == 'true';
-                      });
-                    },
+                  Row(
+                    children: [
+                      Text(
+                        'Obavijesti o narudžbi',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      SizedBox(width: 8.0),
+                      Switch(
+                        value: _orderStatusNotifications!,
+                        onChanged: (bool value) {
+                          setState(() {
+                            _orderStatusNotifications = value;
+                          });
+                        },
+                      ),
+                    ],
                   ),
                 ],
               ),
