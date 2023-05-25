@@ -1,8 +1,11 @@
 import 'dart:ffi';
 
 import 'package:casada/data/buyer.dart';
+import 'package:casada/data/city.dart';
 import 'package:casada/orders/buyers_bloc.dart';
+import 'package:casada/orders/orders_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 class BuyerDataWidget extends StatefulWidget {
   final int buyerId;
@@ -14,18 +17,26 @@ class BuyerDataWidget extends StatefulWidget {
 
 class _BuyerDataWidgetState extends State<BuyerDataWidget> {
   final _buyerBloc = BuyersBloc();
+  final _orderBloc = OrdersBloc();
+  List<City> _cities = [];
   bool _isEditable = false;
   final _formKey = GlobalKey<FormState>();
   Buyer? _buyer = null;
   String _buyerName = "";
   String _buyerSurname = "";
   String _buyerHome = "";
+  int _buyerHomePostalCode = 0;
   String _buyerDelivery = "";
+  int _buyerDeliveryPostalCode = 0;
   String _buyerPhone = "";
   String _buyerEmail = "";
+  TextEditingController _homePostalController = TextEditingController();
+  TextEditingController _deliveryPostalController = TextEditingController();
+
   @override
   void initState() {
     _loadBuyer();
+    _loadCities();
   }
 
   void _loadBuyer() async {
@@ -35,14 +46,38 @@ class _BuyerDataWidgetState extends State<BuyerDataWidget> {
         _buyerName = buyer.buyerName!;
         _buyerSurname = buyer.buyerSurname!;
         _buyerHome = buyer.buyerHomeAddress!;
+        _buyerHomePostalCode = buyer.homePostalCode!;
         _buyerDelivery = buyer.buyerDeliveryAddress!;
+        _buyerDeliveryPostalCode = buyer.deliveryPostalCode!;
         _buyerPhone = buyer.buyerPhoneNumber!;
         _buyerEmail = buyer.buyerEmail!;
         _buyer = buyer;
+        _homePostalController.text = buyer.homePostalCodeName!;
+        _deliveryPostalController.text = buyer.deliveryPostalCodeName!;
       });
     } catch (e) {
       // handle error
     }
+  }
+
+  void _loadCities() async {
+    try {
+      final cities = await _orderBloc.loadAllCity();
+      setState(() {
+        _cities = cities;
+      });
+    } catch (e) {
+      // handle error
+    }
+  }
+
+  List<City> _suggestion(String text) {
+    return _cities.where((city) {
+      return city.cityname
+          .toString()
+          .toLowerCase()
+          .contains(text.toLowerCase());
+    }).toList();
   }
 
   @override
@@ -53,43 +88,43 @@ class _BuyerDataWidgetState extends State<BuyerDataWidget> {
             child: Form(
               child: Column(
                 children: [
-                  Row(
-                    children: [
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'Informacije o kupcu',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).primaryColor,
+                  Row(children: [
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Informacije o kupcu',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).primaryColor,
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(width: 30,),
-                  Column(
-                    children: [
-                      if (_isEditable)
-                        ElevatedButton(
-                          onPressed: () {
-                            // Perform the saving action
-                            print('Saving...');
-                            // You can add your own saving logic here
-                          },
-                          child: Text('Save'),
-                        ),
-                      if (!_isEditable)
-                        ElevatedButton(
-                          onPressed: () {
-                            setState(() {
-                              _isEditable = !_isEditable;
-                            });
-                          },
-                          child: Text('Edit'),
-                        ),
-                    ],
-                  )
-                  
+                    SizedBox(
+                      width: 30,
+                    ),
+                    Column(
+                      children: [
+                        if (_isEditable)
+                          ElevatedButton(
+                            onPressed: () {
+                              // Perform the saving action
+                              print('Saving...');
+                              // You can add your own saving logic here
+                            },
+                            child: Text('Save'),
+                          ),
+                        if (!_isEditable)
+                          ElevatedButton(
+                            onPressed: () {
+                              setState(() {
+                                _isEditable = !_isEditable;
+                              });
+                            },
+                            child: Text('Edit'),
+                          ),
+                      ],
+                    )
                   ]),
                   TextFormField(
                     decoration: InputDecoration(labelText: 'Ime'),
@@ -135,6 +170,30 @@ class _BuyerDataWidgetState extends State<BuyerDataWidget> {
                       return null;
                     },
                   ),
+                  TypeAheadField(
+                    textFieldConfiguration: TextFieldConfiguration(
+                      controller: _homePostalController,
+                      autofocus: false,
+                      decoration: InputDecoration(
+                        labelText: 'Grad stanovanja',
+                        errorText: null,
+                      ),
+                    ),
+                    suggestionsCallback: (pattern) async {
+                      return _suggestion(pattern);
+                    },
+                    itemBuilder: (context, suggestion) {
+                      return ListTile(
+                        title: Text(suggestion.cityname!),
+                      );
+                    },
+                    onSuggestionSelected: (suggestion) {
+                      setState(() {
+                        _homePostalController.text = suggestion.cityname!;
+                        _buyerHomePostalCode = suggestion.citypostalcode!;
+                      });
+                    },
+                  ),
                   TextFormField(
                     decoration: InputDecoration(labelText: 'Adresa dostave'),
                     initialValue: _buyerDelivery,
@@ -144,6 +203,30 @@ class _BuyerDataWidgetState extends State<BuyerDataWidget> {
                         return 'Unesite adresu dostave';
                       }
                       return null;
+                    },
+                  ),
+                  TypeAheadField(
+                    textFieldConfiguration: TextFieldConfiguration(
+                      controller: _deliveryPostalController,
+                      autofocus: false,
+                      decoration: InputDecoration(
+                        labelText: 'Grad dostave',
+                        errorText: null,
+                      ),
+                    ),
+                    suggestionsCallback: (pattern) async {
+                      return _suggestion(pattern);
+                    },
+                    itemBuilder: (context, suggestion) {
+                      return ListTile(
+                        title: Text(suggestion.cityname!),
+                      );
+                    },
+                    onSuggestionSelected: (suggestion) {
+                      setState(() {
+                        _deliveryPostalController.text = suggestion.cityname!;
+                        _buyerDeliveryPostalCode = suggestion.citypostalcode!;
+                      });
                     },
                   ),
                   TextFormField(
