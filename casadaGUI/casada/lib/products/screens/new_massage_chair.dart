@@ -139,6 +139,12 @@ class _NewMassageChair extends State<NewMassageChair> {
                     _formKey.currentState!.save();
                     _productsBloc.addMassageChair(
                         _name, _price, _code, _selectedId, _isActive);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Dodana nova masažna fotelja!'),
+                        duration: Duration(seconds: 3),
+                      ),
+                    );
                   }
                 },
                 child: Text('Dodaj'),
