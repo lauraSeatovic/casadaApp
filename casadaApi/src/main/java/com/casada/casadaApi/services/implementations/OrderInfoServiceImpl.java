@@ -41,4 +41,8 @@ public class OrderInfoServiceImpl implements OrderInfoService {
             throw new RuntimeException("Order not found");
         }
     }
+
+    public void removeOrder(int orderId){
+        orderInfoRepository.deleteById(orderId);
+    }
 }

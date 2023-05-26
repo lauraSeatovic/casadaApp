@@ -29,4 +29,9 @@ public class OrderInfoController {
     public OrderInfoDTO findById(@PathVariable("orderId") Integer orderId) {
         return orderInfoService.findById(orderId);
     }
+
+    @DeleteMapping("/{orderId}")
+    public void deleteById(@PathVariable("orderId") Integer orderId){
+        orderInfoService.removeOrder(orderId);
+    }
 }
