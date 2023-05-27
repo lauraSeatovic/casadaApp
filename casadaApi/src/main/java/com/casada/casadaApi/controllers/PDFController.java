@@ -34,7 +34,12 @@ public class PDFController {
 
     @GetMapping("/pdf/{orderId}")
     public ResponseEntity<byte[]> generateOrderPdf(@PathVariable("orderId") Integer orderId) {
-        return pdfService.generateOrderPdf(orderId);
+        return pdfService.generateOrderPdf(orderId, "orderInfo");
+    }
+
+    @GetMapping("/pdfdispatch/{orderId}")
+    public ResponseEntity<byte[]> generateDispatchNotePdf(@PathVariable("orderId") Integer orderId) {
+        return pdfService.generateOrderPdf(orderId, "orderInfoDispatch");
     }
 
     @GetMapping("/html/{orderId}")

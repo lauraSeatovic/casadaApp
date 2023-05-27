@@ -38,7 +38,7 @@ public class PDFServiceImpl {
     @Autowired
     private BuyerRepository buyerRepository;
 
-    public ResponseEntity<byte[]> generateOrderPdf(int orderId) {
+    public ResponseEntity<byte[]> generateOrderPdf(int orderId, String templateName) {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_PDF);
@@ -49,10 +49,9 @@ public class PDFServiceImpl {
             ITextRenderer renderer = new ITextRenderer();
             renderer.getFontResolver().addFont("/fonts/times.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
             renderer.getFontResolver().addFont("/fonts/timesbd.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-            renderer.setDocumentFromString(templateEngine.process("orderInfo", getOrderTemplateContext(orderId)));
+            renderer.setDocumentFromString(templateEngine.process(templateName, getOrderTemplateContext(orderId)));
             renderer.layout();
             renderer.createPDF(outputStream);
-
 
 
             return ResponseEntity.ok().headers(headers).body(outputStream.toByteArray());
@@ -76,9 +75,47 @@ public class PDFServiceImpl {
         }
     }
 
+    public byte[] generatePDF(int orderId) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        ITextRenderer renderer = new ITextRenderer();
+        try {
+            renderer.getFontResolver().addFont("/fonts/times.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+
+            renderer.getFontResolver().addFont("/fonts/timesbd.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+            renderer.setDocumentFromString(templateEngine.process("orderInfo", getOrderTemplateContext(orderId)));
+            renderer.layout();
+            renderer.createPDF(outputStream);
+            byte[] pdfData = outputStream.toByteArray();
+            return pdfData;
+        } catch (DocumentException | IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public byte[] generateDispatchNotePDF(int orderId) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        ITextRenderer renderer = new ITextRenderer();
+        try {
+            renderer.getFontResolver().addFont("/fonts/times.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+
+            renderer.getFontResolver().addFont("/fonts/timesbd.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+            renderer.setDocumentFromString(templateEngine.process("orderInfo", getOrderTemplateContext(orderId)));
+            renderer.layout();
+            renderer.createPDF(outputStream);
+            byte[] pdfData = outputStream.toByteArray();
+            return pdfData;
+        } catch (DocumentException | IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+
     private Context getOrderTemplateContext(int orderId) {
         Optional<OrderInfo> orderInfoOptional = orderInfoRepository.findById(orderId);
-        if(orderInfoOptional.isPresent()){
+        if (orderInfoOptional.isPresent()) {
             OrderInfo orderInfo = orderInfoOptional.get();
             Context context = new Context();
             Buyer buyer = orderInfo.getBuyer();
@@ -87,13 +124,15 @@ public class PDFServiceImpl {
             context.setVariable("buyerPhone", buyer.getBuyerPhoneNumber());
             context.setVariable("buyerEmail", buyer.getBuyerEmail());
             context.setVariable("buyerAddress", buyer.getBuyerDeliveryAddress());
+            context.setVariable("orderNumber", orderInfo.getOrderNumber());
+            context.setVariable("orderDate", orderInfo.getOrderDate());
 
             List<ProductPDF> products = orderInfo.getOrderOrderProducts().stream().map(product -> new ProductPDF(
                     product.getProduct().getProductName(),
                     product.getQuantity(),
                     product.getProduct().getProductPrice(),
                     product.getDiscount(),
-                    product.getProduct().getProductPrice()*product.getQuantity()
+                    product.getProduct().getProductPrice() * product.getQuantity()
             )).toList();
             context.setVariable("products", products);
 
@@ -105,7 +144,7 @@ public class PDFServiceImpl {
             context.setVariable("note", orderInfo.getOrderNote());
 
             return context;
-        }else{
+        } else {
             throw new RuntimeException("Order not found");
         }
 

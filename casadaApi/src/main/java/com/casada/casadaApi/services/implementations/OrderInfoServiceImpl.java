@@ -5,8 +5,10 @@ import com.casada.casadaApi.DTOs.MemberDTO;
 import com.casada.casadaApi.DTOs.OrderInfoDTO;
 import com.casada.casadaApi.domain.Buyer;
 import com.casada.casadaApi.domain.OrderInfo;
+import com.casada.casadaApi.domain.OrderStatus;
 import com.casada.casadaApi.mappers.OrderInfoMapper;
 import com.casada.casadaApi.repos.OrderInfoRepository;
+import com.casada.casadaApi.repos.OrderStatusRepository;
 import com.casada.casadaApi.services.OrderInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,9 @@ public class OrderInfoServiceImpl implements OrderInfoService {
     private OrderInfoRepository orderInfoRepository;
 
     @Autowired
+    private OrderStatusRepository orderStatusRepository;
+
+    @Autowired
     private OrderInfoMapper orderInfoMapper;
 
     public List<OrderInfoDTO> findAll() {
@@ -30,7 +35,11 @@ public class OrderInfoServiceImpl implements OrderInfoService {
     }
 
     public OrderInfo addOrderInfo(OrderInfoDTO orderInfo){
-        return orderInfoRepository.save(orderInfoMapper.toDomain(orderInfo));
+        OrderInfo order = orderInfoMapper.toDomain(orderInfo);
+        OrderInfo savedOrder = orderInfoRepository.save(order);
+        Integer generatedId = savedOrder.getOrderId();
+        savedOrder.setOrderNumber(generatedId.toString() +"-" + order.getOrderDate());
+        return orderInfoRepository.save(savedOrder);
     }
 
     public OrderInfoDTO findById(Integer orderId){
@@ -44,5 +53,18 @@ public class OrderInfoServiceImpl implements OrderInfoService {
 
     public void removeOrder(int orderId){
         orderInfoRepository.deleteById(orderId);
+    }
+
+    public void changeOrderStatus(int orderId, int statusId){
+        Optional<OrderInfo> orderInfoOptional = orderInfoRepository.findById(orderId);
+        Optional<OrderStatus> orderStatusOptional = orderStatusRepository.findById(statusId);
+        if(orderInfoOptional.isPresent() && orderStatusOptional.isPresent()){
+            OrderInfo orderInfo = orderInfoOptional.get();
+            OrderStatus orderStatus = orderStatusOptional.get();
+            orderInfo.setOrderStatus(orderStatus);
+            orderInfoRepository.save(orderInfo);
+        }else{
+            throw new RuntimeException("Order or status not found");
+        }
     }
 }
