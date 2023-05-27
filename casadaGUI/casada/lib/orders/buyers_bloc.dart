@@ -7,4 +7,6 @@ class BuyersBloc{
     final buyer = await _buyerRepository.getBuyer(buyerId);
     return buyer;
   }
+
+  
 }

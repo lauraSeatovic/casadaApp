@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 
 import '../orders_bloc.dart';
@@ -49,6 +50,28 @@ class _OrderHtmlScreenState extends State<OrderHtmlScreen> {
             webViewMediaPlaybackAlwaysAllow: true,
           ),
         ),
+      ),
+      floatingActionButtonLocation: ExpandableFab.location,
+      floatingActionButton: ExpandableFab(
+        child: const Icon(Icons.download),
+        type: ExpandableFabType.up,
+        distance: 70,
+        children: [
+          FloatingActionButton.extended(
+            heroTag: null,
+            label: Text("Narudžbenica"),
+            icon: Icon(Icons.receipt),
+            onPressed: () {
+              _orderBloc.getOrderPDF(widget.orderId);
+            },
+          ),
+          FloatingActionButton.extended(
+            heroTag: null,
+            label: Text("Otpremnica"),
+            icon: Icon(Icons.local_shipping),
+            onPressed: () {},
+          ),
+        ],
       ),
     );
   }

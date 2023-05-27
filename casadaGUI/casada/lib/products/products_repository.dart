@@ -85,4 +85,8 @@ class ProductsRepository {
 
     _apiData.sendData(apiUrl, formData);
   }
+
+  Future<void> deleteProduct(int productId){
+    return _apiData.deleteData("/product/${productId}");
+  }
 }

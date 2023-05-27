@@ -32,7 +32,7 @@ class _MassageDeviceTableState extends State<MassageDeviceTable> {
               label: Text('Naziv'),
             ),
             DataColumn(
-              label: Text('Cijena'),
+              label: Text('Cijena/€'),
             ),
             DataColumn(
               label: Text('Aktivan'),

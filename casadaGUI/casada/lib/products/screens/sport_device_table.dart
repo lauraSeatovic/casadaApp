@@ -32,7 +32,7 @@ class _SportDeviceTable extends State<SportDeviceTable> {
               label: Text('Naziv'),
             ),
             DataColumn(
-              label: Text('Cijena'),
+              label: Text('Cijena/€'),
             ),
             DataColumn(
               label: Text('Aktivan'),

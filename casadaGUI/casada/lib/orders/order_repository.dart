@@ -3,6 +3,7 @@ import 'package:casada/data/city.dart';
 import '../common/Api_Data.dart';
 import '../data/order.dart';
 import '../data/payment_method.dart';
+import '../data/status.dart';
 
 class OrderRepository {
   final ApiData _apiData = ApiData('http://localhost:8080');
@@ -25,12 +26,30 @@ class OrderRepository {
   }
 
   Future<List<City>> getAllCity() async {
-      final response = await _apiData.getData("/city");
-      return response.map((json) => City.fromJson(json)).toList();
+    final response = await _apiData.getData("/city");
+    return response.map((json) => City.fromJson(json)).toList();
   }
 
   Future<List<PaymentMethod>> getAllPaymentMethod() async {
-      final response = await _apiData.getData("/paymentmethod");
-      return response.map((json) => PaymentMethod.fromJson(json)).toList();
+    final response = await _apiData.getData("/paymentmethod");
+    return response.map((json) => PaymentMethod.fromJson(json)).toList();
+  }
+
+  Future<void> deleteOrder(int orderId) {
+    return _apiData.deleteData("/orderinfo/${orderId}");
+  }
+
+  Future<List<Status>> getAllStatus() async {
+    final response = await _apiData.getData("/orderstatus");
+    return response.map((json) => Status.fromJson(json)).toList();
+  }
+
+  Future<void> changeStatus(int orderId, int statusId) async {
+    const apiUrl = '/orderstatus/changestatus';
+
+    final formData = {"orderId": orderId, "newStatusId": statusId};
+
+    _apiData.sendData(apiUrl, formData);
+
   }
 }

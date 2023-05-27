@@ -2,6 +2,7 @@ import 'package:casada/orders/order_repository.dart';
 import 'package:casada/orders/orders_bloc.dart';
 import 'package:casada/orders/screens/order_detail_screen.dart';
 import 'package:casada/orders/screens/order_html_screen.dart';
+import 'package:casada/orders/screens/status_change_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -150,12 +151,6 @@ class _DataTableSource extends DataTableSource {
               },
             ),
             IconButton(
-              icon: Icon(Icons.picture_as_pdf),
-              onPressed: () {
-                _ordersBloc.getOrderPDF(item.orderId!);
-              },
-            ),
-            IconButton(
               icon: Icon(Icons.info),
               onPressed: () {
                 Navigator.push(
@@ -163,6 +158,47 @@ class _DataTableSource extends DataTableSource {
                   MaterialPageRoute(
                       builder: (context) =>
                           OrderHtmlScreen(orderId: item.orderId!)),
+                );
+              },
+            ),
+            IconButton(
+              icon: Icon(Icons.assignment),
+              onPressed: () {
+                Navigator.push(
+                  _context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          StatusChangeWidget(statustId: item.orderStatusId!, orderId: item.orderId!)),
+                );
+              },
+            ),
+            IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () {
+                showDialog(
+                  context: _context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text('Izbriši narudžbu'),
+                      content:
+                          Text('Jeste li sigurni da želite narudžbu?'),
+                      actions: <Widget>[
+                        TextButton(
+                          child: Text('Odustani'),
+                          onPressed: () {
+                            Navigator.of(context).pop(); // Close the dialog
+                          },
+                        ),
+                        TextButton(
+                          child: Text('Obriši'),
+                          onPressed: () {
+                            _ordersBloc.deleteOrder(item.orderId!);
+                            Navigator.of(context).pop(); // Close the dialog
+                          },
+                        ),
+                      ],
+                    );
+                  },
                 );
               },
             ),

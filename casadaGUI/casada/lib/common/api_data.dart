@@ -85,4 +85,15 @@ class ApiData {
       return "";
     }
   }
+
+  Future<dynamic> deleteData(String url) async {
+    print("$apiUrl$url");
+    final response = await http.delete(Uri.parse("$apiUrl$url"));
+    if (response.statusCode == 200) {
+      final jsonData = json.decode(response.body);
+      return jsonData;
+    } else {
+      throw Exception('Failed to delete');
+    }
+  }
 }

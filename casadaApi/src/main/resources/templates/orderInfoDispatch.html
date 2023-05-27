@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv='Content-Type' content='text/html; charset=UTF-8'/>
+    <style type='text/css'>
+   @page {
+      size: A4;
+      margin: 1cm 0cm 0cm 0cm;
+    }
+
+
+    body {
+       font-family: "Times New Roman";
+    }
+        h1 {
+            color: #FF0000;
+        }
+      .column-box {
+      padding-bottom:10px;
+      }
+      .column-box-title {
+      font-weight: bold;
+    }
+      .align-right {
+  text-align: right;
+}
+      .buyer-name{
+        font-weight: bold;
+        font-size: 20px;
+      }
+      .container {
+      display: inline-flex;
+    }
+
+    .item {
+      flex: ;
+    }
+      .item p {
+  margin: 0;
+  padding-right: ;
+}
+      table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 8px;
+      border-bottom: 1px solid #ddd;
+      text-align:left
+    }
+      .footer-text{
+        text-align:center;
+        font-weight: lighter;
+        font-size: 10px;
+      }
+      .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 1cm;
+            text-align: center;
+            padding: 0.5em 0;
+            font-size: 10px;
+            font-weight: lighter;
+            color: #777;
+        }
+        .bold {
+            font-weight: 500;
+        }
+        .image-size {
+        width: 150px;
+    }
+    .content{
+    padding:0cm 2cm 2cm 2cm;
+        min-height: calc(100vh - 4cm);
+            box-sizing: border-box;
+            page-break-inside: avoid;
+    }
+    .signature{
+    margin-left: auto;
+margin-right: 0;
+    width: 6cm;
+    }
+    </style>
+</head>
+<body>
+<div class="content">
+    <img alt="logo" th:src="@{classpath:images/casadaLogo.png}" class="image-size"></img>
+    <div class="top-left-column">
+        <div class="column-box">CASADA PARTNER – CROATIA</div>
+        <div class="column-box">
+            <div class="column-item column-box-title">CASADA ADRIATIC d.o.o.</div>
+            <div class="column-item">A. Šenoe 90, Zaprešić - Hrvatska</div>
+            <div class="column-item">OIB 27177711116</div>
+        </div>
+        <div class="column-box">
+            <div class="column-item column-box-title">PRODAJNO MJESTO – TC WESTGATE.</div>
+            <div class="column-item">Tel: +385 1 210 8833</div>
+            <div class="column-item">Mob: +385 92 1888 721</div>
+            <div class="column-item">Mail: info@casada-adriatic.com</div>
+            <div class="column-item">www.casada-adriatic.com</div>
+        </div>
+
+        <div class="column-box">
+            <div>IBAN: HR7824840081135019904</div>
+            <div>SWIFT: RZBHHR2XXXX</div>
+        </div>
+    </div>
+
+    <div class="align-right">
+        <div class="column-item">
+            Kupac:
+        </div>
+        <div th:text="${buyerNameSurname}" class="buyer-name">
+        </div>
+        <hr></hr>
+        <div th:text="${buyerPhone}">
+        </div>
+        <div th:text="${buyerEmail}">
+        </div>
+        <div th:text="${buyerAddress}">
+        </div>
+    </div>
+
+    <div>
+        <label>Narudžbenica:</label>
+        <span th:text="${orderNumber}"></span>
+    </div>
+    <div>
+        <label>Datum:</label>
+        <span th:text="${orderDate}"></span>
+    </div>
+    <table>
+        <tr class="bold">
+            <th>RB</th>
+            <th>PROIZVOD/USLUGA</th>
+            <th>KOL</th>
+        </tr>
+        <!-- Iterate over a collection using Thymeleaf -->
+        <tr th:each="product, index : ${products}">
+            <td th:text="${index.count}"></td>
+            <td th:text="${product.name}"></td>
+            <td th:text="${product.quantity}"></td>
+        </tr>
+    </table>
+    <br></br>
+    <div>
+        <label>Način plaćanja:</label>
+        <span th:text="${payment}"></span>
+    </div>
+    <div>
+        <label>Dostava:</label>
+        <span th:text="${delivery}"></span>
+    </div>
+    <div>
+        <label>Opearater:</label>
+        <span th:text="${seller}"></span>
+    </div>
+    <div>
+        <label>Napomena:</label>
+        <span th:text="${note}"></span>
+    </div>
+    <div class="signature">
+        <div>
+            PREUZEO
+        </div>
+        <br></br>
+        <hr></hr>
+    </div>
+</div>
+
+</body>
+<div class="footer">
+    <hr></hr>
+    <div class="footer-text">
+        CASADA ADRIATIC doo, A.Šenoe 90, Zaprešić, odgovorna osoba Dalibor Šeatović, temeljni kapital 20.000 kn uplaćen u cijelosti
+    </div>
+    <div class="footer-text">
+        Trgovački sud u Zagrebu, upisano pod MBS 081071463
+    </div>
+</div>
+</html>

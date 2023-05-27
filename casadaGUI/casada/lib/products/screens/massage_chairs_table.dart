@@ -1,4 +1,5 @@
 import 'package:casada/common/custom_paginated_data_table.dart';
+import 'package:casada/products/products_bloc.dart';
 import 'package:flutter/material.dart';
 
 import '../../data/massage_chair.dart';
@@ -13,7 +14,6 @@ class MassageChairTable extends StatefulWidget {
 }
 
 class _MassageChairTableState extends State<MassageChairTable> {
-  late final _dataTableSource = _DataTableSource(widget.data);
   TextEditingController _searchController = TextEditingController();
   List<MassageChair> _filteredData = [];
 
@@ -53,8 +53,10 @@ class _MassageChairTableState extends State<MassageChairTable> {
                         labelText: 'Pretraži',
                       ),
                     )),
-                    SizedBox(width: 20,),
-                    Text('Masažne fotelje'),
+                SizedBox(
+                  width: 20,
+                ),
+                Text('Masažne fotelje'),
               ],
             ),
             columns: [
@@ -68,7 +70,7 @@ class _MassageChairTableState extends State<MassageChairTable> {
                 label: Text('Naziv'),
               ),
               DataColumn(
-                label: Text('Cijena'),
+                label: Text('Cijena/€'),
               ),
               DataColumn(
                 label: Text('Aktivan'),
@@ -79,8 +81,11 @@ class _MassageChairTableState extends State<MassageChairTable> {
               DataColumn(
                 label: Text('Klasa'),
               ),
+              DataColumn(
+                label: Text(''),
+              ),
             ],
-            source: _DataTableSource(_filteredData),
+            source: _DataTableSource(_filteredData, context),
             rowsPerPage: 5, // number of rows to show per page
           ),
         ]));
@@ -89,8 +94,10 @@ class _MassageChairTableState extends State<MassageChairTable> {
 
 class _DataTableSource extends DataTableSource {
   final List<MassageChair> _data;
+  ProductsBloc _productsBloc = ProductsBloc();
+  final BuildContext _context;
   int _selectedRowCount = 0;
-  _DataTableSource(this._data);
+  _DataTableSource(this._data, this._context);
 
   @override
   DataRow? getRow(int index) {
@@ -112,6 +119,40 @@ class _DataTableSource extends DataTableSource {
         ),
         DataCell(Text(item.productCode.toString())),
         DataCell(Text(item.massageChairClassName.toString())),
+        DataCell(Row(
+          children: [
+            IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () {
+                showDialog(
+                  context: _context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text('Izbriši proizvod'),
+                      content:
+                          Text('Jeste li sigurni da želite obrisati proizvod?'),
+                      actions: <Widget>[
+                        TextButton(
+                          child: Text('Odustani'),
+                          onPressed: () {
+                            Navigator.of(context).pop(); // Close the dialog
+                          },
+                        ),
+                        TextButton(
+                          child: Text('Obriši'),
+                          onPressed: () {
+                            _productsBloc.deleteProduct(item.productId!);
+                            Navigator.of(context).pop(); // Close the dialog
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+            ),
+          ],
+        )),
       ],
     );
   }
