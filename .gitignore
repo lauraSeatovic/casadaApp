@@ -566,6 +566,7 @@ FodyWeavers.xsd
 *.sln.iml
 
 casadaApi/src/main/resources/db.properties
+casadaApi/src/main/resources/mail.properties
 
 ### VisualStudio Patch ###
 # Additional files built by Visual Studio
