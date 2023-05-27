@@ -1,34 +1,53 @@
+import 'package:casada/orders/orders_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
+
+import '../../data/buyer.dart';
+import '../../data/city.dart';
 
 class NewBuyerForm extends StatefulWidget {
-  final GlobalKey<FormState> formKey;
-  final Function(String) onNameChanged; // Callback function to notify parent
-  final Function(String) onSurnameChanged;
-  final Function(String) onHomeAddressChanged;
-  final Function(String) onDeliveryAddressChanged;
-  final Function(String) onPhoneNumberChanged;
-  final Function(String) onEmailChanged;
+  final Buyer buyer;
+  final ValueChanged<Buyer> onChanged;
+  
 
-  const NewBuyerForm(
-      {Key? key,
-      required this.formKey,
-      required this.onNameChanged,
-      required this.onSurnameChanged,
-      required this.onHomeAddressChanged,
-      required this.onDeliveryAddressChanged,
-      required this.onPhoneNumberChanged,
-      required this.onEmailChanged})
-      : super(key: key);
+  const NewBuyerForm({required this.buyer, required this.onChanged});
 
   @override
   _NewBuyerFormState createState() => _NewBuyerFormState();
 }
 
 class _NewBuyerFormState extends State<NewBuyerForm> {
+  TextEditingController _homePostalController = TextEditingController();
+  TextEditingController _deliveryPostalController = TextEditingController();
+  List<City> _cities = [];
+  OrdersBloc _orderBloc = OrdersBloc();
+
+  @override
+  void initState() {
+    _loadCities();
+  }
+
+  void _loadCities() async {
+    try {
+      final cities = await _orderBloc.loadAllCity();
+      setState(() {
+        _cities = cities;
+      });
+    } catch (e) {
+      // handle error
+    }
+  }
+  List<City> _suggestion(String text) {
+    return _cities.where((city) {
+      return city.cityname
+          .toString()
+          .toLowerCase()
+          .contains(text.toLowerCase());
+    }).toList();
+  }
   @override
   Widget build(BuildContext context) {
     return Form(
-      key: widget.formKey,
       child: Column(
         children: [
           TextFormField(
@@ -39,9 +58,7 @@ class _NewBuyerFormState extends State<NewBuyerForm> {
               }
               return null;
             },
-            onChanged: (value) {
-              widget.onNameChanged(value); // Notify parent of name change
-            },
+            onChanged: (value) => widget.onChanged(widget.buyer.copyWith(buyerName: value)),
           ),
           TextFormField(
             decoration: InputDecoration(labelText: 'Prezime'),
@@ -51,9 +68,8 @@ class _NewBuyerFormState extends State<NewBuyerForm> {
               }
               return null;
             },
-            onChanged: (value) {
-              widget.onSurnameChanged(value); // Notify parent of name change
-            },
+            onChanged: (value) =>
+                widget.onChanged(widget.buyer.copyWith(buyerSurname: value)),
           ),
           TextFormField(
             decoration: InputDecoration(labelText: 'Broj telefona'),
@@ -63,9 +79,8 @@ class _NewBuyerFormState extends State<NewBuyerForm> {
               }
               return null;
             },
-            onChanged: (value) {
-              widget.onPhoneNumberChanged(value); // Notify parent of name change
-            },
+            onChanged: (value) =>
+                widget.onChanged(widget.buyer.copyWith(buyerPhoneNumber: value)),
           ),
           TextFormField(
             decoration: InputDecoration(labelText: 'Adresa stanovanja'),
@@ -75,8 +90,31 @@ class _NewBuyerFormState extends State<NewBuyerForm> {
               }
               return null;
             },
-            onChanged: (value) {
-              widget.onHomeAddressChanged(value); // Notify parent of name change
+            onChanged: (value) =>
+                widget.onChanged(widget.buyer.copyWith(buyerHomeAddress: value)),
+          ),
+          TypeAheadField(
+            textFieldConfiguration: TextFieldConfiguration(
+              controller: _homePostalController,
+              autofocus: false,
+              decoration: InputDecoration(
+                labelText: 'Grad stanovanja',
+                errorText: null,
+              ),
+            ),
+            suggestionsCallback: (pattern) async {
+              return _suggestion(pattern);
+            },
+            itemBuilder: (context, suggestion) {
+              return ListTile(
+                title: Text(suggestion.cityname!),
+              );
+            },
+            onSuggestionSelected: (suggestion) {
+              setState(() {
+                _homePostalController.text = suggestion.cityname!;
+                widget.onChanged(widget.buyer.copyWith(homePostalCode: suggestion.citypostalcode!));
+              });
             },
           ),
           TextFormField(
@@ -87,10 +125,33 @@ class _NewBuyerFormState extends State<NewBuyerForm> {
               }
               return null;
             },
-            onChanged: (value) {
-              widget.onDeliveryAddressChanged(value); // Notify parent of name change
-            },
+            onChanged: (value) =>
+                widget.onChanged(widget.buyer.copyWith(buyerDeliveryAddress: value)),
           ),
+          TypeAheadField(
+                    textFieldConfiguration: TextFieldConfiguration(
+                      controller: _deliveryPostalController,
+                      autofocus: false,
+                      decoration: InputDecoration(
+                        labelText: 'Grad dostave',
+                        errorText: null,
+                      ),
+                    ),
+                    suggestionsCallback: (pattern) async {
+                      return _suggestion(pattern);
+                    },
+                    itemBuilder: (context, suggestion) {
+                      return ListTile(
+                        title: Text(suggestion.cityname!),
+                      );
+                    },
+                    onSuggestionSelected: (suggestion) {
+                      setState(() {
+                        _deliveryPostalController.text = suggestion.cityname!;
+                        widget.onChanged(widget.buyer.copyWith(deliveryPostalCode: suggestion.citypostalcode));
+                      });
+                    },
+                  ),
           TextFormField(
             decoration: InputDecoration(labelText: 'Email'),
             validator: (value) {
@@ -99,9 +160,7 @@ class _NewBuyerFormState extends State<NewBuyerForm> {
               }
               return null;
             },
-            onChanged: (value) {
-              widget.onEmailChanged(value); // Notify parent of name change
-            },
+            onChanged: (value) => widget.onChanged(widget.buyer.copyWith(buyerEmail: value)),
           ),
         ],
       ),

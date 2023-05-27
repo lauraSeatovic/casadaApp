@@ -26,9 +26,14 @@ class OrdersBloc {
     final order = await _orderRepository.getOrderPDF(orderId);
   }
 
+  void getOrderDispatchPDF(int orderId) async {
+    final order = await _orderRepository.getOrderDispatchPDF(orderId);
+  }
+
   Future<String> getOrderHTML(int orderId) async {
     return await _orderRepository.getOrderHTML(orderId);
   }
+  
 
   Future<List<City>> loadAllCity() async {
     final classes = await _orderRepository.getAllCity();

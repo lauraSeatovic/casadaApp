@@ -1,9 +1,12 @@
+import 'package:casada/data/order_product.dart';
 import 'package:casada/orders/screens/new_buyer_form.dart';
 import 'package:casada/orders/screens/product_catalog_step.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'order_data_form.dart';
+import '../../data/buyer.dart';
+import '../../data/order.dart';
+import 'new_order_data_form.dart';
 
 class NewOrder extends StatefulWidget {
   @override
@@ -19,6 +22,10 @@ class _NewOrder extends State<NewOrder> {
   String _buyerDelivery = '';
   String _buyerPhone = '';
   String _buyerEmail = '';
+
+  Buyer buyer = Buyer();
+  Order order = Order();
+  List<OrderProduct> products = [];
 
   @override
   Widget build(BuildContext context) {
@@ -51,37 +58,12 @@ class _NewOrder extends State<NewOrder> {
         },
         steps: [
           Step(
-            title: Text('Buyer Data'),
+            title: Text('Kupac'),
             content: NewBuyerForm(
-              formKey: _formKey,
-              onNameChanged: (value) {
+              buyer: buyer,
+              onChanged: (updatedBuyer) {
                 setState(() {
-                  _buyerName = value;
-                });
-              },
-              onSurnameChanged: (value) {
-                setState(() {
-                  _buyerSurname = value;
-                });
-              },
-              onHomeAddressChanged: (value) {
-                setState(() {
-                  _buyerHome = value;
-                });
-              },
-              onDeliveryAddressChanged: (value) {
-                setState(() {
-                  _buyerDelivery = value;
-                });
-              },
-              onPhoneNumberChanged: (value) {
-                setState(() {
-                  _buyerPhone = value;
-                });
-              },
-              onEmailChanged: (value) {
-                setState(() {
-                  _buyerEmail = value;
+                  buyer = updatedBuyer;
                 });
               },
             ),
@@ -89,14 +71,27 @@ class _NewOrder extends State<NewOrder> {
             isActive: _currentStep == 0,
           ),
           Step(
-            title: Text('Order Data'),
-            content: OrderDataForm(),
+            title: Text('Narudžba'),
+            content: NewOrderDataForm(
+              order: order,
+              onChanged: (updatedOrder) {
+                setState(() {
+                  order = updatedOrder;
+                });
+              },
+            ),
             state: _currentStep == 1 ? StepState.editing : StepState.indexed,
             isActive: _currentStep == 1,
           ),
           Step(
             title: Text('Products'),
-            content: ProductCatalogStep(),
+            content: ProductCatalogStep(
+                productsList: products,
+                onChanged: (newProducts) {
+                  setState(() {
+                    products = newProducts;
+                  });
+                }),
             state: _currentStep == 2 ? StepState.editing : StepState.indexed,
             isActive: _currentStep == 2,
           ),

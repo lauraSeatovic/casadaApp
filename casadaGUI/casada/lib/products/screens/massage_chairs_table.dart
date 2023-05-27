@@ -135,14 +135,14 @@ class _DataTableSource extends DataTableSource {
                         TextButton(
                           child: Text('Odustani'),
                           onPressed: () {
-                            Navigator.of(context).pop(); // Close the dialog
+                            Navigator.of(context).pop();
                           },
                         ),
                         TextButton(
                           child: Text('Obriši'),
                           onPressed: () {
                             _productsBloc.deleteProduct(item.productId!);
-                            Navigator.of(context).pop(); // Close the dialog
+                            Navigator.of(context).pop();
                           },
                         ),
                       ],

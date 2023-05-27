@@ -69,7 +69,9 @@ class _OrderHtmlScreenState extends State<OrderHtmlScreen> {
             heroTag: null,
             label: Text("Otpremnica"),
             icon: Icon(Icons.local_shipping),
-            onPressed: () {},
+            onPressed: () {
+              _orderBloc.getOrderDispatchPDF(widget.orderId);
+            },
           ),
         ],
       ),

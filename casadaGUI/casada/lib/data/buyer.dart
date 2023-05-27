@@ -53,4 +53,32 @@ class Buyer {
     data['deliveryPostalCodeName'] = this.deliveryPostalCodeName;
     return data;
   }
+
+  Buyer copyWith({
+    int? buyerId,
+    String? buyerName,
+    String? buyerSurname,
+    String? buyerPhoneNumber,
+    String? buyerHomeAddress,
+    String? buyerDeliveryAddress,
+    String? buyerEmail,
+    int? homePostalCode,
+    String? homePostalCodeName,
+    int? deliveryPostalCode,
+    String? deliveryPostalCodeName,
+  }) {
+    return Buyer(
+      buyerId: buyerId ?? this.buyerId,
+      buyerName: buyerName ?? this.buyerName,
+      buyerSurname: buyerSurname ?? this.buyerSurname,
+      buyerPhoneNumber: buyerPhoneNumber ?? this.buyerPhoneNumber,
+      buyerHomeAddress: buyerHomeAddress ?? this.buyerHomeAddress,
+      buyerDeliveryAddress: buyerDeliveryAddress ?? this.buyerDeliveryAddress,
+      buyerEmail: buyerEmail ?? this.buyerEmail,
+      homePostalCode: homePostalCode ?? this.homePostalCode,
+      homePostalCodeName: homePostalCodeName ?? this.homePostalCodeName,
+      deliveryPostalCode: deliveryPostalCode ?? this.deliveryPostalCode,
+      deliveryPostalCodeName: deliveryPostalCodeName ?? this.deliveryPostalCodeName,
+    );
+  }
 }

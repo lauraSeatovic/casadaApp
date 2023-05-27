@@ -107,4 +107,60 @@ class Order {
     data['orderStatusNotifications'] = this.orderStatusNotifications;
     return data;
   }
+
+  Order copyWith({
+    int? orderId,
+    DateTime? orderDate,
+    bool? personalPickup,
+    String? orderNote,
+    int? deliveryPersonId,
+    String? deliveryPersonName,
+    String? deliveryPersonSurname,
+    int? sellerId,
+    String? sellerName,
+    String? sellerSurname,
+    int? buyerId,
+    String? buyerName,
+    String? buyerSurname,
+    int? orderStatusId,
+    String? orderStatusName,
+    int? paymentMethodId,
+    String? paymentMethodName,
+    String? deliveryDate,
+    double? orderDiscount,
+    String? otherPayment,
+    double? orderDeposit,
+    bool? isFullPaid,
+    String? orderNumber,
+    bool? orderStatusNotifications,
+  }) {
+    return Order(
+      orderId: orderId ?? this.orderId,
+      orderDate: orderDate ?? this.orderDate,
+      personalPickup: personalPickup ?? this.personalPickup,
+      orderNote: orderNote ?? this.orderNote,
+      deliveryPersonId: deliveryPersonId ?? this.deliveryPersonId,
+      deliveryPersonName: deliveryPersonName ?? this.deliveryPersonName,
+      deliveryPersonSurname:
+          deliveryPersonSurname ?? this.deliveryPersonSurname,
+      sellerId: sellerId ?? this.sellerId,
+      sellerName: sellerName ?? this.sellerName,
+      sellerSurname: sellerSurname ?? this.sellerSurname,
+      buyerId: buyerId ?? this.buyerId,
+      buyerName: buyerName ?? this.buyerName,
+      buyerSurname: buyerSurname ?? this.buyerSurname,
+      orderStatusId: orderStatusId ?? this.orderStatusId,
+      orderStatusName: orderStatusName ?? this.orderStatusName,
+      paymentMethodId: paymentMethodId ?? this.paymentMethodId,
+      paymentMethodName: paymentMethodName ?? this.paymentMethodName,
+      deliveryDate: deliveryDate ?? this.deliveryDate,
+      orderDiscount: orderDiscount ?? this.orderDiscount,
+      otherPayment: otherPayment ?? this.otherPayment,
+      orderDeposit: orderDeposit ?? this.orderDeposit,
+      isFullPaid: isFullPaid ?? this.isFullPaid,
+      orderNumber: orderNumber ?? this.orderNumber,
+      orderStatusNotifications:
+          orderStatusNotifications ?? this.orderStatusNotifications,
+    );
+  }
 }

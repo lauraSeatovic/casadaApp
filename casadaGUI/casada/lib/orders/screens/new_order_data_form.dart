@@ -12,15 +12,17 @@ import '../../data/member.dart';
 import '../../data/order.dart';
 import '../../data/payment_method.dart';
 
-class OrderDataForm extends StatefulWidget {
-  const OrderDataForm({
-    Key? key,
-  }) : super(key: key);
+class NewOrderDataForm extends StatefulWidget {
+  final Order order;
+  final ValueChanged<Order> onChanged;
+
+  const NewOrderDataForm({required this.order, required this.onChanged});
+
   @override
   _OrderDataFormState createState() => _OrderDataFormState();
 }
 
-class _OrderDataFormState extends State<OrderDataForm> {
+class _OrderDataFormState extends State<NewOrderDataForm> {
   final _orderBloc = OrdersBloc();
   final _memberBloc = MemberBloc();
   bool _isEditable = false;
@@ -62,6 +64,7 @@ class _OrderDataFormState extends State<OrderDataForm> {
     if (pickedDate != null) {
       setState(() {
         _orderDate = pickedDate;
+        widget.onChanged(widget.order.copyWith(orderDate: pickedDate));
       });
     }
   }
@@ -125,7 +128,8 @@ class _OrderDataFormState extends State<OrderDataForm> {
               value: _personalPickup,
               onChanged: (bool value) {
                 setState(() {
-                  _personalPickup = value;
+                  widget
+                      .onChanged(widget.order.copyWith(personalPickup: value));
                 });
               },
             ),
@@ -133,13 +137,12 @@ class _OrderDataFormState extends State<OrderDataForm> {
         ),
         TextFormField(
           decoration: InputDecoration(labelText: 'Order Note'),
-          enabled: _isEditable,
           validator: (value) {
             return null;
           },
-          onChanged: (value) {
+          onChanged: (String value) {
             setState(() {
-              _orderNote = value;
+              widget.onChanged(widget.order.copyWith(orderNote: value));
             });
           },
         ),
@@ -166,6 +169,8 @@ class _OrderDataFormState extends State<OrderDataForm> {
               _sellerController.text =
                   "${suggestion.memberName!} ${suggestion.memberSurname!}";
               _sellerId = suggestion.memberId!;
+              widget.onChanged(
+                  widget.order.copyWith(sellerId: suggestion.memberId));
             });
           },
         ),
@@ -192,18 +197,8 @@ class _OrderDataFormState extends State<OrderDataForm> {
               _deliveryPersonController.text =
                   "${suggestion.memberName!} ${suggestion.memberSurname!}";
               _deliveryPersonId = suggestion.memberId!;
-            });
-          },
-        ),
-        TextFormField(
-          decoration: InputDecoration(labelText: 'Order Status Name'),
-          enabled: _isEditable,
-          validator: (value) {
-            return null;
-          },
-          onChanged: (value) {
-            setState(() {
-              _orderStatusName = value;
+              widget.onChanged(
+                  widget.order.copyWith(deliveryPersonId: suggestion.memberId));
             });
           },
         ),
@@ -212,6 +207,7 @@ class _OrderDataFormState extends State<OrderDataForm> {
           onChanged: (value) {
             setState(() {
               _paymentMethodId = value!;
+              widget.onChanged(widget.order.copyWith(paymentMethodId: value));
             });
           },
           items: _payments
@@ -223,49 +219,39 @@ class _OrderDataFormState extends State<OrderDataForm> {
         ),
         TextFormField(
           decoration: InputDecoration(labelText: 'Opis dostave'),
-          enabled: _isEditable,
           validator: (value) {
             return null;
           },
           onChanged: (value) {
             setState(() {
               _deliveryDate = value;
+              widget.onChanged(widget.order.copyWith(deliveryDate: value));
             });
           },
         ),
         TextFormField(
           decoration: InputDecoration(labelText: 'Order Discount'),
-          enabled: _isEditable,
           validator: (value) {
             return null;
           },
           onChanged: (value) {
             setState(() {
               _orderDiscount = double.tryParse(value)!;
-            });
-          },
-        ),
-        TextFormField(
-          decoration: InputDecoration(labelText: 'Other Payment'),
-          enabled: _isEditable,
-          validator: (value) {
-            return null;
-          },
-          onChanged: (value) {
-            setState(() {
-              _otherPayment = value;
+              widget.onChanged(
+                  widget.order.copyWith(orderDiscount: double.tryParse(value)));
             });
           },
         ),
         TextFormField(
           decoration: InputDecoration(labelText: 'Order Deposit'),
-          enabled: _isEditable,
           validator: (value) {
             return null;
           },
           onChanged: (value) {
             setState(() {
               _orderDeposit = double.tryParse(value)!;
+              widget.onChanged(
+                  widget.order.copyWith(orderDeposit: double.tryParse(value)));
             });
           },
         ),
@@ -281,23 +267,11 @@ class _OrderDataFormState extends State<OrderDataForm> {
               onChanged: (bool value) {
                 setState(() {
                   _isFullPaid = value;
+                  widget.onChanged(widget.order.copyWith(isFullPaid: value));
                 });
               },
             ),
           ],
-        ),
-        TextFormField(
-          decoration: InputDecoration(labelText: 'Order Number'),
-          initialValue: _orderNumber,
-          enabled: _isEditable,
-          validator: (value) {
-            return null;
-          },
-          onChanged: (value) {
-            setState(() {
-              _orderNumber = value;
-            });
-          },
         ),
         Row(
           children: [
@@ -311,6 +285,8 @@ class _OrderDataFormState extends State<OrderDataForm> {
               onChanged: (bool value) {
                 setState(() {
                   _orderStatusNotifications = value;
+                  widget.onChanged(
+                      widget.order.copyWith(orderStatusNotifications: value));
                 });
               },
             ),
