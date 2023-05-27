@@ -1,7 +1,10 @@
 import 'dart:io' as io;
+import 'package:file_picker/file_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:path/path.dart' as path;
+import 'package:path_provider/path_provider.dart' as path_provider;
 import 'dart:convert';
 
 class ApiData {
@@ -57,14 +60,18 @@ class ApiData {
     final response = await http.get(Uri.parse('$apiUrl$url'));
 
     if (response.statusCode == io.HttpStatus.ok) {
-      final io.Directory? downloadsDirectory = await getDownloadsDirectory();
-      if (downloadsDirectory != null) {
-        final file = io.File('${downloadsDirectory.path}/document.pdf');
+      final String? filePath = await FilePicker.platform.saveFile(
+        fileName: 'document.pdf',
+        initialDirectory: await path_provider.getDownloadsDirectory().toString(),
+        allowedExtensions: ['pdf'],
+      );
+      if (filePath != null) {
+        final file = io.File(filePath);
         await file.writeAsBytes(response.bodyBytes);
         // File saved successfully
       } else {
-        // Handle null downloadsDirectory
-        print('Downloads directory not available');
+        // Handle null filePath (user canceled or an error occurred)
+        print('Save operation canceled or failed');
       }
     } else {
       // Handle error
