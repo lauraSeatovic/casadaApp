@@ -24,6 +24,7 @@ class ApiData {
 
   void sendData(String url, Map<String, Object?> body) async {
     try {
+      print(body);
       final response = await http.post(
         Uri.parse("$apiUrl$url"),
         headers: <String, String>{

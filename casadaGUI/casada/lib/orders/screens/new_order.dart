@@ -1,4 +1,5 @@
 import 'package:casada/data/order_product.dart';
+import 'package:casada/orders/orders_bloc.dart';
 import 'package:casada/orders/screens/new_buyer_form.dart';
 import 'package:casada/orders/screens/product_catalog_step.dart';
 import 'package:flutter/cupertino.dart';
@@ -16,6 +17,7 @@ class NewOrder extends StatefulWidget {
 class _NewOrder extends State<NewOrder> {
   int _currentStep = 0;
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  OrdersBloc ordersBloc = OrdersBloc();
   String _buyerName = '';
   String _buyerSurname = '';
   String _buyerHome = '';
@@ -97,7 +99,12 @@ class _NewOrder extends State<NewOrder> {
           ),
           Step(
             title: Text('Potvrdi'),
-            content: Text('potvrda'),
+            content:  ElevatedButton(
+          onPressed: () {
+            ordersBloc.newOrder(buyer, order, products);
+          },
+          child: Text('Submit Data'),
+        ),
             state: _currentStep == 3 ? StepState.editing : StepState.indexed,
             isActive: _currentStep == 3,
           ),

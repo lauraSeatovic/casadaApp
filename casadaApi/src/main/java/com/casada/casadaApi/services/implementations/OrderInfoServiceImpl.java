@@ -2,10 +2,12 @@ package com.casada.casadaApi.services.implementations;
 
 import com.casada.casadaApi.DTOs.BuyerDTO;
 import com.casada.casadaApi.DTOs.MemberDTO;
+import com.casada.casadaApi.DTOs.NewOrderDTO;
 import com.casada.casadaApi.DTOs.OrderInfoDTO;
 import com.casada.casadaApi.domain.Buyer;
 import com.casada.casadaApi.domain.OrderInfo;
 import com.casada.casadaApi.domain.OrderStatus;
+import com.casada.casadaApi.mappers.BuyerMapper;
 import com.casada.casadaApi.mappers.OrderInfoMapper;
 import com.casada.casadaApi.repos.OrderInfoRepository;
 import com.casada.casadaApi.repos.OrderStatusRepository;
@@ -29,42 +31,86 @@ public class OrderInfoServiceImpl implements OrderInfoService {
     @Autowired
     private OrderInfoMapper orderInfoMapper;
 
+    @Autowired
+    private BuyerMapper buyerMapper;
+
+    @Autowired
+    private BuyerServiceImpl buyerService;
+
+    @Autowired
+    private OrderProductServiceImpl orderProductService;
+
     public List<OrderInfoDTO> findAll() {
         return orderInfoRepository.findAll().stream()
                 .map(orderInfoMapper::toDTO).collect(Collectors.toList());
     }
 
-    public OrderInfo addOrderInfo(OrderInfoDTO orderInfo){
+    public OrderInfo addOrderInfo(OrderInfoDTO orderInfo) {
         OrderInfo order = orderInfoMapper.toDomain(orderInfo);
         OrderInfo savedOrder = orderInfoRepository.save(order);
         Integer generatedId = savedOrder.getOrderId();
-        savedOrder.setOrderNumber(generatedId.toString() +"-" + order.getOrderDate());
+        savedOrder.setOrderNumber(generatedId.toString() + "-" + order.getOrderDate());
         return orderInfoRepository.save(savedOrder);
     }
 
-    public OrderInfoDTO findById(Integer orderId){
+    public int addOrderInfoGetId(OrderInfoDTO orderInfo) {
+        OrderInfo order = orderInfoMapper.toDomain(orderInfo);
+        OrderInfo savedOrder = orderInfoRepository.save(order);
+        Integer generatedId = savedOrder.getOrderId();
+        savedOrder.setOrderNumber(generatedId.toString() + "-" + order.getOrderDate());
+        orderInfoRepository.save(savedOrder);
+        return generatedId;
+    }
+
+    public OrderInfoDTO findById(Integer orderId) {
         Optional<OrderInfo> orderInfoOptional = orderInfoRepository.findById(orderId);
-        if(orderInfoOptional.isPresent()){
+        if (orderInfoOptional.isPresent()) {
             return orderInfoMapper.toDTO(orderInfoOptional.get());
-        }else{
+        } else {
             throw new RuntimeException("Order not found");
         }
     }
 
-    public void removeOrder(int orderId){
+    public OrderInfo findByIdDomain(Integer orderId) {
+        Optional<OrderInfo> orderInfoOptional = orderInfoRepository.findById(orderId);
+        if (orderInfoOptional.isPresent()) {
+            return orderInfoOptional.get();
+        } else {
+            throw new RuntimeException("Order not found");
+        }
+    }
+
+    public void removeOrder(int orderId) {
         orderInfoRepository.deleteById(orderId);
     }
 
-    public void changeOrderStatus(int orderId, int statusId){
+    public void changeOrderStatus(int orderId, int statusId) {
         Optional<OrderInfo> orderInfoOptional = orderInfoRepository.findById(orderId);
         Optional<OrderStatus> orderStatusOptional = orderStatusRepository.findById(statusId);
-        if(orderInfoOptional.isPresent() && orderStatusOptional.isPresent()){
+        if (orderInfoOptional.isPresent() && orderStatusOptional.isPresent()) {
             OrderInfo orderInfo = orderInfoOptional.get();
             OrderStatus orderStatus = orderStatusOptional.get();
             orderInfo.setOrderStatus(orderStatus);
             orderInfoRepository.save(orderInfo);
-        }else{
+        } else {
             throw new RuntimeException("Order or status not found");
         }
+    }
+
+    public void newOrder(NewOrderDTO newOrderDTO) {
+        OrderInfo orderInfo = orderInfoMapper.toDomain(newOrderDTO.getOrder());
+        if (newOrderDTO.getOldBuyerId() == 0) {
+            int buyerId = buyerService.addNewBuyer(newOrderDTO.getBuyer());
+            newOrderDTO.getOrder().setBuyerId(buyerId);
+            newOrderDTO.getOrder().setOrderStatusId(1);
+        } else {
+            newOrderDTO.getOrder().setBuyerId(newOrderDTO.getOldBuyerId());
+        }
+        int orderId = addOrderInfoGetId(newOrderDTO.getOrder());
+        newOrderDTO.getProducts().forEach(orderProductDTO -> {
+            orderProductDTO.setOrderid(orderId);
+            orderProductService.addNewProduct(orderProductDTO);
+        });
+
     }
 }

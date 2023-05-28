@@ -82,7 +82,7 @@ class Order {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['orderId'] = this.orderId;
-    data['orderDate'] = this.orderDate;
+    data['orderDate'] = this.orderDate!.toIso8601String();
     data['personalPickup'] = this.personalPickup;
     data['orderNote'] = this.orderNote;
     data['deliveryPersonId'] = this.deliveryPersonId;

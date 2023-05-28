@@ -4,6 +4,7 @@ import com.casada.casadaApi.DTOs.BuyerDTO;
 import com.casada.casadaApi.DTOs.MemberDTO;
 import com.casada.casadaApi.DTOs.PaymentMethodDTO;
 import com.casada.casadaApi.domain.Buyer;
+import com.casada.casadaApi.domain.OrderInfo;
 import com.casada.casadaApi.domain.PaymentMethod;
 import com.casada.casadaApi.mappers.BuyerMapper;
 import com.casada.casadaApi.repos.BuyerRepository;
@@ -37,5 +38,12 @@ public class BuyerServiceImpl implements BuyerService {
         }else{
             throw new RuntimeException("Buyer not found");
         }
+    }
+
+    public Integer addNewBuyer(BuyerDTO buyerDTO){
+        Buyer buyer = buyerMapper.toDomain(buyerDTO);
+        Buyer savedBuyer = buyerRepository.save(buyer);
+        Integer generatedId = savedBuyer.getBuyerId();
+        return generatedId;
     }
 }

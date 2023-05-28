@@ -1,7 +1,9 @@
 import 'package:casada/data/order.dart';
+import 'package:casada/data/order_product.dart';
 import 'package:casada/orders/order_repository.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../data/buyer.dart';
 import '../data/city.dart';
 import '../data/payment_method.dart';
 import '../data/status.dart';
@@ -56,5 +58,9 @@ class OrdersBloc {
 
   void changeStatus(int orderId, int statusId) {
     _orderRepository.changeStatus(orderId, statusId);
+  }
+
+  void newOrder(Buyer buyer, Order order, List<OrderProduct> orderProduct) {
+    _orderRepository.newOrder(buyer, order, orderProduct);
   }
 }

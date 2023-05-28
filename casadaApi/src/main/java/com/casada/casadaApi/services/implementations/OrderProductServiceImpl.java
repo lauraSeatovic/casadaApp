@@ -24,4 +24,8 @@ public class OrderProductServiceImpl implements OrderProductService {
     public List<OrderProductDTO> findAllByOrderId(Integer orderId) {
         return orderProductRepository.findByOrderId(orderId).stream().map(orderProductMapper::toDTO).collect(Collectors.toList());
     }
+
+    public void addNewProduct(OrderProductDTO orderProductDTO){
+        orderProductRepository.save(orderProductMapper.toDomain(orderProductDTO));
+    }
 }

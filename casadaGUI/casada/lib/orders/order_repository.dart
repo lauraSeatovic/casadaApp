@@ -1,6 +1,8 @@
 import 'package:casada/data/city.dart';
+import 'package:casada/data/order_product.dart';
 
 import '../common/Api_Data.dart';
+import '../data/buyer.dart';
 import '../data/order.dart';
 import '../data/payment_method.dart';
 import '../data/status.dart';
@@ -56,4 +58,24 @@ class OrderRepository {
     _apiData.sendData(apiUrl, formData);
 
   }
+
+  Future<void> newOrder(Buyer buyer, Order order, List<OrderProduct> products) async {
+  const apiUrl = '/orderinfo/neworder';
+  final formData = {
+    'oldBuyerId': 0,
+    'buyer': buyer.toJson(),
+    'order': order.toJson(),
+    'products': products.map((product) => product.toJson()).toList(),
+  };
+
+  try {
+     _apiData.sendData(apiUrl, formData);
+  } catch (error) {
+    print('Error: $error');
+  }
+}
+
+
+
+
 }
