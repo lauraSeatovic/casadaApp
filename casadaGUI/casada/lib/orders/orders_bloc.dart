@@ -63,4 +63,13 @@ class OrdersBloc {
   void newOrder(Buyer buyer, Order order, List<OrderProduct> orderProduct) {
     _orderRepository.newOrder(buyer, order, orderProduct);
   }
+
+  Future<List<OrderProduct>> loadAllOrderProduct(int orderId) async {
+    final orderProducts = await _orderRepository.getAllOrderProduct(orderId);
+    return orderProducts;
+  }
+
+   void updateProducts(List<OrderProduct> orderProduct) {
+    _orderRepository.updateProducts(orderProduct);
+  }
 }

@@ -51,6 +51,7 @@ class _OrderDataFormState extends State<NewOrderDataForm> {
   void initState() {
     _loadData();
     super.initState();
+    //widget.onChanged(widget.order.copyWith(orderDate: DateTime.now(),personalPickup: false, paymentMethodId: 1, isFullPaid: false, orderStatusNotifications: false));
   }
 
   Future<void> _selectDate() async {
@@ -74,6 +75,7 @@ class _OrderDataFormState extends State<NewOrderDataForm> {
       final members = await _memberBloc.loadAllMember();
       final payments = await _orderBloc.loadAllPaymentMethod();
       setState(() {
+        widget.onChanged(widget.order.copyWith(orderDate: DateTime.now(),personalPickup: false, paymentMethodId: 1, isFullPaid: false, orderStatusNotifications: false));
         _members = members;
         _payments = payments;
       });
@@ -128,6 +130,7 @@ class _OrderDataFormState extends State<NewOrderDataForm> {
               value: _personalPickup,
               onChanged: (bool value) {
                 setState(() {
+                  _personalPickup = value;
                   widget
                       .onChanged(widget.order.copyWith(personalPickup: value));
                 });

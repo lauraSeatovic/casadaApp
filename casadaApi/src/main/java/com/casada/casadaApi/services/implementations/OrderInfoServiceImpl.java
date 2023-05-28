@@ -98,14 +98,17 @@ public class OrderInfoServiceImpl implements OrderInfoService {
     }
 
     public void newOrder(NewOrderDTO newOrderDTO) {
-        OrderInfo orderInfo = orderInfoMapper.toDomain(newOrderDTO.getOrder());
+        //OrderInfo orderInfo = orderInfoMapper.toDomain(newOrderDTO.getOrder());
         if (newOrderDTO.getOldBuyerId() == 0) {
+            newOrderDTO.getBuyer().setBuyerId(0);
             int buyerId = buyerService.addNewBuyer(newOrderDTO.getBuyer());
             newOrderDTO.getOrder().setBuyerId(buyerId);
             newOrderDTO.getOrder().setOrderStatusId(1);
         } else {
             newOrderDTO.getOrder().setBuyerId(newOrderDTO.getOldBuyerId());
         }
+        newOrderDTO.getOrder().setOrderNumber("");
+        newOrderDTO.getOrder().setOrderId(0);
         int orderId = addOrderInfoGetId(newOrderDTO.getOrder());
         newOrderDTO.getProducts().forEach(orderProductDTO -> {
             orderProductDTO.setOrderid(orderId);

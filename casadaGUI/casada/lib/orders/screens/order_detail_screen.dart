@@ -1,5 +1,7 @@
 import 'package:casada/orders/screens/buyer_data_widget.dart';
 import 'package:casada/orders/screens/order_data_widget.dart';
+import 'package:casada/orders/screens/product_catalog_step.dart';
+import 'package:casada/orders/screens/product_details.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -35,6 +37,7 @@ class _OrderDetailScreen extends State<OrderDetailScreen> {
                 ),
               ],
             ),
+            ProductDetails(orderId: widget.orderId)
           ],
         ),
       ),

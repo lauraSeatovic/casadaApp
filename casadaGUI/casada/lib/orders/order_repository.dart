@@ -56,26 +56,40 @@ class OrderRepository {
     final formData = {"orderId": orderId, "newStatusId": statusId};
 
     _apiData.sendData(apiUrl, formData);
-
   }
 
-  Future<void> newOrder(Buyer buyer, Order order, List<OrderProduct> products) async {
-  const apiUrl = '/orderinfo/neworder';
-  final formData = {
-    'oldBuyerId': 0,
-    'buyer': buyer.toJson(),
-    'order': order.toJson(),
-    'products': products.map((product) => product.toJson()).toList(),
-  };
+  Future<void> newOrder(
+      Buyer buyer, Order order, List<OrderProduct> products) async {
+    const apiUrl = '/orderinfo/neworder';
+    final formData = {
+      'oldBuyerId': 0,
+      'buyer': buyer.toJson(),
+      'order': order.toJson(),
+      'products': products.map((product) => product.toJson()).toList(),
+    };
 
-  try {
-     _apiData.sendData(apiUrl, formData);
-  } catch (error) {
-    print('Error: $error');
+    try {
+      _apiData.sendData(apiUrl, formData);
+    } catch (error) {
+      print('Error: $error');
+    }
   }
-}
 
+  Future<List<OrderProduct>> getAllOrderProduct(int orderId) async {
+    final response = await _apiData.getData("/orderproduct/$orderId");
+    return response.map((json) => OrderProduct.fromJson(json)).toList();
+  }
 
+  Future<void> updateProducts(List<OrderProduct> products) async {
+    const apiUrl = '/orderproduct/updateproducts';
+    final formData = {
+      'products': products.map((product) => product.toJson()).toList(),
+    };
 
-
+    try {
+      _apiData.sendData(apiUrl, formData);
+    } catch (error) {
+      print('Error: $error');
+    }
+  }
 }
