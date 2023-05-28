@@ -68,156 +68,158 @@ class _ProductDetailsState extends State<ProductDetails> {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        
         SizedBox(
           height: 60,
         ),
-        Divider(
-          height: 1,
-          color: Colors.grey,
-          thickness: 1,
-          indent: 16,
-          endIndent: 16,
-        ),
-        Text(
-          'Proizvodi u narudžbi',
-          style: TextStyle(
-            color: Theme.of(context).primaryColor,
-            fontSize: 20.0,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        IconButton(
-          icon: Icon(Icons.add),
-          onPressed: () {
-            OrderProduct newProduct = OrderProduct();
-            showDialog(
-              context: context,
-              builder: (context) => AlertDialog(
-                title: Text('Dodaj proizvod'),
-                content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Form(
-                      key: _formKey,
-                      child: Column(
-                        children: [
-                          TypeAheadField(
-                            textFieldConfiguration: TextFieldConfiguration(
-                              controller: _productController,
-                              autofocus: false,
-                              decoration: InputDecoration(
-                                labelText: 'Novi proizvod',
-                                errorText: null,
-                              ),
-                            ),
-                            suggestionsCallback: (pattern) async {
-                              return _suggestion(pattern);
-                            },
-                            itemBuilder: (context, suggestion) {
-                              return ListTile(
-                                title: Text(suggestion.productName!),
-                              );
-                            },
-                            onSuggestionSelected: (suggestion) {
-                              setState(() {
-                                _productController.text =
-                                    suggestion.productName!;
-                                newProduct.productid = suggestion.productId;
-                                newProduct.productName = suggestion.productName;
-                                newProduct.productPrice =
-                                    suggestion.productPrice;
-                                newProduct.quantity = 1;
-                                newProduct.orderid = widget.orderId;
-                              });
-                            },
-                          ),
-                          TextFormField(
-                            decoration: InputDecoration(
-                              labelText: 'Popust',
-                            ),
-                            onChanged: (value) {
-                              setState(() {
-                                newProduct.discount = double.tryParse(value);
-                              });
-                            },
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Popust ne može biti prazan.';
-                              }
-                              if (double.tryParse(value) == null) {
-                                return 'Unesite decimalni broj.';
-                              }
-                              if (double.tryParse(value)! > 100 ||
-                                  double.tryParse(value)! < 0) {
-                                return 'Unesite broj između 0 i 100';
-                              }
-                              return null;
-                            },
-                          ),
-                          TextFormField(
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            decoration: InputDecoration(
-                              labelText: 'Trajanje jamstva u mjesecima',
-                            ),
-                            onChanged: (value) {
-                              setState(() {
-                                newProduct.guarantee = int.tryParse(value);
-                              });
-                            },
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Trajanje jamstva ne može biti prazno.';
-                              }
-                              if (int.tryParse(value) == null) {
-                                return 'Unesite cijeli broj.';
-                              }
-                              return null;
-                            },
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Text('Odustani'),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        Navigator.of(context).pop();
-                        if (!(selectedProducts.any((product) =>
-                            product.productid == newProduct.productid))) {
-                          setState(() {
-                            selectedProducts.add(newProduct);
-                          });
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('Proizvod je već odabran!'),
-                              duration: Duration(seconds: 3),
-                            ),
-                          );
-                        }
-                      }
-                    },
-                    child: Text('Dodaj'),
-                  ),
-                ],
+        Row(
+          children: [
+            Text(
+              'Proizvodi u narudžbi',
+              style: TextStyle(
+                color: Theme.of(context).primaryColor,
+                fontSize: 20.0,
+                fontWeight: FontWeight.bold,
               ),
-            );
-          },
-        ),
-        ElevatedButton(
-          onPressed: () {
-            ordersBloc.updateProducts(selectedProducts);
-          },
-          child: Text('Edit'),
+            ),
+            SizedBox(width: 16,),
+            ElevatedButton(
+              child: Text("Dodaj proizvod"),
+              onPressed: () {
+                OrderProduct newProduct = OrderProduct();
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: Text('Dodaj proizvod'),
+                    content: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Form(
+                          key: _formKey,
+                          child: Column(
+                            children: [
+                              TypeAheadField(
+                                textFieldConfiguration: TextFieldConfiguration(
+                                  controller: _productController,
+                                  autofocus: false,
+                                  decoration: InputDecoration(
+                                    labelText: 'Novi proizvod',
+                                    errorText: null,
+                                  ),
+                                ),
+                                suggestionsCallback: (pattern) async {
+                                  return _suggestion(pattern);
+                                },
+                                itemBuilder: (context, suggestion) {
+                                  return ListTile(
+                                    title: Text(suggestion.productName!),
+                                  );
+                                },
+                                onSuggestionSelected: (suggestion) {
+                                  setState(() {
+                                    _productController.text =
+                                        suggestion.productName!;
+                                    newProduct.productid = suggestion.productId;
+                                    newProduct.productName =
+                                        suggestion.productName;
+                                    newProduct.productPrice =
+                                        suggestion.productPrice;
+                                    newProduct.quantity = 1;
+                                    newProduct.orderid = widget.orderId;
+                                  });
+                                },
+                              ),
+                              TextFormField(
+                                decoration: InputDecoration(
+                                  labelText: 'Popust',
+                                ),
+                                onChanged: (value) {
+                                  setState(() {
+                                    newProduct.discount =
+                                        double.tryParse(value);
+                                  });
+                                },
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Popust ne može biti prazan.';
+                                  }
+                                  if (double.tryParse(value) == null) {
+                                    return 'Unesite decimalni broj.';
+                                  }
+                                  if (double.tryParse(value)! > 100 ||
+                                      double.tryParse(value)! < 0) {
+                                    return 'Unesite broj između 0 i 100';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              TextFormField(
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
+                                decoration: InputDecoration(
+                                  labelText: 'Trajanje jamstva u mjesecima',
+                                ),
+                                onChanged: (value) {
+                                  setState(() {
+                                    newProduct.guarantee = int.tryParse(value);
+                                  });
+                                },
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Trajanje jamstva ne može biti prazno.';
+                                  }
+                                  if (int.tryParse(value) == null) {
+                                    return 'Unesite cijeli broj.';
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Text('Odustani'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            Navigator.of(context).pop();
+                            if (!(selectedProducts.any((product) =>
+                                product.productid == newProduct.productid))) {
+                              setState(() {
+                                selectedProducts.add(newProduct);
+                              });
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Proizvod je već odabran!'),
+                                  duration: Duration(seconds: 3),
+                                ),
+                              );
+                            }
+                          }
+                        },
+                        child: Text('Dodaj'),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+            SizedBox(width: 16,),
+            ElevatedButton(
+              onPressed: () {
+                ordersBloc.updateProducts(selectedProducts);
+              },
+              child: Text('Edit'),
+            )
+          ],
         ),
         _buildAddedProductsTable(),
       ],
@@ -254,6 +256,22 @@ class _ProductDetailsState extends State<ProductDetails> {
                           if (productList.productid == product.productid) {
                             productList.quantity =
                                 (productList.quantity ?? 0) + 1;
+                          }
+                        });
+                      });
+                    },
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.remove),
+                    onPressed: () {
+                      setState(() {
+                        selectedProducts.forEach((productList) {
+                          if (productList.productid == product.productid) {
+                            productList.quantity =
+                                (productList.quantity ?? 0) - 1;
+                            if (productList.quantity == 0) {
+                              selectedProducts.remove(productList);
+                            }
                           }
                         });
                       });

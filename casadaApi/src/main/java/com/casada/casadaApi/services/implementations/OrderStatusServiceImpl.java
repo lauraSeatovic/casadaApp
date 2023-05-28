@@ -65,6 +65,7 @@ public class OrderStatusServiceImpl implements OrderStatusService {
         orderInfoService.changeOrderStatus(orderId, statusId);
         switch (statusId) {
             case 1:
+                System.out.println("narudzbenica");
                 byte[] pdf = pdfService.generatePDF(orderId);
                 String body = """
                         Poštovani,
@@ -73,11 +74,13 @@ public class OrderStatusServiceImpl implements OrderStatusService {
 
                         Lijep pozdrav, Casada""";
                 try {
-                    emailService.sendEmailWithAttachment("laura.seatovic@gmail.com", "narudzba-casada", body, pdf, "narudzbenica.pdf");
+                    emailService.sendEmailWithAttachment(buyer.getBuyerEmail(), "narudzba-casada", body, pdf, "narudzbenica.pdf");
                 } catch (MessagingException e) {
                     e.printStackTrace();
                 }
+                break;
             case 2:
+                System.out.println("dostava");
                 String body2 = String.format("""
                                 Poštovani,
 
@@ -88,8 +91,10 @@ public class OrderStatusServiceImpl implements OrderStatusService {
                                 Lijep pozdrav, Casada""",
                         buyer.getBuyerDeliveryAddress(),
                         buyer.getDeliveryPostalCodeName());
-                emailService.sendEmail("laura.seatovic@gmail.com", "narudzba-casada", body2);
+                emailService.sendEmail(buyer.getBuyerEmail(), "narudzba-casada", body2);
+                break;
             case 3:
+                System.out.println("dostavljena");
                 String body3 = String.format("""
                                 Poštovani,
 
@@ -100,7 +105,8 @@ public class OrderStatusServiceImpl implements OrderStatusService {
                                 Lijep pozdrav, Casada""",
                         buyer.getBuyerDeliveryAddress(),
                         buyer.getDeliveryPostalCodeName());
-                emailService.sendEmail("laura.seatovic@gmail.com", "narudzba-casada", body3);
+                emailService.sendEmail(buyer.getBuyerEmail(), "narudzba-casada", body3);
+                break;
         }
     }
 }

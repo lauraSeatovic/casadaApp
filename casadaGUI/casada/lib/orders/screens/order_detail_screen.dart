@@ -25,6 +25,8 @@ class _OrderDetailScreen extends State<OrderDetailScreen> {
       ),
       body: SingleChildScrollView(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -37,7 +39,9 @@ class _OrderDetailScreen extends State<OrderDetailScreen> {
                 ),
               ],
             ),
-            ProductDetails(orderId: widget.orderId)
+            Container(
+                padding: EdgeInsets.all(16.0),
+                child: Center(child: ProductDetails(orderId: widget.orderId)))
           ],
         ),
       ),

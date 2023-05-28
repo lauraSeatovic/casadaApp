@@ -24,6 +24,7 @@ class _NewOrder extends State<NewOrder> {
   String _buyerDelivery = '';
   String _buyerPhone = '';
   String _buyerEmail = '';
+  int _oldBuyerId = 0;
 
   Buyer buyer = Buyer();
   Order order = Order();
@@ -68,6 +69,9 @@ class _NewOrder extends State<NewOrder> {
                   buyer = updatedBuyer;
                 });
               },
+              onChangedOldBuyer: (id){
+                _oldBuyerId = id;
+              }
             ),
             state: _currentStep == 0 ? StepState.editing : StepState.indexed,
             isActive: _currentStep == 0,
@@ -101,7 +105,7 @@ class _NewOrder extends State<NewOrder> {
             title: Text('Potvrdi'),
             content:  ElevatedButton(
           onPressed: () {
-            ordersBloc.newOrder(buyer, order, products);
+            ordersBloc.newOrder(_oldBuyerId, buyer, order, products);
           },
           child: Text('Submit Data'),
         ),

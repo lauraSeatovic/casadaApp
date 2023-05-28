@@ -1,13 +1,12 @@
 package com.casada.casadaApi.controllers;
 
-import com.casada.casadaApi.DTOs.BuyerDTO;
-import com.casada.casadaApi.DTOs.NewOrderDTO;
-import com.casada.casadaApi.DTOs.OrderInfoDTO;
+import com.casada.casadaApi.DTOs.*;
 import com.casada.casadaApi.domain.Buyer;
 import com.casada.casadaApi.domain.OrderInfo;
 import com.casada.casadaApi.mappers.BuyerMapper;
 import com.casada.casadaApi.services.implementations.BuyerServiceImpl;
 import com.casada.casadaApi.services.implementations.OrderInfoServiceImpl;
+import com.casada.casadaApi.services.implementations.OrderStatusServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +24,9 @@ public class OrderInfoController {
     @Autowired
     private BuyerServiceImpl buyerService;
 
+    @Autowired
+    private OrderStatusServiceImpl orderStatusService;
+
     @GetMapping
     public List<OrderInfoDTO> findAll() {
         return orderInfoService.findAll();
@@ -33,6 +35,11 @@ public class OrderInfoController {
     @PostMapping
     public OrderInfo saveOrderInfo(@RequestBody OrderInfoDTO orderInfoDTO) {
         return orderInfoService.addOrderInfo(orderInfoDTO);
+    }
+
+    @PostMapping("/update")
+    public OrderInfo updateOrder(@RequestBody EditOrderDTO editOrderDTO) {
+        return orderInfoService.updateOrder(editOrderDTO.getOrder());
     }
 
     @GetMapping("/{orderId}")
@@ -45,9 +52,9 @@ public class OrderInfoController {
         orderInfoService.removeOrder(orderId);
     }
 
-    @PostMapping("neworder")
+    @PostMapping("/neworder")
     public void newOrder(@RequestBody NewOrderDTO newOrderDTO){
-        orderInfoService.newOrder(newOrderDTO);
+        int orderId = orderInfoService.newOrder(newOrderDTO);
 
     }
 

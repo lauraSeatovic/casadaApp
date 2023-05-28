@@ -88,87 +88,82 @@ class _BuyerDataWidgetState extends State<BuyerDataWidget> {
             child: Form(
               child: Column(
                 children: [
-                  Row(children: [
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Informacije o kupcu',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Theme.of(context).primaryColor,
+                  Row(
+                    children: [
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Informacije o kupcu',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).primaryColor,
+                          ),
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      width: 30,
-                    ),
-                    Column(
-                      children: [
-                        if (_isEditable)
-                          ElevatedButton(
-                            onPressed: () {
-                              // Perform the saving action
-                              print('Saving...');
-                              // You can add your own saving logic here
-                            },
-                            child: Text('Save'),
-                          ),
-                        if (!_isEditable)
-                          ElevatedButton(
-                            onPressed: () {
-                              setState(() {
-                                _isEditable = !_isEditable;
-                              });
-                            },
-                            child: Text('Edit'),
-                          ),
-                      ],
-                    )
-                  ]),
+                      SizedBox(
+                        width: 30,
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            _buyerBloc.newBuyer(_buyer!);
+                          });
+                        },
+                        child: Text('Promijeni'),
+                      ),
+                    ],
+                  ),
                   TextFormField(
                     decoration: InputDecoration(labelText: 'Ime'),
                     initialValue: _buyerName,
-                    enabled: _isEditable,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Unesite ime kupca';
                       }
                       return null;
                     },
+                    onChanged: (value) => {
+                      print(value),
+                      _buyer = _buyer = _buyer!.copyWith(buyerName: value),
+                      print(_buyer!.buyerName)
+                    },
                   ),
                   TextFormField(
                     decoration: InputDecoration(labelText: 'Prezime'),
                     initialValue: _buyerSurname,
-                    enabled: _isEditable,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Unesite prezime kupca';
                       }
                       return null;
                     },
+                    onChanged: (value) =>
+                        _buyer = _buyer!.copyWith(buyerSurname: value),
                   ),
                   TextFormField(
                     decoration: InputDecoration(labelText: 'Broj telefona'),
                     initialValue: _buyerPhone,
-                    enabled: _isEditable,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Unesite broj telefona kupca';
                       }
                       return null;
                     },
+                    onChanged: (value) =>
+                        _buyer = _buyer!.copyWith(buyerPhoneNumber: value),
                   ),
                   TextFormField(
                     decoration: InputDecoration(labelText: 'Adresa stanovanja'),
                     initialValue: _buyerHome,
-                    enabled: _isEditable,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Unesite adresu stanovanja';
                       }
                       return null;
                     },
+                    onChanged: (value) =>
+                        _buyer = _buyer!.copyWith(buyerHomeAddress: value),
                   ),
                   TypeAheadField(
                     textFieldConfiguration: TextFieldConfiguration(
@@ -189,6 +184,8 @@ class _BuyerDataWidgetState extends State<BuyerDataWidget> {
                     },
                     onSuggestionSelected: (suggestion) {
                       setState(() {
+                        _buyer = _buyer!.copyWith(
+                            homePostalCode: suggestion.citypostalcode!);
                         _homePostalController.text = suggestion.cityname!;
                         _buyerHomePostalCode = suggestion.citypostalcode!;
                       });
@@ -197,13 +194,14 @@ class _BuyerDataWidgetState extends State<BuyerDataWidget> {
                   TextFormField(
                     decoration: InputDecoration(labelText: 'Adresa dostave'),
                     initialValue: _buyerDelivery,
-                    enabled: _isEditable,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Unesite adresu dostave';
                       }
                       return null;
                     },
+                    onChanged: (value) =>
+                        _buyer = _buyer!.copyWith(buyerDeliveryAddress: value),
                   ),
                   TypeAheadField(
                     textFieldConfiguration: TextFieldConfiguration(
@@ -224,6 +222,8 @@ class _BuyerDataWidgetState extends State<BuyerDataWidget> {
                     },
                     onSuggestionSelected: (suggestion) {
                       setState(() {
+                        _buyer = _buyer!.copyWith(
+                            deliveryPostalCode: suggestion.citypostalcode!);
                         _deliveryPostalController.text = suggestion.cityname!;
                         _buyerDeliveryPostalCode = suggestion.citypostalcode!;
                       });
@@ -232,13 +232,14 @@ class _BuyerDataWidgetState extends State<BuyerDataWidget> {
                   TextFormField(
                     decoration: InputDecoration(labelText: 'Email'),
                     initialValue: _buyerEmail,
-                    enabled: _isEditable,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Unesite email kupca';
                       }
                       return null;
                     },
+                    onChanged: (value) =>
+                        _buyer = _buyer!.copyWith(buyerEmail: value),
                   ),
                 ],
               ),

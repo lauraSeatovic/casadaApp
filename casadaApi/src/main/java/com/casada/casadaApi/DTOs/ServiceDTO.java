@@ -6,19 +6,27 @@ import java.sql.Date;
 
 @lombok.Data
 public class ServiceDTO implements Serializable {
-    private static final long serialVersionUID = 1L;
-    private Long serviceid;
+    private Integer serviceId;
 
-    private Date servicestartdate;
+    private Date serviceStartDate;
 
-    private Date servicefinishdate;
+    private Date serviceFinishDate;
 
-    private String servicenote;
+    private String serviceNote;
 
-    private Double serviceprice;
+    private Double servicePrice;
 
-    private Long orderid;
+    private Integer orderId;
 
-    private Long productid;
+    private Integer productId;
 
+    public ServiceDTO(Integer serviceid, Date servicestartdate, Date servicefinishdate, String servicenote, Double serviceprice, Integer orderid, Integer productid) {
+        this.serviceId = serviceid;
+        this.serviceStartDate = servicestartdate;
+        this.serviceFinishDate = servicefinishdate;
+        this.serviceNote = servicenote;
+        this.servicePrice = serviceprice;
+        this.orderId = orderid;
+        this.productId = productid;
+    }
 }

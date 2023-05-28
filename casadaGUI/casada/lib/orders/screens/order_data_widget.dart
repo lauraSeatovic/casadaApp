@@ -93,6 +93,7 @@ class _OrderDataWidgetState extends State<OrderDataWidget> {
     if (pickedDate != null) {
       setState(() {
         _orderDate = pickedDate;
+        _order = _order!.copyWith(orderDate: pickedDate);
       });
     }
   }
@@ -131,42 +132,32 @@ class _OrderDataWidgetState extends State<OrderDataWidget> {
             child: Form(
               child: Column(
                 children: [
-                  Row(children: [
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Informacije o narudzbi',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Theme.of(context).primaryColor,
+                  Row(
+                    children: [
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Informacije o narudzbi',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).primaryColor,
+                          ),
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      width: 30,
-                    ),
-                    Column(
-                      children: [
-                        if (_isEditable)
-                          ElevatedButton(
-                            onPressed: () {
-                              print('Saving...');
-                            },
-                            child: Text('Save'),
-                          ),
-                        if (!_isEditable)
-                          ElevatedButton(
-                            onPressed: () {
-                              setState(() {
-                                _isEditable = !_isEditable;
-                              });
-                            },
-                            child: Text('Edit'),
-                          ),
-                      ],
-                    )
-                  ]),
+                      SizedBox(
+                        width: 30,
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            _orderBloc.editOrder(_order!);
+                          });
+                        },
+                        child: Text('Promijeni'),
+                      ),
+                    ],
+                  ),
                   SizedBox(height: 30),
                   GestureDetector(
                     onTap: _selectDate,
@@ -199,6 +190,7 @@ class _OrderDataWidgetState extends State<OrderDataWidget> {
                         onChanged: (bool value) {
                           setState(() {
                             _personalPickup = value;
+                            _order = _order!.copyWith(personalPickup: value);
                           });
                         },
                       ),
@@ -207,13 +199,13 @@ class _OrderDataWidgetState extends State<OrderDataWidget> {
                   TextFormField(
                     decoration: InputDecoration(labelText: 'Order Note'),
                     initialValue: _orderNote,
-                    enabled: _isEditable,
                     validator: (value) {
                       return null;
                     },
                     onChanged: (value) {
                       setState(() {
                         _orderNote = value;
+                        _order = _order!.copyWith(orderNote: value);
                       });
                     },
                   ),
@@ -237,6 +229,8 @@ class _OrderDataWidgetState extends State<OrderDataWidget> {
                     },
                     onSuggestionSelected: (suggestion) {
                       setState(() {
+                        _order =
+                            _order!.copyWith(sellerId: suggestion.memberId);
                         _sellerController.text =
                             "${suggestion.memberName!} ${suggestion.memberSurname!}";
                         _sellerId = suggestion.memberId!;
@@ -263,22 +257,11 @@ class _OrderDataWidgetState extends State<OrderDataWidget> {
                     },
                     onSuggestionSelected: (suggestion) {
                       setState(() {
+                        _order = _order!
+                            .copyWith(deliveryPersonId: suggestion.memberId);
                         _deliveryPersonController.text =
                             "${suggestion.memberName!} ${suggestion.memberSurname!}";
                         _deliveryPersonId = suggestion.memberId!;
-                      });
-                    },
-                  ),
-                  TextFormField(
-                    decoration: InputDecoration(labelText: 'Order Status Name'),
-                    initialValue: _orderStatusName,
-                    enabled: _isEditable,
-                    validator: (value) {
-                      return null;
-                    },
-                    onChanged: (value) {
-                      setState(() {
-                        _orderStatusName = value;
                       });
                     },
                   ),
@@ -286,6 +269,7 @@ class _OrderDataWidgetState extends State<OrderDataWidget> {
                     value: _paymentMethodId,
                     onChanged: (value) {
                       setState(() {
+                        _order = _order!.copyWith(paymentMethodId: value);
                         _paymentMethodId = value!;
                       });
                     },
@@ -299,12 +283,12 @@ class _OrderDataWidgetState extends State<OrderDataWidget> {
                   TextFormField(
                     decoration: InputDecoration(labelText: 'Opis dostave'),
                     initialValue: _deliveryDate,
-                    enabled: _isEditable,
                     validator: (value) {
                       return null;
                     },
                     onChanged: (value) {
                       setState(() {
+                        _order = _order!.copyWith(deliveryDate: value);
                         _deliveryDate = value;
                       });
                     },
@@ -312,38 +296,27 @@ class _OrderDataWidgetState extends State<OrderDataWidget> {
                   TextFormField(
                     decoration: InputDecoration(labelText: 'Order Discount'),
                     initialValue: _orderDiscount?.toString(),
-                    enabled: _isEditable,
                     validator: (value) {
                       return null;
                     },
                     onChanged: (value) {
                       setState(() {
+                        _order = _order!
+                            .copyWith(orderDiscount: double.tryParse(value));
                         _orderDiscount = double.tryParse(value);
-                      });
-                    },
-                  ),
-                  TextFormField(
-                    decoration: InputDecoration(labelText: 'Other Payment'),
-                    initialValue: _otherPayment,
-                    enabled: _isEditable,
-                    validator: (value) {
-                      return null;
-                    },
-                    onChanged: (value) {
-                      setState(() {
-                        _otherPayment = value;
                       });
                     },
                   ),
                   TextFormField(
                     decoration: InputDecoration(labelText: 'Order Deposit'),
                     initialValue: _orderDeposit?.toString(),
-                    enabled: _isEditable,
                     validator: (value) {
                       return null;
                     },
                     onChanged: (value) {
                       setState(() {
+                        _order = _order!
+                            .copyWith(orderDeposit: double.tryParse(value));
                         _orderDeposit = double.tryParse(value);
                       });
                     },
@@ -359,24 +332,12 @@ class _OrderDataWidgetState extends State<OrderDataWidget> {
                         value: _isFullPaid!,
                         onChanged: (bool value) {
                           setState(() {
+                            _order = _order!.copyWith(isFullPaid: value);
                             _isFullPaid = value;
                           });
                         },
                       ),
                     ],
-                  ),
-                  TextFormField(
-                    decoration: InputDecoration(labelText: 'Order Number'),
-                    initialValue: _orderNumber,
-                    enabled: _isEditable,
-                    validator: (value) {
-                      return null;
-                    },
-                    onChanged: (value) {
-                      setState(() {
-                        _orderNumber = value;
-                      });
-                    },
                   ),
                   Row(
                     children: [
@@ -389,6 +350,8 @@ class _OrderDataWidgetState extends State<OrderDataWidget> {
                         value: _orderStatusNotifications!,
                         onChanged: (bool value) {
                           setState(() {
+                            _order = _order!
+                                .copyWith(orderStatusNotifications: value);
                             _orderStatusNotifications = value;
                           });
                         },

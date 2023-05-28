@@ -2,6 +2,7 @@ package com.casada.casadaApi.services.implementations;
 
 import com.casada.casadaApi.DTOs.BuyerDTO;
 import com.casada.casadaApi.DTOs.MemberDTO;
+import com.casada.casadaApi.DTOs.OrderInfoDTO;
 import com.casada.casadaApi.DTOs.PaymentMethodDTO;
 import com.casada.casadaApi.domain.Buyer;
 import com.casada.casadaApi.domain.OrderInfo;
@@ -42,8 +43,13 @@ public class BuyerServiceImpl implements BuyerService {
 
     public Integer addNewBuyer(BuyerDTO buyerDTO){
         Buyer buyer = buyerMapper.toDomain(buyerDTO);
+
         Buyer savedBuyer = buyerRepository.save(buyer);
         Integer generatedId = savedBuyer.getBuyerId();
         return generatedId;
+    }
+
+    public Buyer updateBuyer(BuyerDTO buyerDTO) {
+        return buyerRepository.save(buyerMapper.toDomain(buyerDTO));
     }
 }

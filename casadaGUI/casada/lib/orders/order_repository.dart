@@ -59,13 +59,26 @@ class OrderRepository {
   }
 
   Future<void> newOrder(
-      Buyer buyer, Order order, List<OrderProduct> products) async {
+      int oldBuyerId, Buyer buyer, Order order, List<OrderProduct> products) async {
     const apiUrl = '/orderinfo/neworder';
     final formData = {
-      'oldBuyerId': 0,
+      'oldBuyerId': oldBuyerId,
       'buyer': buyer.toJson(),
       'order': order.toJson(),
       'products': products.map((product) => product.toJson()).toList(),
+    };
+
+    try {
+      _apiData.sendData(apiUrl, formData);
+    } catch (error) {
+      print('Error: $error');
+    }
+  }
+
+  Future<void> editOrder(Order order) async {
+    const apiUrl = '/orderinfo/update';
+    final formData = {
+      'order': order.toJson(),
     };
 
     try {

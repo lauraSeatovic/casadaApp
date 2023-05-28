@@ -3,6 +3,8 @@ package com.casada.casadaApi.domain;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.sql.Date;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,10 +20,10 @@ public class Service {
     private Integer serviceId;
 
     @Column(name = "servicestartdate", nullable = false)
-    private LocalDate serviceStartDate;
+    private Date serviceStartDate;
 
     @Column(name = "servicefinishdate")
-    private LocalDate serviceFinishDate;
+    private Date serviceFinishDate;
 
     @Column(name = "servicenote", length = 600)
     private String serviceNote;
@@ -37,4 +39,13 @@ public class Service {
     @JoinColumn(name = "productid", nullable = false)
     private Product product;
 
+    public Service(Integer serviceId, Date serviceStartDate, Date serviceFinishDate, String serviceNote, Double servicePrice, OrderInfo order, Product product) {
+        this.serviceId = serviceId;
+        this.serviceStartDate = serviceStartDate;
+        this.serviceFinishDate = serviceFinishDate;
+        this.serviceNote = serviceNote;
+        this.servicePrice = servicePrice;
+        this.order = order;
+        this.product = product;
+    }
 }

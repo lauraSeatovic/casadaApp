@@ -240,6 +240,23 @@ class _ProductCatalogStepState extends State<ProductCatalogStep> {
                     },
                   ),
                   IconButton(
+                    icon: Icon(Icons.remove),
+                    onPressed: () {
+                      setState(() {
+                        selectedProducts.forEach((productList) {
+                          if (productList.productid == product.productid) {
+                            productList.quantity =
+                                (productList.quantity ?? 0) - 1;
+                                if(productList.quantity == 0){
+                                  selectedProducts.remove(productList);
+                                }
+                            widget.onChanged(selectedProducts);
+                          }
+                        });
+                      });
+                    },
+                  ),
+                  IconButton(
                     icon: Icon(Icons.delete),
                     onPressed: () {
                       setState(() {

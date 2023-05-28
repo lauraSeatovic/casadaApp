@@ -8,5 +8,13 @@ class BuyersBloc{
     return buyer;
   }
 
+  Future<List<Buyer>> loadAllBuyer() async {
+    final buyers = await _buyerRepository.getAllBuyer();
+    return buyers;
+  }
+
+  void newBuyer(Buyer buyer) {
+    _buyerRepository.editBuyer(buyer);
+  }
   
 }

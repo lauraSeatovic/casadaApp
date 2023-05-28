@@ -60,8 +60,12 @@ class OrdersBloc {
     _orderRepository.changeStatus(orderId, statusId);
   }
 
-  void newOrder(Buyer buyer, Order order, List<OrderProduct> orderProduct) {
-    _orderRepository.newOrder(buyer, order, orderProduct);
+  void newOrder(int oldBuyerId, Buyer buyer, Order order, List<OrderProduct> orderProduct) {
+    _orderRepository.newOrder(oldBuyerId, buyer, order, orderProduct);
+  }
+
+  void editOrder(Order order) {
+    _orderRepository.editOrder(order);
   }
 
   Future<List<OrderProduct>> loadAllOrderProduct(int orderId) async {

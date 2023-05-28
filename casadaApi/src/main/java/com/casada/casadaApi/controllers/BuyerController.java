@@ -1,8 +1,8 @@
 package com.casada.casadaApi.controllers;
 
-import com.casada.casadaApi.DTOs.BuyerDTO;
-import com.casada.casadaApi.DTOs.MemberDTO;
-import com.casada.casadaApi.DTOs.OrderProductDTO;
+import com.casada.casadaApi.DTOs.*;
+import com.casada.casadaApi.domain.Buyer;
+import com.casada.casadaApi.domain.OrderInfo;
 import com.casada.casadaApi.services.implementations.BuyerServiceImpl;
 import com.casada.casadaApi.services.implementations.MemberServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +25,11 @@ public class BuyerController {
     @GetMapping("/{buyerId}")
     public BuyerDTO findById(@PathVariable("buyerId") Integer buyerId) {
         return buyerService.findById(buyerId);
+    }
+
+    @PostMapping("/update")
+    public Buyer updateBuyer(@RequestBody NewBuyerDTO newBuyerDTO) {
+        return buyerService.updateBuyer(newBuyerDTO.getBuyer());
     }
 
 }

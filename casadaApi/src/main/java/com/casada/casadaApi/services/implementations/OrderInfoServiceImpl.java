@@ -6,17 +6,20 @@ import com.casada.casadaApi.DTOs.NewOrderDTO;
 import com.casada.casadaApi.DTOs.OrderInfoDTO;
 import com.casada.casadaApi.domain.Buyer;
 import com.casada.casadaApi.domain.OrderInfo;
+import com.casada.casadaApi.domain.OrderProduct;
 import com.casada.casadaApi.domain.OrderStatus;
 import com.casada.casadaApi.mappers.BuyerMapper;
 import com.casada.casadaApi.mappers.OrderInfoMapper;
 import com.casada.casadaApi.repos.OrderInfoRepository;
 import com.casada.casadaApi.repos.OrderStatusRepository;
 import com.casada.casadaApi.services.OrderInfoService;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,6 +43,13 @@ public class OrderInfoServiceImpl implements OrderInfoService {
     @Autowired
     private OrderProductServiceImpl orderProductService;
 
+    @Autowired
+    private PDFServiceImpl pdfService;
+
+    @Autowired
+    private EmailService emailService;
+
+
     public List<OrderInfoDTO> findAll() {
         return orderInfoRepository.findAll().stream()
                 .map(orderInfoMapper::toDTO).collect(Collectors.toList());
@@ -51,6 +61,10 @@ public class OrderInfoServiceImpl implements OrderInfoService {
         Integer generatedId = savedOrder.getOrderId();
         savedOrder.setOrderNumber(generatedId.toString() + "-" + order.getOrderDate());
         return orderInfoRepository.save(savedOrder);
+    }
+
+    public OrderInfo updateOrder(OrderInfoDTO orderInfo) {
+        return orderInfoRepository.save(orderInfoMapper.toDomain(orderInfo));
     }
 
     public int addOrderInfoGetId(OrderInfoDTO orderInfo) {
@@ -97,23 +111,25 @@ public class OrderInfoServiceImpl implements OrderInfoService {
         }
     }
 
-    public void newOrder(NewOrderDTO newOrderDTO) {
+    public int newOrder(NewOrderDTO newOrderDTO) {
         //OrderInfo orderInfo = orderInfoMapper.toDomain(newOrderDTO.getOrder());
         if (newOrderDTO.getOldBuyerId() == 0) {
             newOrderDTO.getBuyer().setBuyerId(0);
+            System.out.println(newOrderDTO.getBuyer().getHomePostalCode());
             int buyerId = buyerService.addNewBuyer(newOrderDTO.getBuyer());
             newOrderDTO.getOrder().setBuyerId(buyerId);
-            newOrderDTO.getOrder().setOrderStatusId(1);
         } else {
+            System.out.println(newOrderDTO.getOldBuyerId());
             newOrderDTO.getOrder().setBuyerId(newOrderDTO.getOldBuyerId());
         }
+        newOrderDTO.getOrder().setOrderStatusId(4);
         newOrderDTO.getOrder().setOrderNumber("");
         newOrderDTO.getOrder().setOrderId(0);
         int orderId = addOrderInfoGetId(newOrderDTO.getOrder());
         newOrderDTO.getProducts().forEach(orderProductDTO -> {
             orderProductDTO.setOrderid(orderId);
-            orderProductService.addNewProduct(orderProductDTO);
+            OrderProduct tempProduct = orderProductService.addNewProduct(orderProductDTO);
         });
-
+        return orderId;
     }
 }

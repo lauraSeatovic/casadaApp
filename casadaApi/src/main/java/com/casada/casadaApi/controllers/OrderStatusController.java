@@ -32,11 +32,6 @@ public class OrderStatusController {
         return orderStatusService.findById(id);
     }
 
-    @GetMapping("/change")
-    public void changeStatus() throws MessagingException {
-        orderStatusService.sendChangeOrderStatusMail(1, 1);
-    }
-
     @PostMapping("/changestatus")
     public void changeOrderStatus(@RequestBody StatusAndOrderDTO statusAndOrderDTO){
         orderStatusService.changeOrderStatus(statusAndOrderDTO);

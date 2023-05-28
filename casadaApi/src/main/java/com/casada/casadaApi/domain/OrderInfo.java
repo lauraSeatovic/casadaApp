@@ -73,7 +73,7 @@ public class OrderInfo {
     @OneToMany(mappedBy = "order")
     private Set<Service> orderServices;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<OrderProduct> orderOrderProducts;
 
     public OrderInfo(){}

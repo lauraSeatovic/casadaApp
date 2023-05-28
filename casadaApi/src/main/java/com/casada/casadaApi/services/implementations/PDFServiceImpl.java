@@ -88,6 +88,7 @@ public class PDFServiceImpl {
             byte[] pdfData = outputStream.toByteArray();
             return pdfData;
         } catch (DocumentException | IOException e) {
+            System.out.println("error");
             e.printStackTrace();
         }
         return null;
