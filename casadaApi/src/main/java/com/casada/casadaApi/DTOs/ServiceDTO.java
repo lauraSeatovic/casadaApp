@@ -18,15 +18,21 @@ public class ServiceDTO implements Serializable {
 
     private Integer orderId;
 
+    private String orderNumber;
+
     private Integer productId;
 
-    public ServiceDTO(Integer serviceid, Date servicestartdate, Date servicefinishdate, String servicenote, Double serviceprice, Integer orderid, Integer productid) {
-        this.serviceId = serviceid;
-        this.serviceStartDate = servicestartdate;
-        this.serviceFinishDate = servicefinishdate;
-        this.serviceNote = servicenote;
-        this.servicePrice = serviceprice;
-        this.orderId = orderid;
-        this.productId = productid;
+    private String productName;
+
+    public ServiceDTO(Integer serviceId, Date serviceStartDate, Date serviceFinishDate, String serviceNote, Double servicePrice, Integer orderId, String orderNumber, Integer productId, String productName) {
+        this.serviceId = serviceId;
+        this.serviceStartDate = serviceStartDate;
+        this.serviceFinishDate = serviceFinishDate;
+        this.serviceNote = serviceNote;
+        this.servicePrice = servicePrice;
+        this.orderId = orderId;
+        this.orderNumber = orderNumber;
+        this.productId = productId;
+        this.productName = productName;
     }
 }

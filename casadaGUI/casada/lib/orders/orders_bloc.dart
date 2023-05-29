@@ -3,9 +3,11 @@ import 'package:casada/data/order_product.dart';
 import 'package:casada/orders/order_repository.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../data/service.dart';
 import '../data/buyer.dart';
 import '../data/city.dart';
 import '../data/payment_method.dart';
+
 import '../data/status.dart';
 
 class OrdersBloc {
@@ -75,5 +77,14 @@ class OrdersBloc {
 
    void updateProducts(List<OrderProduct> orderProduct) {
     _orderRepository.updateProducts(orderProduct);
+  }
+
+  Future<List<Service>> loadAllService(int orderId) async {
+    final service = await _orderRepository.getAllService(orderId);
+    return service;
+  }
+
+  void addSErvice(DateTime serviceStart, DateTime serviceEnd,String serviceNote, double price, int productId, int orderId ) {
+    _orderRepository.addSErvice(serviceStart, serviceEnd, serviceNote, price, productId, orderId);
   }
 }

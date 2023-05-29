@@ -15,6 +15,7 @@ import lombok.Setter;
 @Table(name = "service")
 public class Service {
 
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "serviceid", nullable = false, updatable = false)
     private Integer serviceId;
@@ -38,6 +39,8 @@ public class Service {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "productid", nullable = false)
     private Product product;
+
+    public Service(){}
 
     public Service(Integer serviceId, Date serviceStartDate, Date serviceFinishDate, String serviceNote, Double servicePrice, OrderInfo order, Product product) {
         this.serviceId = serviceId;

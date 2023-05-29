@@ -2,6 +2,7 @@ import 'package:casada/orders/order_repository.dart';
 import 'package:casada/orders/orders_bloc.dart';
 import 'package:casada/orders/screens/order_detail_screen.dart';
 import 'package:casada/orders/screens/order_html_screen.dart';
+import 'package:casada/orders/screens/service_screen.dart';
 import 'package:casada/orders/screens/status_change_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -130,7 +131,7 @@ class _DataTableSource extends DataTableSource {
       cells: [
         DataCell(Text(("${++index}.").toString())),
         DataCell(Text(item.orderId.toString())),
-        DataCell(Text(DateFormat('yyyy-MM-dd').format(item.orderDate!))),
+        DataCell(Text(DateFormat('dd-MM-yyyy').format(item.orderDate!))),
         DataCell(Text(
             "${item.buyerName.toString()} ${item.buyerSurname.toString()}")),
         DataCell(Text(item.orderStatusName.toString())),
@@ -199,6 +200,17 @@ class _DataTableSource extends DataTableSource {
                       ],
                     );
                   },
+                );
+              },
+            ),
+            IconButton(
+              icon: Icon(Icons.build),
+              onPressed: () {
+                Navigator.push(
+                  _context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          ServiceScreen(orderId: item.orderId!)),
                 );
               },
             ),

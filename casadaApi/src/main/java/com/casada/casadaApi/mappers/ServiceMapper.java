@@ -27,7 +27,10 @@ public class ServiceMapper {
                 service.getServiceNote(),
                 service.getServicePrice(),
                 service.getOrder().getOrderId(),
-                service.getProduct().getProductId());
+                service.getOrder().getOrderNumber(),
+                service.getProduct().getProductId(),
+                service.getProduct().getProductName()
+        );
     }
 
     public Service toDomain(ServiceDTO service) {

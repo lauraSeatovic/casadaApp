@@ -1,6 +1,8 @@
+import 'dart:developer';
+
 import 'package:casada/data/city.dart';
 import 'package:casada/data/order_product.dart';
-
+import 'package:casada/data/service.dart';
 import '../common/Api_Data.dart';
 import '../data/buyer.dart';
 import '../data/order.dart';
@@ -104,5 +106,26 @@ class OrderRepository {
     } catch (error) {
       print('Error: $error');
     }
+  }
+
+  Future<List<Service>> getAllService(int orderId) async {
+    final response = await _apiData.getData("/service/$orderId");
+    return response.map((json) => Service.fromJson(json)).toList();
+  }
+
+  Future<void> addSErvice(DateTime serviceStart, DateTime serviceEnd,String serviceNote, double price, int productId, int orderId ) async {
+    const apiUrl = '/service';
+
+    final formData = {
+  "serviceId": 0,
+  "serviceStartDate": serviceStart.toIso8601String(),
+  "serviceFinishDate": serviceEnd.toIso8601String(),
+  "serviceNote": serviceNote,
+  "servicePrice": price,
+  "orderId": orderId,
+  "productId": productId
+};
+
+    _apiData.sendData(apiUrl, formData);
   }
 }
