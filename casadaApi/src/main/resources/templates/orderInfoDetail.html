@@ -113,6 +113,7 @@
             <th>PROIZVOD/USLUGA</th>
             <th>KOL</th>
             <th>CIJENA/€</th>
+            <th>POPUST</th>
             <th>IZNOS/€</th>
         </tr>
         <!-- Iterate over a collection using Thymeleaf -->
@@ -121,29 +122,34 @@
             <td th:text="${product.name}"></td>
             <td th:text="${product.quantity}"></td>
             <td th:text="${product.price}"></td>
+            <td th:text="${product.discount}"></td>
             <td th:text="${product.totalProductPrice}"></td>
+        </tr>
+        <tr>
+            <td colspan="4" style="text-align: right;" ><b>POPUST</b></td>
+            <td th:text="${orderdiscount}"></td>
         </tr>
         <tr>
             <td colspan="4" style="text-align: right;"><b>Rekaputalacija PDV-a</b></td>
         </tr>
         <tr>
-            <td colspan="4" style="text-align: right;"><b>NETO</b></td>
-            <td>1500</td>
+            <td colspan="4" style="text-align: right;" ><b>NETO</b></td>
+            <td th:text="${neto}"></td>
         </tr>
         <tr>
             <td colspan="4" style="text-align: right;"><b>PDV-25%</b></td>
-            <td>200</td>
+            <td th:text="${pdv}"></td>
         </tr>
         <tr>
             <td colspan="4" style="text-align: right;"><b>BRUTO</b></td>
-            <td>700</td>
+            <td th:text="${total}"></td>
         </tr>
         <tr>
             <td colspan="4" style="text-align: right;"><b>ZA PLATITI/€</b></td>
-            <td>200</td>
+            <td th:text="${total}"></td>
         </tr>
         <tr>
-            <td colspan="5" style="text-align: left;">TEČAJ KONVERZIJE 1 EUR=7,53450 KN, <b>IZNOS U KUNAMA 13.328,53 KN</b></td>
+            <td colspan="5" style="text-align: left;">TEČAJ KONVERZIJE 1 EUR=7,53450 KN, <b>IZNOS U KUNAMA&nbsp;<span th:text="${kunasprice}"></span></b></td>
         </tr>
     </table>
     <br></br>
