@@ -47,7 +47,9 @@ class _NewOrder extends State<NewOrder> {
             }
           });
         },
-        onStepCancel: () {
+        onStepCancel: _currentStep ==3
+          ? null // Disable the "Cancel" button on the last step
+          : () {
           setState(() {
             if (_currentStep > 0) {
               _currentStep--;
@@ -113,6 +115,8 @@ class _NewOrder extends State<NewOrder> {
             isActive: _currentStep == 3,
           ),
         ],
+
+        
       ),
     );
   }
