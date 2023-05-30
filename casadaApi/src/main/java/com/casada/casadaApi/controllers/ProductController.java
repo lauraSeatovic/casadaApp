@@ -44,6 +44,11 @@ public class ProductController {
         return productService.addMassageChair(massageChairProductDTO.getProductDTO(), massageChairProductDTO.getMassageChairClassId());
     }
 
+    @PostMapping("/massagechair/edit")//add colors
+    public void editMassageChair(@RequestBody MassageChairProductDTO massageChairProductDTO){
+        productService.editMassageChair(massageChairProductDTO.getProductDTO(), massageChairProductDTO.getMassageChairClassId());
+    }
+
     /*JSON body
         {"productDTO":{
             "productId": 0,

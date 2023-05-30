@@ -21,6 +21,7 @@ import org.xhtmlrenderer.pdf.ITextRenderer;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Optional;
 
@@ -127,22 +128,31 @@ public class PDFServiceImpl {
             context.setVariable("buyerAddress", buyer.getBuyerDeliveryAddress());
             context.setVariable("orderNumber", orderInfo.getOrderNumber());
             context.setVariable("orderDate", orderInfo.getOrderDate());
+            DecimalFormat decimalFormat = new DecimalFormat("#.00");
 
             List<ProductPDF> products = orderInfo.getOrderOrderProducts().stream().map(product -> new ProductPDF(
                     product.getProduct().getProductName(),
                     product.getQuantity(),
                     product.getProduct().getProductPrice(),
                     product.getDiscount(),
-                    product.getProduct().getProductPrice() * product.getQuantity()
+                    Double.parseDouble(decimalFormat.format((product.getProduct().getProductPrice() - (product.getDiscount()/100)*product.getProduct().getProductPrice()) * product.getQuantity()))
             )).toList();
             context.setVariable("products", products);
 
+            double totalPrice = products.stream().mapToDouble(ProductPDF::getTotalProductPrice).sum();
+            double totoalDiscountPrice = Double.parseDouble(decimalFormat.format(totalPrice - (orderInfo.getOrderDiscount()/100)*totalPrice));
             Member seller = orderInfo.getSeller();
             String sellerNameSurname = seller.getMemberName().concat(" ").concat(seller.getMemberSurname());
             context.setVariable("payment", orderInfo.getPaymentMethod().getPaymentMethodName());
             context.setVariable("delivery", orderInfo.getDeliveryDate());
             context.setVariable("seller", sellerNameSurname);
             context.setVariable("note", orderInfo.getOrderNote());
+            context.setVariable("total", totoalDiscountPrice);
+            context.setVariable("orderdiscount", orderInfo.getOrderDiscount());
+            context.setVariable("neto", Double.parseDouble(decimalFormat.format(0.8*totoalDiscountPrice)));
+            context.setVariable("pdv", Double.parseDouble(decimalFormat.format(0.2*totoalDiscountPrice)));
+            context.setVariable("kunasprice", Double.parseDouble(decimalFormat.format(7.53450*totoalDiscountPrice)));
+
 
             return context;
         } else {

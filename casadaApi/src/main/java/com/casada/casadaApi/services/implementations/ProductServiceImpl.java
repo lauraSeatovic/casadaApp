@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -78,6 +79,26 @@ public class ProductServiceImpl implements ProductService {
         MassageChair massageChairEntity = new MassageChair(massageChairClass, productDomain);
         massageChairRepository.save(massageChairEntity);
         return true;
+    }
+
+    @Transactional
+    public void editMassageChair(ProductDTO product, Integer massageChairClassId){
+        Optional<Product> optionalProduct = productRepository.findById(product.getProductId());
+        Optional<MassageChair> optionalMassageChair = massageChairRepository.findById(product.getProductId());
+        if(optionalProduct.isPresent() && optionalMassageChair.isPresent()){
+            Product oldProduct = optionalProduct.get();
+            MassageChair massageChair = optionalMassageChair.get();
+            MassageChairClass massageChairClass = massageChairClassRepository.findById(massageChairClassId).get();
+            oldProduct.setProductName(product.getProductName());
+            oldProduct.setProductPrice(product.getProductPrice());
+            oldProduct.setProductCode(product.getProductCode());
+            oldProduct.setProductActiveStatus(product.getProductActiveStatus());
+            massageChair.setMassageChairClass(massageChairClass);
+            massageChair.setProduct(oldProduct);
+            massageChairRepository.save(massageChair);
+        }else {
+            throw new RuntimeException("Product not found");
+        }
     }
 
     @Transactional

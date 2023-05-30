@@ -55,6 +55,12 @@ class ProductsBloc {
         name, price, productCode, classId, isActive);
   }
 
+  void editMassageChair(int? productId, String? name, String? price, String? productCode,
+      int? classId, bool isActive) {
+    _productsRepository.editMassageChair(productId,
+        name, price, productCode, classId, isActive);
+  }
+
   void deleteProduct(int productId){
     _productsRepository.deleteProduct(productId);
   }

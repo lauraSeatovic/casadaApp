@@ -86,6 +86,24 @@ class ProductsRepository {
     _apiData.sendData(apiUrl, formData);
   }
 
+  Future<void> editMassageChair(int? productId, String? name, String? price, String? productCode,
+      int? classId, bool isActive) async {
+    const apiUrl = '/product/massagechair/edit';
+
+    final formData = {
+      "productDTO": {
+        "productId": productId,
+        "productName": name,
+        "productPrice": price,
+        "productActiveStatus": isActive,
+        "productCode": productCode
+      },
+      "massageChairClassId": classId
+    };
+
+    _apiData.sendData(apiUrl, formData);
+  }
+
   Future<void> deleteProduct(int productId){
     return _apiData.deleteData("/product/${productId}");
   }
