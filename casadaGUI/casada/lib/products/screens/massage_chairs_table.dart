@@ -1,5 +1,6 @@
 import 'package:casada/common/custom_paginated_data_table.dart';
 import 'package:casada/products/products_bloc.dart';
+import 'package:casada/products/screens/edit_massage_chair.dart';
 import 'package:flutter/material.dart';
 
 import '../../data/massage_chair.dart';
@@ -121,6 +122,12 @@ class _DataTableSource extends DataTableSource {
         DataCell(Text(item.massageChairClassName.toString())),
         DataCell(Row(
           children: [
+            IconButton(icon: Icon(Icons.edit), onPressed: () {
+              Navigator.push(
+                _context,
+                MaterialPageRoute(builder: (context) => EditMassageChair(productId: item.productId!, name:item.productName!, price:item.productPrice!.toString(), code:item.productCode!, isActive:item.productActiveStatus!, selectedId: item.massageChairClassId!)),
+              );
+            }),
             IconButton(
               icon: Icon(Icons.delete),
               onPressed: () {
