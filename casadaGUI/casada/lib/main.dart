@@ -44,7 +44,6 @@ class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
 
   final List<Widget> _pages = [
-    const Text('Page 1'),
     Products(),
     OrdersScreen(),
   ];
@@ -61,6 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Row(
         children: [
+          
           NavigationRail(
             selectedIndex: _selectedIndex,
             onDestinationSelected: (int index) {
@@ -70,10 +70,11 @@ class _MyHomePageState extends State<MyHomePage> {
             },
             labelType: NavigationRailLabelType.all,
             destinations: const [
+              /*
               NavigationRailDestination(
                 icon: Icon(Icons.person),
                 label: Text('Korisnici'),
-              ),
+              ),*/
               NavigationRailDestination(
                 icon: Icon(Icons.local_mall),
                 label: Text('Proizvodi'),
