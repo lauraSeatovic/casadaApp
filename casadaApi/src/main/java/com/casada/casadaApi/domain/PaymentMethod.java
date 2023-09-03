@@ -15,6 +15,7 @@ public class PaymentMethod {
 
     @Id
     @Column(name = "paymentmethodid", nullable = false, updatable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer paymentMethodId;
 
     @Column(name = "paymentmethodname", nullable = false, length = 200)

@@ -217,7 +217,7 @@ class _ProductDetailsState extends State<ProductDetails> {
               onPressed: () {
                 ordersBloc.updateProducts(selectedProducts);
               },
-              child: Text('Edit'),
+              child: Text('Spremi'),
             )
           ],
         ),
@@ -277,6 +277,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                       });
                     },
                   ),
+                  /*
                   IconButton(
                     icon: Icon(Icons.delete),
                     onPressed: () {
@@ -285,7 +286,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                             productList.productid == product.productid);
                       });
                     },
-                  ),
+                  ),*/
                 ],
               ),
             ),

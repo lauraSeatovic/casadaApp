@@ -139,7 +139,7 @@ class _OrderDataFormState extends State<NewOrderDataForm> {
           ],
         ),
         TextFormField(
-          decoration: InputDecoration(labelText: 'Order Note'),
+          decoration: InputDecoration(labelText: 'Napomena'),
           validator: (value) {
             return null;
           },
@@ -233,7 +233,7 @@ class _OrderDataFormState extends State<NewOrderDataForm> {
           },
         ),
         TextFormField(
-          decoration: InputDecoration(labelText: 'Order Discount'),
+          decoration: InputDecoration(labelText: 'Popust'),
           validator: (value) {
             return null;
           },
@@ -246,7 +246,7 @@ class _OrderDataFormState extends State<NewOrderDataForm> {
           },
         ),
         TextFormField(
-          decoration: InputDecoration(labelText: 'Order Deposit'),
+          decoration: InputDecoration(labelText: 'Polog/€'),
           validator: (value) {
             return null;
           },

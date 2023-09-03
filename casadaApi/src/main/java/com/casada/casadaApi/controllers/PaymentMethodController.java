@@ -28,5 +28,4 @@ public class PaymentMethodController {
     public PaymentMethodDTO findById(@PathVariable("id") Integer id) {
         return paymentMethodService.findById(id);
     }
-
 }

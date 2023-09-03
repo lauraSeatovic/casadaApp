@@ -92,7 +92,7 @@ class _NewOrder extends State<NewOrder> {
             isActive: _currentStep == 1,
           ),
           Step(
-            title: Text('Products'),
+            title: Text('Proizvodi'),
             content: ProductCatalogStep(
                 productsList: products,
                 onChanged: (newProducts) {
@@ -105,12 +105,46 @@ class _NewOrder extends State<NewOrder> {
           ),
           Step(
             title: Text('Potvrdi'),
-            content:  ElevatedButton(
+            content:  Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('Kupac:'),
+        Text('Ime i prezime: ${buyer.buyerName} ${buyer.buyerSurname}'),
+        Text('Broj: ${buyer.buyerPhoneNumber}'),
+        Text('Adresa stanovanja: ${buyer.buyerHomeAddress}'),
+        Text('Adresa dostave: ${buyer.buyerDeliveryAddress}'),
+        Text('Email: ${buyer.buyerEmail}'),
+        SizedBox(height: 16),
+        Text('Narudžba:'),
+        Text('Napomena: ${order.orderNote}'),
+        Text('Dostava: ${order.deliveryDate}'),
+        Text('Popust: ${order.orderDiscount}'),
+        Text('Polog: ${order.orderDeposit}'),
+        SizedBox(height: 16),
+        Text('Proizvodi:'),
+        ListView.builder(
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          itemCount: products.length,
+          itemBuilder: (context, index) {
+            final orderProduct = products[index];
+            return ListTile(
+              title: Text('Proizvod: ${orderProduct.productName}'),
+              subtitle: Text('Kolicina: ${orderProduct.quantity}'),
+              trailing: Text('Cijena/€: ${orderProduct.productPrice}'),
+            );
+          },
+        ),
+        ElevatedButton(
           onPressed: () {
             ordersBloc.newOrder(_oldBuyerId, buyer, order, products);
           },
-          child: Text('Submit Data'),
+          child: Text('Dodaj narudžbu'),
         ),
+      ],
+    ),
+            
+            
             state: _currentStep == 3 ? StepState.editing : StepState.indexed,
             isActive: _currentStep == 3,
           ),

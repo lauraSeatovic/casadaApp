@@ -92,7 +92,7 @@ class _EditMassageChair extends State<EditMassageChair> {
               TextFormField(
                 initialValue: widget.price,
                 decoration: InputDecoration(
-                  labelText: 'Cijena',
+                  labelText: 'Cijena/€',
                 ),
                 validator: (value) {
                   if (value!.isEmpty) {
@@ -115,7 +115,7 @@ class _EditMassageChair extends State<EditMassageChair> {
                 ),
                 validator: (value) {
                   if (value!.isEmpty) {
-                    return 'Please enter your email';
+                    return 'Unesite šifru proizvoda';
                   }
                   return null;
                 },
@@ -171,7 +171,7 @@ class _EditMassageChair extends State<EditMassageChair> {
                     );
                   }
                 },
-                child: Text('Promijeni'),
+                child: Text('Spremi'),
               ),
             ],
           ),

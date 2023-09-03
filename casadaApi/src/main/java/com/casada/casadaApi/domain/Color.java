@@ -15,6 +15,7 @@ public class Color {
 
     @Id
     @Column(name = "colorid", nullable = false, updatable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer colorId;
 
     @Column(name = "colorname", nullable = false, length = 200)

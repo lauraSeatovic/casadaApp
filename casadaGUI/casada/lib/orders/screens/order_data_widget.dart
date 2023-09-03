@@ -154,7 +154,7 @@ class _OrderDataWidgetState extends State<OrderDataWidget> {
                             _orderBloc.editOrder(_order!);
                           });
                         },
-                        child: Text('Promijeni'),
+                        child: Text('Spremi'),
                       ),
                     ],
                   ),
@@ -173,7 +173,7 @@ class _OrderDataWidgetState extends State<OrderDataWidget> {
                       ),
                       controller: TextEditingController(
                         text: _orderDate != null
-                            ? DateFormat('yyyy-MM-dd').format(_orderDate!)
+                            ? DateFormat('dd-MM-yyyy').format(_orderDate!)
                             : '',
                       ),
                     ),
@@ -294,7 +294,7 @@ class _OrderDataWidgetState extends State<OrderDataWidget> {
                     },
                   ),
                   TextFormField(
-                    decoration: InputDecoration(labelText: 'Order Discount'),
+                    decoration: InputDecoration(labelText: 'Popust'),
                     initialValue: _orderDiscount?.toString(),
                     validator: (value) {
                       return null;
@@ -308,7 +308,7 @@ class _OrderDataWidgetState extends State<OrderDataWidget> {
                     },
                   ),
                   TextFormField(
-                    decoration: InputDecoration(labelText: 'Order Deposit'),
+                    decoration: InputDecoration(labelText: 'Polog'),
                     initialValue: _orderDeposit?.toString(),
                     validator: (value) {
                       return null;

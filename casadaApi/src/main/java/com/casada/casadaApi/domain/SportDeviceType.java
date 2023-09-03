@@ -15,6 +15,7 @@ public class SportDeviceType {
 
     @Id
     @Column(name = "sportdevicetypeid", nullable = false, updatable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer sportDeviceTypeId;
 
     @Column(name = "sportdevicetypename", nullable = false, length = 200)

@@ -15,6 +15,7 @@ public class MassageChairClass {
 
     @Id
     @Column(name = "massagechairclassid", nullable = false, updatable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer massageChairClassId;
 
     @Column(name = "massagechairclassname", nullable = false, length = 200)

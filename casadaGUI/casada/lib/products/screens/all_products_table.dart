@@ -14,13 +14,28 @@ class AllProductsTable extends StatefulWidget {
 
 class _AllProductsTableState extends State<AllProductsTable> {
   late final _dataTableSource = _DataTableSource(widget.data);
-
+  TextEditingController _searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Padding(
         padding: const EdgeInsets.all(16.0),
         child: CustomPaginatedDataTable(
-          header: Text('Svi proizvodi'),
+          header: Row(
+            children: [
+              Container(
+                  width: 150,
+                  child: TextField(
+                    controller: _searchController,
+                    decoration: InputDecoration(
+                      labelText: 'Pretraži',
+                    ),
+                  )),
+              SizedBox(
+                width: 20,
+              ),
+              Text('Svi proizvodi'),
+            ],
+          ),
           columns: [
             DataColumn(
               label: Text(''),
@@ -39,6 +54,9 @@ class _AllProductsTableState extends State<AllProductsTable> {
             ),
             DataColumn(
               label: Text('Šifra'),
+            ),
+            DataColumn(
+              label: Text(''),
             ),
           ],
           source: _dataTableSource,
@@ -71,6 +89,15 @@ class _DataTableSource extends DataTableSource {
               : Icon(Icons.close, color: Colors.red),
         ),
         DataCell(Text(item.productCode.toString())),
+        DataCell(Row(
+          children: [
+            IconButton(icon: Icon(Icons.edit), onPressed: () {}),
+            IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () {},
+            ),
+          ],
+        )),
       ],
     );
   }

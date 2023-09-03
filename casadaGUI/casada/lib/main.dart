@@ -25,6 +25,7 @@ class MyApp extends StatelessWidget {
       },
     );
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch:
             customPrimaryColor, // Change the primary color to deep purple
@@ -70,11 +71,6 @@ class _MyHomePageState extends State<MyHomePage> {
             },
             labelType: NavigationRailLabelType.all,
             destinations: const [
-              /*
-              NavigationRailDestination(
-                icon: Icon(Icons.person),
-                label: Text('Korisnici'),
-              ),*/
               NavigationRailDestination(
                 icon: Icon(Icons.local_mall),
                 label: Text('Proizvodi'),

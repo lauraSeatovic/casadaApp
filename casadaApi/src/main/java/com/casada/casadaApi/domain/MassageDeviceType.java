@@ -14,7 +14,8 @@ import lombok.Setter;
 public class MassageDeviceType {
 
     @Id
-    @Column(name = "massagedevicetypeid")
+    @Column(name = "massagedevicetypeid", nullable = false, updatable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int massageDeviceTypeId;
 
     @Column(name = "massagedevicetypename")

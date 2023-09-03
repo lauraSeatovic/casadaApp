@@ -15,6 +15,7 @@ public class OrderStatus {
 
     @Id
     @Column(name = "orderstatusid", nullable = false, updatable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer orderStatusId;
 
     @Column(name = "orderstatusname", nullable = false, length = 200)

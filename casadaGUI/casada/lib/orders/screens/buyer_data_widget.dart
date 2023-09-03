@@ -110,7 +110,7 @@ class _BuyerDataWidgetState extends State<BuyerDataWidget> {
                             _buyerBloc.newBuyer(_buyer!);
                           });
                         },
-                        child: Text('Promijeni'),
+                        child: Text('Spremi'),
                       ),
                     ],
                   ),

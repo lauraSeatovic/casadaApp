@@ -256,6 +256,7 @@ class _ProductCatalogStepState extends State<ProductCatalogStep> {
                       });
                     },
                   ),
+                  /*
                   IconButton(
                     icon: Icon(Icons.delete),
                     onPressed: () {
@@ -265,7 +266,7 @@ class _ProductCatalogStepState extends State<ProductCatalogStep> {
                         widget.onChanged(selectedProducts);
                       });
                     },
-                  ),
+                  ),*/
                 ],
               ),
             ),

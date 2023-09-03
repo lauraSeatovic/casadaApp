@@ -19,6 +19,7 @@ public class Member {
 
     @Id
     @Column(name = "memberid", nullable = false, updatable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer memberId;
 
     @Column(name = "membername", nullable = false, length = 100)

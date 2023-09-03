@@ -139,6 +139,17 @@ class _DataTableSource extends DataTableSource {
         DataCell(Row(
           children: [
             IconButton(
+              icon: Icon(Icons.info),
+              onPressed: () {
+                Navigator.push(
+                  _context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          OrderHtmlScreen(orderId: item.orderId!)),
+                );
+              },
+            ),
+            IconButton(
               icon: Icon(Icons.edit),
               onPressed: () {
                 Navigator.push(
@@ -152,24 +163,25 @@ class _DataTableSource extends DataTableSource {
               },
             ),
             IconButton(
-              icon: Icon(Icons.info),
-              onPressed: () {
-                Navigator.push(
-                  _context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          OrderHtmlScreen(orderId: item.orderId!)),
-                );
-              },
-            ),
-            IconButton(
               icon: Icon(Icons.assignment),
               onPressed: () {
                 Navigator.push(
                   _context,
                   MaterialPageRoute(
+                      builder: (context) => StatusChangeWidget(
+                          statustId: item.orderStatusId!,
+                          orderId: item.orderId!)),
+                );
+              },
+            ),
+            IconButton(
+              icon: Icon(Icons.build),
+              onPressed: () {
+                Navigator.push(
+                  _context,
+                  MaterialPageRoute(
                       builder: (context) =>
-                          StatusChangeWidget(statustId: item.orderStatusId!, orderId: item.orderId!)),
+                          ServiceScreen(orderId: item.orderId!)),
                 );
               },
             ),
@@ -181,8 +193,7 @@ class _DataTableSource extends DataTableSource {
                   builder: (BuildContext context) {
                     return AlertDialog(
                       title: Text('Izbriši narudžbu'),
-                      content:
-                          Text('Jeste li sigurni da želite narudžbu?'),
+                      content: Text('Jeste li sigurni da želite narudžbu?'),
                       actions: <Widget>[
                         TextButton(
                           child: Text('Odustani'),
@@ -200,17 +211,6 @@ class _DataTableSource extends DataTableSource {
                       ],
                     );
                   },
-                );
-              },
-            ),
-            IconButton(
-              icon: Icon(Icons.build),
-              onPressed: () {
-                Navigator.push(
-                  _context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          ServiceScreen(orderId: item.orderId!)),
                 );
               },
             ),

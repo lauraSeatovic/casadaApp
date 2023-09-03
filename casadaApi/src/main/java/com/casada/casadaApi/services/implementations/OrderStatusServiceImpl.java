@@ -68,9 +68,9 @@ public class OrderStatusServiceImpl implements OrderStatusService {
                 System.out.println("narudzbenica");
                 byte[] pdf = pdfService.generatePDF(orderId);
                 String body = """
-                        Poštovani,
+                        Postovani,
 
-                        U prilogu Vam šaljemo narudžbenicu.
+                        U prilogu Vam saljemo narudzbenicu.
 
                         Lijep pozdrav, Casada""";
                 try {
@@ -82,9 +82,9 @@ public class OrderStatusServiceImpl implements OrderStatusService {
             case 2:
                 System.out.println("dostava");
                 String body2 = String.format("""
-                                Poštovani,
+                                Postovani,
 
-                                Vaša narudžba je spremna za dostavu te će uskoro biti dostavljena na Vašu adresu.
+                                Vaša narudzba je spremna za dostavu te će uskoro biti dostavljena na Vasu adresu.
 
                                 Adresa dostave: %s, %s
 
@@ -96,9 +96,9 @@ public class OrderStatusServiceImpl implements OrderStatusService {
             case 3:
                 System.out.println("dostavljena");
                 String body3 = String.format("""
-                                Poštovani,
+                                Postovani,
 
-                                Vaša narudžba je dostavljena.
+                                Vasa narudzba je dostavljena.
 
                                 Hvala na povjerenju!
 

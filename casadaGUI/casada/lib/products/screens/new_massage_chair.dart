@@ -69,7 +69,7 @@ class _NewMassageChair extends State<NewMassageChair> {
               ),
               TextFormField(
                 decoration: InputDecoration(
-                  labelText: 'Cijena',
+                  labelText: 'Cijena/€',
                 ),
                 validator: (value) {
                   if (value!.isEmpty) {
@@ -91,7 +91,7 @@ class _NewMassageChair extends State<NewMassageChair> {
                 ),
                 validator: (value) {
                   if (value!.isEmpty) {
-                    return 'Please enter your email';
+                    return 'Unesite šifru proizvoda';
                   }
                   return null;
                 },
