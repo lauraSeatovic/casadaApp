@@ -2,7 +2,7 @@
 # Build stage
 #
 FROM maven:3.6.0-jdk-11-slim AS build
-COPY src /casadaApi/src
+COPY src casadaApp/casadaApi/src
 COPY pom.xml casadaApp/casadaApi
 RUN mvn -f casadaApp/casadaApi/pom.xml clean package
 
