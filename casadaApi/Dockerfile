@@ -2,14 +2,14 @@
 # Build stage
 #
 FROM maven:3.6.0-jdk-11-slim AS build
-COPY src casadaApp/casadaApi/src
-COPY pom.xml casadaApp/casadaApi
-RUN mvn -f casadaApp/casadaApi/pom.xml clean package
+COPY src /casadaApi/src
+COPY pom.xml /casadaApi
+RUN mvn -f /casadaApi/pom.xml clean package
 
 #
 # Package stage
 #
 FROM openjdk:11-jre-slim
-COPY --from=build casadaApp/casadaApi-0.0.1-SNAPSHOT.jar /usr/local/lib/app.jar
+COPY --from=build /casadaApi-0.0.1-SNAPSHOT.jar /usr/local/lib/app.jar
 EXPOSE 8080
 ENTRYPOINT ["java","-jar","/usr/local/lib/app.jar"]
