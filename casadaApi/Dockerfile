@@ -1,7 +1,7 @@
 #
 # Build stage
 #
-FROM openjdk:17-alpine AS builder
+FROM openjdk:17-alpine AS build
 COPY src /casadaApi/src
 COPY pom.xml /casadaApi
 RUN mvn -f /casadaApi/pom.xml clean package
