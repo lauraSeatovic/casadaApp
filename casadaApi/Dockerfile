@@ -1,15 +1,24 @@
-#
-# Build stage
-#
+# Container za izgradnju (build) aplikacije
 FROM openjdk:17-alpine AS builder
-COPY src /casadaApi/src
-COPY pom.xml /casadaApi
-RUN mvn -f /casadaApi/pom.xml clean package
 
-#
-# Package stage
-#
-FROM adoptopenjdk:17-jre-hotspot
-COPY --from=builder /casadaApi-0.0.1-SNAPSHOT.jar /usr/local/lib/app.jar
+# Kopiranje izvornog koda u container
+COPY ../.mvn .mvn
+COPY ../mvnw .
+COPY ../pom.xml .
+COPY ../src src
+RUN chmod +x mvnw
+
+# Pokretanje builda
+RUN ./mvnw clean package
+
+# Stvaranje containera u kojem ce se vrtiti aplikacija
+FROM openjdk:17-alpine
+
+# Kopiranje izvrsnog JAR-a iz build containera u izvrsni container
+COPY --from=builder target/*.jar /app.jar
+
+# Izlaganje porta
 EXPOSE 8080
-ENTRYPOINT ["java","-jar","/usr/local/lib/app.jar"]
+
+# Naredba kojom se pokrece aplikacija
+ENTRYPOINT ["java","-jar","/app.jar"]
